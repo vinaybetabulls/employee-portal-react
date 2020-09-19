@@ -31,7 +31,7 @@ import jwtDecode from 'jwt-decode';
 const hist = createBrowserHistory();
 let isAuthenticated = true;
 
-(function(){
+(function () {
   let token = localStorage.getItem('empJWT');
   if (token) {
     var decoded = jwtDecode(token);

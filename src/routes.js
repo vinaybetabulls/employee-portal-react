@@ -24,9 +24,9 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
 import Language from "@material-ui/icons/Language";
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import BusinessIcon from '@material-ui/icons/Business';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import BusinessIcon from "@material-ui/icons/Business";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
@@ -44,6 +44,7 @@ import Designations from "views/Designations/Designations";
 import Departments from "views/Departments/Departments";
 import Login from "views/user-onboarding/Login";
 import AddOrganisation from "views/Organisation/AddOrganisation";
+import ChangePassword from "views/user-onboarding/ChangePassword";
 
 const dashboardRoutes = [
   {
@@ -51,112 +52,111 @@ const dashboardRoutes = [
     name: "Login",
     icon: Dashboard,
     component: Login,
-    layout: ""
+    layout: "",
   },
   {
     path: "/dashboard",
     name: "Dashboard",
     icon: Dashboard,
     component: DashboardPage,
-    layout: ""
+    layout: "",
   },
   {
     path: "/organisations",
     name: "Organisation",
     icon: AccountBalanceIcon,
     component: Organisation,
-    layout: ""
+    layout: "",
   },
   {
     path: "/companies",
     name: "Companies",
     icon: BusinessIcon,
     component: Companies,
-    layout: ""
+    layout: "",
   },
   {
     path: "/employees",
     name: "Employees",
     icon: AssignmentIndIcon,
     component: Employees,
-    layout: ""
+    layout: "",
   },
   {
     path: "/designations",
     name: "Designations",
     icon: AssignmentIndIcon,
     component: Designations,
-    layout: ""
+    layout: "",
   },
   {
     path: "/departments",
     name: "Departments",
     icon: AssignmentIndIcon,
     component: Departments,
-    layout: ""
+    layout: "",
   },
   {
     path: "/user",
     name: "User Profile",
     icon: Person,
     component: UserProfile,
-    layout: ""
+    layout: "",
   },
   {
     path: "/organisation/create",
     name: "Add Organisation",
     icon: "content_paste",
     component: AddOrganisation,
-    layout: ""
+    layout: "",
   },
-  // {
-  //   path: "/typography",
-  //   name: "Typography",
-  //   rtlName: "طباعة",
-  //   icon: LibraryBooks,
-  //   component: Typography,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   rtlName: "الرموز",
-  //   icon: BubbleChart,
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   rtlName: "خرائط",
-  //   icon: LocationOn,
-  //   component: Maps,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   rtlName: "إخطارات",
-  //   icon: Notifications,
-  //   component: NotificationsPage,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/rtl-page",
-  //   name: "RTL Support",
-  //   rtlName: "پشتیبانی از راست به چپ",
-  //   icon: Language,
-  //   component: RTLPage,
-  //   layout: "/rtl"
-  // },
-  // {
-  //   path: "/upgrade-to-pro",
-  //   name: "Upgrade To PRO",
-  //   rtlName: "التطور للاحترافية",
-  //   icon: Unarchive,
-  //   component: UpgradeToPro,
-  //   layout: "/admin"
-  // }
+
+  {
+    path: "/changepassword",
+    name: "Change Password",
+    component: ChangePassword,
+    layout: "",
+  },
+  //{
+  //  path: "/icons",
+  //  name: "Icons",
+  //  rtlName: "الرموز",
+  //  icon: BubbleChart,
+  //  component: Icons,
+  //  layout: "/admin"
+  //},
+  //{
+  //  path: "/maps",
+  //  name: "Maps",
+  //  rtlName: "خرائط",
+  //  icon: LocationOn,
+  //  component: Maps,
+  //  layout: "/admin"
+  //},
+  //{
+  //  path: "/notifications",
+  //  name: "Notifications",
+  //  rtlName: "إخطارات",
+  //  icon: Notifications,
+  //  component: NotificationsPage,
+  //  layout: "/admin"
+  //},
+  //{
+  //  path: "/rtl-page",
+  //  name: "RTL Support",
+  //  rtlName: "پشتیبانی از راست به چپ",
+  //  icon: Language,
+  //  component: RTLPage,
+  //  layout: "/rtl"
+  //},
+  //{
+  //  path: "/upgrade-to-pro",
+  //  name: "Upgrade To PRO",
+  //  rtlName: "التطور للاحترافية",
+  //  icon: Unarchive,
+  //  component: UpgradeToPro,
+  //  layout: "/admin"
+  //}
 ];
 
 export default dashboardRoutes;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -17,10 +16,12 @@ import avatar from "assets/img/faces/marc.jpg";
 import Spinner from "components/Spinner/Spinner";
 import Admin from "layouts/Admin";
 
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import { Box } from "@material-ui/core";
 import axios from "axios";
+import { Redirect } from 'react-router-dom';
+import ChangePassword from "./ChangePassword";
+import { AppContext } from "context/AppContext";
 
 const styles = {
   cardCategoryWhite: {
@@ -28,7 +29,7 @@ const styles = {
     margin: "0",
     fontSize: "14px",
     marginTop: "0",
-    marginBottom: "0"
+    marginBottom: "0",
   },
   cardTitleWhite: {
     color: "#FFFFFF",
@@ -37,8 +38,8 @@ const styles = {
     fontWeight: "300",
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 };
 
 const useStyles = makeStyles(styles);
@@ -47,73 +48,95 @@ export default function Login() {
   const classes = useStyles();
   const [userCredentials, setUserCredentials] = useState({});
   const [loading, setLoading] = useState(false);
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(false);
+  const [firstTimeLogin, setIsfirstTimeLogin] = useState(false);
+  const { isAuthenticated, setIsAuthenticated, decoded } = React.useContext(AppContext)
 
   const handleChange = (event) => {
     console.log(event.target.value);
-    setUserCredentials({ ...userCredentials, [event.target.name]: event.target.value });
+    setUserCredentials({
+      ...userCredentials,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const signInUser = async () => {
     const data = {};
-    const userDetails = await axios.post('http://localhost:3001/employee/login', {
-      "username": "superadmin",
-      "password": "superadmin"
-    });
-    console.log(userDetails.data);
-    localStorage.setItem('empJWT', userDetails.data.jwt);
+    const userDetails = await axios.post(
+      "http://localhost:3000/employee/login",
+      {
+        username: "vinay",
+        password: "d3ltagamm@",
+      }
+    );
+    localStorage.setItem("empJWT", userDetails.data.jwt);
     return userDetails.data;
-  }
+  };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     setLoading(true);
-    let {
-      jwt
-    } = await signInUser();
-    jwt && setIsAuth(true);
+    let { jwt, isFirstTimeLogin } = await signInUser();
+    jwt && setIsAuthenticated(true);
+    setIsfirstTimeLogin(isFirstTimeLogin)
     setLoading(false);
-
-  }
-  return (
-
-    isAuth ? <Admin /> : <div>
-      <GridContainer spacing={0}
+    console.log(decoded.user)
+  };
+  return isAuthenticated && firstTimeLogin ? (
+    <ChangePassword />
+  ) : isAuthenticated && !firstTimeLogin ? <Admin /> : (
+    <div>
+      <GridContainer
+        spacing={0}
         direction="column"
         alignItems="center"
         justify="center"
-        style={{ minHeight: '100vh' }} >
+        style={{ minHeight: "100vh" }}
+      >
         <GridItem style={{ width: "100%", maxWidth: 600 }}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Login</h4>
               <p className={classes.cardCategoryWhite}>Create Account here</p>
             </CardHeader>
-            {(loading) && <Spinner />}
+            {loading && <Spinner />}
             <form onSubmit={handleSubmit}>
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     {/* <TextField id="standard-basic" label="Standard" onChange={handleChange} name="username" /> */}
-                    <CustomInput name="username" onChange={handleChange} required labelText="Email address" id="email-address"
+                    <CustomInput
+                      name="username"
+                      onChange={handleChange}
+                      required
+                      labelText="Email address"
+                      id="email-address"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
                       }}
                     />
                   </GridItem>
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <CustomInput type="password" name="password" onChange={handleChange} required labelText="Password" id="pwd"
+                    <CustomInput
+                      type="password"
+                      name="password"
+                      onChange={handleChange}
+                      required
+                      labelText="Password"
+                      id="pwd"
                       formControlProps={{
-                        fullWidth: true
+                        fullWidth: true,
                       }}
                     />
                   </GridItem>
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button type="submit" variant="contained" color="primary">SignIn</Button>
+                <Button type="submit" variant="contained" color="primary">
+                  SignIn
+                </Button>
               </CardFooter>
             </form>
           </Card>

@@ -12,7 +12,7 @@ export const AppProvider = (props) => {
   const [role, setRole] = useState("");
   const [permissions, setPermission] = useState([]);
 
-  let values = { isAuthenticated, setIsAuthenticated }
+  let values = { isAuthenticated, setIsAuthenticated, decoded }
   return (
     <AppContext.Provider value={values}>
       {props.children}
