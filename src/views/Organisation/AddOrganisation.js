@@ -14,6 +14,9 @@ import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
 import avatar from "assets/img/faces/marc.jpg";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 
 const styles = {
   cardCategoryWhite: {
@@ -59,8 +62,8 @@ export default function AddOrganisation() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="Email address"
-                    id="email-address"
+                    labelText="Code"
+                    id="code"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -70,8 +73,8 @@ export default function AddOrganisation() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="First Name"
-                    id="first-name"
+                    labelText="Email"
+                    id="email-address"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -79,8 +82,28 @@ export default function AddOrganisation() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
+                    labelText="Phone"
+                    id="phone"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="Address"
+                    id="address"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="City"
+                    id="city"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -90,8 +113,8 @@ export default function AddOrganisation() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="City"
-                    id="city"
+                    labelText="State"
+                    id="state"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -117,19 +140,20 @@ export default function AddOrganisation() {
                 </GridItem>
               </GridContainer>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
+                <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
+                    labelText="Contact Person"
+                    id="contactPerson"
                     formControlProps={{
                       fullWidth: true
                     }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5
-                    }}
                   />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControlLabel style={{margin: "37px 0 0 0",
+    "position": "relative",
+    "paddingBottom": "10px",
+    "verticalAlign": "unset"}} control={<Switch name="checkedA" />} label="Is Active" />
                 </GridItem>
               </GridContainer>
             </CardBody>
@@ -138,7 +162,7 @@ export default function AddOrganisation() {
             </CardFooter>
           </Card>
         </GridItem>
-        
+
       </GridContainer>
     </div>
   );
