@@ -24,6 +24,10 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
 import Language from "@material-ui/icons/Language";
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import BusinessIcon from '@material-ui/icons/Business';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
@@ -33,82 +37,126 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
-// core components/views for RTL layout
-import RTLPage from "views/RTLPage/RTLPage.js";
+import Organisation from "views/Organisation/Organisation";
+import Companies from "views/Companies/Companies";
+import Employees from "views/Employees/Employees";
+import Designations from "views/Designations/Designations";
+import Departments from "views/Departments/Departments";
+import Login from "views/user-onboarding/Login";
+import AddOrganisation from "views/Organisation/AddOrganisation";
 
 const dashboardRoutes = [
   {
+    path: "/",
+    name: "Login",
+    icon: Dashboard,
+    component: Login,
+    layout: ""
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
-    rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/admin"
+    layout: ""
+  },
+  {
+    path: "/organisations",
+    name: "Organisation",
+    icon: AccountBalanceIcon,
+    component: Organisation,
+    layout: ""
+  },
+  {
+    path: "/companies",
+    name: "Companies",
+    icon: BusinessIcon,
+    component: Companies,
+    layout: ""
+  },
+  {
+    path: "/employees",
+    name: "Employees",
+    icon: AssignmentIndIcon,
+    component: Employees,
+    layout: ""
+  },
+  {
+    path: "/designations",
+    name: "Designations",
+    icon: AssignmentIndIcon,
+    component: Designations,
+    layout: ""
+  },
+  {
+    path: "/departments",
+    name: "Departments",
+    icon: AssignmentIndIcon,
+    component: Departments,
+    layout: ""
   },
   {
     path: "/user",
     name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
-    layout: "/admin"
+    layout: ""
   },
   {
-    path: "/table",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
+    path: "/organisation/create",
+    name: "Add Organisation",
     icon: "content_paste",
-    component: TableList,
-    layout: "/admin"
+    component: AddOrganisation,
+    layout: ""
   },
-  {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: LibraryBooks,
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    rtlName: "الرموز",
-    icon: BubbleChart,
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    rtlName: "خرائط",
-    icon: LocationOn,
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    rtlName: "إخطارات",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin"
-  },
-  {
-    path: "/rtl-page",
-    name: "RTL Support",
-    rtlName: "پشتیبانی از راست به چپ",
-    icon: Language,
-    component: RTLPage,
-    layout: "/rtl"
-  },
-  {
-    path: "/upgrade-to-pro",
-    name: "Upgrade To PRO",
-    rtlName: "التطور للاحترافية",
-    icon: Unarchive,
-    component: UpgradeToPro,
-    layout: "/admin"
-  }
+  // {
+  //   path: "/typography",
+  //   name: "Typography",
+  //   rtlName: "طباعة",
+  //   icon: LibraryBooks,
+  //   component: Typography,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   rtlName: "الرموز",
+  //   icon: BubbleChart,
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/maps",
+  //   name: "Maps",
+  //   rtlName: "خرائط",
+  //   icon: LocationOn,
+  //   component: Maps,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   rtlName: "إخطارات",
+  //   icon: Notifications,
+  //   component: NotificationsPage,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/rtl-page",
+  //   name: "RTL Support",
+  //   rtlName: "پشتیبانی از راست به چپ",
+  //   icon: Language,
+  //   component: RTLPage,
+  //   layout: "/rtl"
+  // },
+  // {
+  //   path: "/upgrade-to-pro",
+  //   name: "Upgrade To PRO",
+  //   rtlName: "التطور للاحترافية",
+  //   icon: Unarchive,
+  //   component: UpgradeToPro,
+  //   layout: "/admin"
+  // }
 ];
 
 export default dashboardRoutes;

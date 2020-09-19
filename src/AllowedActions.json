@@ -1,0 +1,34 @@
+{
+  "defaultRole": {
+    "menus": [
+      "User Profile", "Dashboard", "Organisation"
+    ],
+    "paths": [
+      "/user",
+      "/dashboard",
+      "/organisations",
+      "/organisation/create"
+    ]
+  },
+  "role1": {
+    "menus": [
+      "Organisation",
+      "employees"
+    ],
+    "paths": [
+      "/dashboard",
+      "/organisations",
+      "/employees"
+    ]
+  },
+  "role2": {
+    "menus": [
+      "Departments",
+      "employees"
+    ],
+    "paths": [
+      "/departments",
+      "/employees"
+    ]
+  }
+}
