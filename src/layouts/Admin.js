@@ -19,6 +19,7 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
 import AllowedActions from "../AllowedActions.json";
+import { AppContext } from "context/AppContext";
 
 let ps;
 
@@ -38,6 +39,8 @@ export default function Admin({ ...rest }) {
   let userRole =  "defaultRole";
   const allowedUserRoutes = routes.filter(element => AllowedActions[userRole].paths.includes(element.path));
   console.log(allowedUserRoutes);
+
+  const { role } = useContext(AppContext);
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices

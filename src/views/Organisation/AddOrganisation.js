@@ -150,10 +150,12 @@ export default function AddOrganisation() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                  <FormControlLabel style={{margin: "37px 0 0 0",
-    "position": "relative",
-    "paddingBottom": "10px",
-    "verticalAlign": "unset"}} control={<Switch name="checkedA" />} label="Is Active" />
+                  <FormControlLabel style={{
+                    margin: "37px 0 0 0",
+                    "position": "relative",
+                    "paddingBottom": "10px",
+                    "verticalAlign": "unset"
+                  }} control={<Switch name="checkedA" />} label="Is Active" />
                 </GridItem>
               </GridContainer>
             </CardBody>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
+import { TextField } from "@material-ui/core";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -20,6 +20,7 @@ import Admin from "layouts/Admin";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { Box } from "@material-ui/core";
+import axios from "axios";
 
 const styles = {
   cardCategoryWhite: {
@@ -42,30 +43,6 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const LoginSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(5, 'Too Short!')
-    .max(10, 'Too Long!')
-    .required('Required'),
-  email: Yup.string()
-    .email('Invalid email')
-    .required('Required'),
-});
-
-const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  lastName: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  email: Yup.string()
-    .email('Invalid email')
-    .required('Required'),
-});
-
 export default function Login() {
   const classes = useStyles();
   const [userCredentials, setUserCredentials] = useState({});
@@ -73,28 +50,29 @@ export default function Login() {
   const [isAuth, setIsAuth] = useState(false)
 
   const handleChange = (event) => {
+    console.log(event.target.value);
     setUserCredentials({ ...userCredentials, [event.target.name]: event.target.value });
   };
 
   const signInUser = async () => {
     const data = {};
-    data.empJWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3VwZXJhZG1pbiIsInJvbGVzIjpbIkRFRkFVTFQiXSwicGVybWlzc2lvbnMiOlsiVklFVyJdLCJlbXBVbmlxdWVJZCI6IjBmMjUzMjUwLWM1M2MtNGUwOC04MTgzLWVlNDg2YzM0ZDlmOCJ9LCJpYXQiOjE1MTYyMzkwMjJ9.9Gr4m4qqP8LeCGaCrrF04mVs_lLJCstGZmLuCCgQX4w";
-
-    localStorage.setItem('empJWT', data.empJWT);
-
-    return data;
+    const userDetails = await axios.post('http://localhost:3001/employee/login', {
+      "username": "superadmin",
+      "password": "superadmin"
+    });
+    console.log(userDetails.data);
+    localStorage.setItem('empJWT', userDetails.data.jwt);
+    return userDetails.data;
   }
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     setLoading(true);
-    setTimeout(async () => {
-      let {
-        empJWT
-      } = await signInUser();
-      empJWT && setIsAuth(true);
-      setLoading(false);
-    }, 2000);
+    let {
+      jwt
+    } = await signInUser();
+    jwt && setIsAuth(true);
+    setLoading(false);
 
   }
   return (
@@ -116,7 +94,8 @@ export default function Login() {
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <CustomInput name="email" onChange={handleChange} required labelText="Email address" id="email-address"
+                    {/* <TextField id="standard-basic" label="Standard" onChange={handleChange} name="username" /> */}
+                    <CustomInput name="username" onChange={handleChange} required labelText="Email address" id="email-address"
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -125,7 +104,7 @@ export default function Login() {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <CustomInput name="password" onChange={handleChange} required labelText="Password" id="pwd"
+                    <CustomInput type="password" name="password" onChange={handleChange} required labelText="Password" id="pwd"
                       formControlProps={{
                         fullWidth: true
                       }}
