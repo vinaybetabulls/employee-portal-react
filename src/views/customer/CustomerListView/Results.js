@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+// import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import axios from 'axios';
 import {
   Avatar,
   Box,
@@ -26,17 +27,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className, customers, ...rest }) => {
+const Results = ({ className }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [organizations, setOrganizations] = useState([])
+  useEffect(() => {
+    const getOrganization = async () => {
+      const organizationsList = await axios.get('http://localhost:4000/organization/list', {
+        headers: {
+          token: localStorage.getItem('empJWT')
+        }
+      })
+      console.log('organizationsList..', organizationsList.data)
+      setOrganizations(organizationsList.data.organizations);
 
+    }
+
+    getOrganization();
+  }, [])
+  console.log('customers....', organizations)
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
+      newSelectedCustomerIds = organizations.map((customer) => customer.orgUniqueId);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -75,7 +91,6 @@ const Results = ({ className, customers, ...rest }) => {
   return (
     <Card
       className={clsx(classes.root, className)}
-      {...rest}
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
@@ -84,43 +99,44 @@ const Results = ({ className, customers, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
+                    checked={selectedCustomerIds.length === organizations.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      && selectedCustomerIds.length < organizations.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
-                  Name
+                  Organization Name
                 </TableCell>
                 <TableCell>
-                  Email
+                  Organization Code
                 </TableCell>
                 <TableCell>
-                  Location
+                  Organization Email
                 </TableCell>
                 <TableCell>
-                  Phone
+                  Organization Phone
                 </TableCell>
                 <TableCell>
-                  Registration date
+                  Organization Address
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
+              {console.log('table', organizations)}
+              {organizations.length > 0 && organizations.slice(0, limit).map((customer) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={customer.orgUniqueId}
+                  selected={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.id)}
+                      checked={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
+                      onChange={(event) => handleSelectOne(event, customer.orgUniqueId)}
                       value="true"
                     />
                   </TableCell>
@@ -131,30 +147,36 @@ const Results = ({ className, customers, ...rest }) => {
                     >
                       <Avatar
                         className={classes.avatar}
-                        src={customer.avatarUrl}
+                        src='/static/images/avatars/avatar_3.png'
                       >
-                        {getInitials(customer.name)}
+                        {getInitials(customer.organizationName)}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.name}
+                        {customer.organizationName}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {customer.email}
+                    {customer.organizationCode}
                   </TableCell>
                   <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                    {customer.organizationEmail}
                   </TableCell>
                   <TableCell>
+                    {customer.organizationPhone}
+                  </TableCell>
+                  <TableCell>
+                    {`${customer.organizationAddress[0].city}, ${customer.organizationAddress[0].state}, ${customer.organizationAddress[0].country}`}
+                  </TableCell>
+                  {/* <TableCell>
                     {customer.phone}
                   </TableCell>
                   <TableCell>
                     {moment(customer.createdAt).format('DD/MM/YYYY')}
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
@@ -163,7 +185,7 @@ const Results = ({ className, customers, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={customers.length}
+        count={organizations.length || 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
@@ -175,8 +197,7 @@ const Results = ({ className, customers, ...rest }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string,
-  customers: PropTypes.array.isRequired
+  className: PropTypes.string
 };
 
 export default Results;

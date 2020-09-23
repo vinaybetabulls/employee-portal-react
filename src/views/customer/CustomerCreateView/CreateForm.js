@@ -60,7 +60,7 @@ const CreateForm = ({ className, ...rest }) => {
       <Card>
         <CardHeader
           subheader="The information can be edited"
-          title="Profile"
+          title="Organizaton Create"
         />
         <Divider />
         <CardContent>
@@ -75,12 +75,12 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
+                helperText="Please specify the Organization name"
+                label="Organization name"
+                name="organizationName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.organizationName}
                 variant="outlined"
               />
             </Grid>
@@ -91,8 +91,8 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Last name"
-                name="lastName"
+                label="Organization code"
+                name="organizationCode"
                 onChange={handleChange}
                 required
                 value={values.lastName}
@@ -106,8 +106,8 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
-                name="email"
+                label="Organization Email"
+                name="organizationEmail"
                 onChange={handleChange}
                 required
                 value={values.email}
@@ -121,8 +121,8 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                label="Organization Phone"
+                name="organizationPhone"
                 onChange={handleChange}
                 type="number"
                 value={values.phone}
@@ -182,7 +182,7 @@ const CreateForm = ({ className, ...rest }) => {
             color="primary"
             variant="contained"
           >
-            Save details
+            Create organization
           </Button>
         </Box>
       </Card>
