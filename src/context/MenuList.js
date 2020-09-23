@@ -109,6 +109,21 @@ const Menu = [
                 icon: SettingsIcon,
                 title: 'Settings'
             },
+            {
+                href: '/app/customers',
+                icon: UsersIcon,
+                title: 'Customers'
+            },
+            {
+                href: '/app/account',
+                icon: UserIcon,
+                title: 'Account'
+            },
+            {
+                href: '/app/create',
+                icon: UserIcon,
+                title: 'Create'
+            }
         ]
     }
 ]

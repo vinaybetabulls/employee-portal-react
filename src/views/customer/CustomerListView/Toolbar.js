@@ -13,6 +13,9 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   importButton: {
@@ -35,17 +38,13 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
-        </Button>
         <Button
           color="primary"
-          variant="contained"
+          variant="contained" component={RouterLink} to="/app/create"
         >
-          Add customer
+        
+            Add Organisation
+          
         </Button>
       </Box>
       <Box mt={3}>

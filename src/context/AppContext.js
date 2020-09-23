@@ -61,8 +61,6 @@ export const AppProvider = (props) => {
     }, [decoded.user?.empUniqueId])
 
 
-
-
     let values = { isAuthenticated, setIsAuthenticated, menuLists, empId }
     return (
         <AppContext.Provider value={values}>
