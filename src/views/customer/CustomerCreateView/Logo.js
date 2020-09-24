@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
 import {
   Avatar,
   Box,
@@ -18,24 +17,22 @@ const user = {
   avatar: '/static/images/avatars/avatar_6.png',
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
-    height: 100,
-    width: 100
-  }
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
-const Logo = ({ className, ...rest }) => {
+const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }) => {
   const classes = useStyles();
-  const uploadOrganizationLogo = (e) => {
 
-  }
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest} >
       <CardContent>
         <Box
           alignItems="center"
@@ -44,40 +41,22 @@ const Logo = ({ className, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={organizationLogoURL}
           />
-          {/* <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h3"
-          >
-            {user.name}
-          </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
-          </Typography> */}
         </Box>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="contained-button-file"
+          type="file"
           onChange={uploadOrganizationLogo}
-        >
-          Upload picture
-        </Button>
+        />
+        <label htmlFor="contained-button-file">
+          <Button variant="contained" color="primary" component="span">  Logo </Button>
+        </label>
       </CardActions>
     </Card>
   );

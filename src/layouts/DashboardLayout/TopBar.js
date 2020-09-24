@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -29,9 +29,12 @@ const TopBar = ({
   onMobileNavOpen,
   ...rest
 }) => {
+  const navigate = useNavigate();
   const classes = useStyles();
-  const [notifications] = useState([]);
-
+  const handleLogout = () => {
+    localStorage.removeItem('empJWT');
+    navigate('/')
+  }
   return (
     <AppBar
       className={clsx(classes.root, className)}
@@ -45,16 +48,7 @@ const TopBar = ({
         <Box flexGrow={1} />
         <Hidden mdDown>
           <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit">
-            <InputIcon />
+            <InputIcon onClick={handleLogout} />
           </IconButton>
         </Hidden>
         <Hidden lgUp>

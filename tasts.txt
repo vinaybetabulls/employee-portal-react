@@ -1,0 +1,10 @@
+1 - Organisation :: edit, delete, details
+2 - Companies :: list, create, edit, delete, details
+3 - Employees :: list, create, edit, delete, details
+4 - Org Logo as Brand in Navbar
+5 - Protected routes
+6 - .env for URL
+7 - Profile edit
+8 - Dashboard only for super admin
+9 - Form validations
+ 

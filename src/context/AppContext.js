@@ -10,8 +10,6 @@ export const AppProvider = (props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('empJWT') || false);
     const decoded = isAuthenticated && jwtDecode(localStorage.getItem('empJWT'));
     console.log('decoded..', decoded);
-    const [role, setRole] = useState("");
-    const [permissions, setPermission] = useState([]);
     const [empId, setEmpId] = useState(decoded && decoded.user?.empUniqueId);
     console.log('empId..', decoded.user?.empUniqueId)
     /**
@@ -60,8 +58,13 @@ export const AppProvider = (props) => {
         }
     }, [decoded.user?.empUniqueId])
 
+    const getActions = () => {
+        const actions = [];
 
-    let values = { isAuthenticated, setIsAuthenticated, menuLists, empId }
+    }
+
+
+    let values = { isAuthenticated, setIsAuthenticated, menuLists, empId, decoded }
     return (
         <AppContext.Provider value={values}>
             {props.children}

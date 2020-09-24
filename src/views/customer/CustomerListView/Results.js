@@ -97,7 +97,7 @@ const Results = ({ className }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
+                {/* <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedCustomerIds.length === organizations.length}
                     color="primary"
@@ -107,7 +107,7 @@ const Results = ({ className }) => {
                     }
                     onChange={handleSelectAll}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   Organization Name
                 </TableCell>
@@ -133,13 +133,13 @@ const Results = ({ className }) => {
                   key={customer.orgUniqueId}
                   selected={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
                 >
-                  <TableCell padding="checkbox">
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
                       onChange={(event) => handleSelectOne(event, customer.orgUniqueId)}
                       value="true"
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <Box
                       alignItems="center"
@@ -147,7 +147,7 @@ const Results = ({ className }) => {
                     >
                       <Avatar
                         className={classes.avatar}
-                        src='/static/images/avatars/avatar_3.png'
+                        src={customer.organizationLogoURL}
                       >
                         {getInitials(customer.organizationName)}
                       </Avatar>

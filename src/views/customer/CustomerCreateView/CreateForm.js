@@ -12,42 +12,13 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({ className, ...rest }) => {
+const CreateForm = ({ createOrganization, handleChange, className, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({});
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
-  const createOrganization = async () => {
-    try {
-      values.organizationAddress = [{
-        address: values.address,
-        city: values.city,
-        state: values.state,
-        country: values.country,
-        zipcode: values.zipcode
-      }]
-      values.organizationContactPerson = {
-        name: values.organizationContactName,
-        phone: values.organizationContactPhone
-      }
-      const createOrgResponse = await axios.post('http://localhost:4000/organization/create', values, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create Org Response..', createOrgResponse)
-    } catch (error) {
-      console.log('org create error', error)
-    }
-  }
 
   return (
     <form
@@ -78,7 +49,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationName"
                 onChange={handleChange}
                 required
-                value={values.organizationName}
                 variant="outlined"
               />
             </Grid>
@@ -93,7 +63,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationCode"
                 onChange={handleChange}
                 required
-                value={values.lastName}
                 variant="outlined"
               />
             </Grid>
@@ -108,7 +77,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationEmail"
                 onChange={handleChange}
                 required
-                value={values.email}
                 variant="outlined"
               />
             </Grid>
@@ -123,7 +91,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationPhone"
                 onChange={handleChange}
                 type="number"
-                value={values.phone}
                 variant="outlined"
               />
             </Grid>
@@ -138,7 +105,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationContactName"
                 onChange={handleChange}
                 type="text"
-                value={values.organizationContactName}
                 variant="outlined"
               />
             </Grid>
@@ -153,7 +119,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="organizationContactPhone"
                 onChange={handleChange}
                 type="number"
-                value={values.organizationContactPhone}
                 variant="outlined"
               />
             </Grid>
@@ -168,7 +133,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="address"
                 onChange={handleChange}
                 required
-                value={values.address}
                 variant="outlined"
               />
             </Grid>
@@ -183,7 +147,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="city"
                 onChange={handleChange}
                 required
-                value={values.city}
                 variant="outlined"
               />
             </Grid>
@@ -198,7 +161,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="state"
                 onChange={handleChange}
                 required
-                value={values.state}
                 variant="outlined"
               />
             </Grid>
@@ -213,7 +175,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="country"
                 onChange={handleChange}
                 required
-                value={values.country}
                 variant="outlined"
               />
             </Grid>
@@ -228,7 +189,6 @@ const CreateForm = ({ className, ...rest }) => {
                 name="zipcode"
                 onChange={handleChange}
                 required
-                value={values.zipcode}
                 variant="outlined"
               />
             </Grid>
