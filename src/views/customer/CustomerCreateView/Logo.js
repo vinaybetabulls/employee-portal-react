@@ -16,11 +16,6 @@ import {
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
 };
 
 const useStyles = makeStyles(() => ({
@@ -33,7 +28,9 @@ const useStyles = makeStyles(() => ({
 
 const Logo = ({ className, ...rest }) => {
   const classes = useStyles();
+  const uploadOrganizationLogo = (e) => {
 
+  }
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -49,7 +46,7 @@ const Logo = ({ className, ...rest }) => {
             className={classes.avatar}
             src={user.avatar}
           />
-          <Typography
+          {/* <Typography
             color="textPrimary"
             gutterBottom
             variant="h3"
@@ -68,7 +65,7 @@ const Logo = ({ className, ...rest }) => {
             variant="body1"
           >
             {`${moment().format('hh:mm A')} ${user.timezone}`}
-          </Typography>
+          </Typography> */}
         </Box>
       </CardContent>
       <Divider />
@@ -77,6 +74,7 @@ const Logo = ({ className, ...rest }) => {
           color="primary"
           fullWidth
           variant="text"
+          onChange={uploadOrganizationLogo}
         >
           Upload picture
         </Button>

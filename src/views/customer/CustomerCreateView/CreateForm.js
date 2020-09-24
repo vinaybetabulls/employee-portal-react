@@ -12,21 +12,7 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -34,14 +20,7 @@ const useStyles = makeStyles(() => ({
 
 const CreateForm = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
+  const [values, setValues] = useState({});
 
   const handleChange = (event) => {
     setValues({
@@ -49,6 +28,26 @@ const CreateForm = ({ className, ...rest }) => {
       [event.target.name]: event.target.value
     });
   };
+
+  const createOrganization = async () => {
+    try {
+      values.organizationAddress = [{
+        address: values.address,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+        zipcode: values.zipcode
+      }]
+      values.organizationContactPerson = {
+        name: values.organizationContactName,
+        phone: values.organizationContactPhone
+      }
+      const createOrgResponse = await axios.post('http://localhost:4000/organization/create', values, { headers: { token: localStorage.getItem('empJWT') } });
+      console.log('create Org Response..', createOrgResponse)
+    } catch (error) {
+      console.log('org create error', error)
+    }
+  }
 
   return (
     <form
@@ -59,8 +58,7 @@ const CreateForm = ({ className, ...rest }) => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Organizaton Create"
+          title="Create Organizaton"
         />
         <Divider />
         <CardContent>
@@ -136,6 +134,81 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
+                label="Organization Contact Name"
+                name="organizationContactName"
+                onChange={handleChange}
+                type="text"
+                value={values.organizationContactName}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Organization Contact Phone"
+                name="organizationContactPhone"
+                onChange={handleChange}
+                type="number"
+                value={values.organizationContactPhone}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Address"
+                name="address"
+                onChange={handleChange}
+                required
+                value={values.address}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="City"
+                name="city"
+                onChange={handleChange}
+                required
+                value={values.city}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="State"
+                name="state"
+                onChange={handleChange}
+                required
+                value={values.state}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
                 label="Country"
                 name="country"
                 onChange={handleChange}
@@ -151,24 +224,13 @@ const CreateForm = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Select State"
-                name="state"
+                label="Zip"
+                name="zipcode"
                 onChange={handleChange}
                 required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
+                value={values.zipcode}
                 variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              />
             </Grid>
           </Grid>
         </CardContent>
@@ -181,6 +243,8 @@ const CreateForm = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
+            type="button"
+            onClick={createOrganization}
           >
             Create organization
           </Button>
