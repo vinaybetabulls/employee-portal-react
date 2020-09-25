@@ -12,6 +12,9 @@ import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 
+import CompanyList from 'src/views/companies/CompanyList';
+import CompanyCreateView from './views/companies/CompanyCreateView';
+
 const routes = [
   {
     path: 'app',
@@ -20,6 +23,8 @@ const routes = [
       { path: 'account', element: <AccountView /> },
       { path: 'customers', element: <CustomerListView /> },
       { path: 'create', element: <CustomerCreateView /> },
+      { path: 'companies', element: <CompanyList /> },
+      { path: 'createcompany', element: <CompanyCreateView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CompanyCreateView = () => {
+const CustomerCreateView = () => {
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -30,7 +30,7 @@ const CompanyCreateView = () => {
     let reader = new FileReader();
     reader.readAsDataURL(evt.target.files[0]);
     reader.onload = function () {
-      setState({ ...state, organizationLogoURL: reader.result });
+      setState({...state, organizationLogoURL:reader.result});
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -69,7 +69,7 @@ const CompanyCreateView = () => {
       <Container maxWidth="lg">
         <Grid container spacing={3} >
           <Grid item lg={4} md={6} xs={12} >
-            <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL} />
+            <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL}/>
           </Grid>
           <Grid item lg={8} md={6} xs={12} >
             <CreateForm handleChange={handleChange} createOrganization={createOrganization} />
@@ -80,4 +80,4 @@ const CompanyCreateView = () => {
   );
 };
 
-export default CompanyCreateView;
+export default CustomerCreateView;
