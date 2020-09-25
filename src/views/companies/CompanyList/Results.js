@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   Avatar,
   Box,
@@ -19,12 +20,16 @@ import {
   makeStyles
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     marginRight: theme.spacing(2)
-  }
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));
 
 const Results = ({ className }) => {
@@ -32,22 +37,31 @@ const Results = ({ className }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies] = useState([]);
+  const getOrganization = async () => {
+    const companiesList = await axios.get('http://localhost:4000/company/list', {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    })
+    console.log('organizationsList..', companiesList.data)
+    setCompanies(companiesList.data.companies);
+
+  }
   useEffect(() => {
-    const getOrganization = async () => {
-      const companiesList = await axios.get('http://localhost:4000/company/list', {
-        headers: {
-          token: localStorage.getItem('empJWT')
-        }
-      })
-      console.log('organizationsList..', companiesList.data)
-      setCompanies(companiesList.data.companies);
-
-    }
-
     getOrganization();
   }, [])
-  console.log('companies....', companies)
+  const deleteCompany = async (companyId) => {
+    console.log('delete icon', companyId)
+    await axios.delete(`http://localhost:4000/company/${companyId}`, {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    })
+
+    getOrganization();
+
+  }
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -123,6 +137,9 @@ const Results = ({ className }) => {
                 <TableCell>
                   Company Address
                 </TableCell>
+                <TableCell>
+                  Delete
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -170,6 +187,11 @@ const Results = ({ className }) => {
                   </TableCell>
                   <TableCell>
                     {`${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
                   </TableCell>
                   {/* <TableCell>
                     {customer.phone}

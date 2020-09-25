@@ -19,6 +19,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -32,22 +34,29 @@ const Results = ({ className }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const [organizations, setOrganizations] = useState([])
+  const [organizations, setOrganizations] = useState([]);
+  const getOrganization = async () => {
+    const organizationsList = await axios.get('http://localhost:4000/organization/list', {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    })
+    console.log('organizationsList..', organizationsList.data)
+    setOrganizations(organizationsList.data.organizations);
+
+  }
   useEffect(() => {
-    const getOrganization = async () => {
-      const organizationsList = await axios.get('http://localhost:4000/organization/list', {
-        headers: {
-          token: localStorage.getItem('empJWT')
-        }
-      })
-      console.log('organizationsList..', organizationsList.data)
-      setOrganizations(organizationsList.data.organizations);
-
-    }
-
     getOrganization();
   }, [])
-  console.log('customers....', organizations)
+  console.log('customers....', organizations);
+  const deleteOrganization = async (orgId) => {
+    await axios.delete(`http://localhost:4000/organization/${orgId}`, {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    })
+    getOrganization();
+  }
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -123,6 +132,9 @@ const Results = ({ className }) => {
                 <TableCell>
                   Organization Address
                 </TableCell>
+                <TableCell>
+                  Delete
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -170,6 +182,11 @@ const Results = ({ className }) => {
                   </TableCell>
                   <TableCell>
                     {`${customer.organizationAddress[0].city}, ${customer.organizationAddress[0].state}, ${customer.organizationAddress[0].country}`}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton aria-label="delete" className={classes.margin} id={customer.orgUniqueId} onClick={() => deleteOrganization(customer.orgUniqueId)}>
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
                   </TableCell>
                   {/* <TableCell>
                     {customer.phone}
