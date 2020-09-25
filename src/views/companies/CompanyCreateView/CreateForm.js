@@ -10,7 +10,9 @@ import {
   Divider,
   Grid,
   TextField,
-  makeStyles
+  makeStyles,
+  Select,
+  MenuItem
 } from '@material-ui/core';
 import axios from 'axios';
 
@@ -18,24 +20,25 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({ createOrganization, handleChange, className, ...rest }) => {
+const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
   useEffect(() => {
     const getOrganizationsList = async () => {
-      let organizations = await axios.get('http://localhost:4000/organization/list', {
+      const organizations = await axios.get('http://localhost:4000/organization/list', {
         headers: {
           token: localStorage.getItem('empJWT')
         }
       });
-      organizations = organizations.data.organizations.map((organization) => {
+      const organizationSelect = organizations.data.organizations.map((organization) => {
         return {
           organizationName: organization.organizationName,
-          organizationId: organization.orgUniqueId
+          orgUniqueId: organization.orgUniqueId
         }
       })
-      setOrganizationsList(organizations)
-      console.log('company create organizations...', organizationsList)
+      console.log('vinay organizationSelect..', organizationSelect)
+      setOrganizationsList(organizationSelect)
+      console.log('company create organizations...', organizationSelect)
     }
     getOrganizationsList()
   }, [])
@@ -78,8 +81,8 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
-                label="Organization code"
-                name="organizationCode"
+                label="Company code"
+                name="companyCode"
                 onChange={handleChange}
                 required
                 variant="outlined"
@@ -92,8 +95,8 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
-                label="Organization Email"
-                name="organizationEmail"
+                label="Company Email"
+                name="companyEmail"
                 onChange={handleChange}
                 required
                 variant="outlined"
@@ -106,8 +109,8 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
-                label="Organization Phone"
-                name="organizationPhone"
+                label="Company Phone"
+                name="companyPhone"
                 onChange={handleChange}
                 type="number"
                 variant="outlined"
@@ -120,8 +123,8 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
-                label="Organization Contact Name"
-                name="organizationContactName"
+                label="Company Contact Name"
+                name="companyContactName"
                 onChange={handleChange}
                 type="text"
                 variant="outlined"
@@ -134,8 +137,8 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
-                label="Organization Contact Phone"
-                name="organizationContactPhone"
+                label="Company Contact Phone"
+                name="companyContactPhone"
                 onChange={handleChange}
                 type="number"
                 variant="outlined"
@@ -148,23 +151,33 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             >
               <TextField
                 fullWidth
+                label="Company Description"
+                name="companyDescription"
+                onChange={handleChange}
+                type="text"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <Select
+                fullWidth
                 label="Select Organization"
-                name="organization"
+                name="companyOrganizationId"
                 onChange={handleChange}
                 required
                 select
                 SelectProps={{ native: true }}
                 variant="outlined"
               >
-                {organizationsList.map((option) => (
-                  <option
-                    key={option.orgUniqueId}
-                    value={option.organizationName}
-                  >
-                    {option.organizationName}
-                  </option>
-                ))}
-              </TextField>
+                <MenuItem value=""> <em>None</em> </MenuItem>
+                {
+                  organizationsList.length > 0 && organizationsList.map(org => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>{org.organizationName}</MenuItem>)
+                }
+              </Select>
             </Grid>
             <Grid
               item
@@ -248,7 +261,7 @@ const CreateForm = ({ createOrganization, handleChange, className, ...rest }) =>
             color="primary"
             variant="contained"
             type="button"
-            onClick={createOrganization}
+            onClick={createCompany}
           >
             Create organization
           </Button>
