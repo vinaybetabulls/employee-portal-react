@@ -22,15 +22,15 @@ const CustomerCreateView = () => {
   const classes = useStyles();
 
   const [state, setState] = useState({
-    organizationLogoURL: null
+    companyLogoURL: null
   })
 
-  const uploadOrganizationLogo = (evt) => {
+  const uploadCompanyLogo = (evt) => {
     console.log(evt.target.files[0]);
     let reader = new FileReader();
     reader.readAsDataURL(evt.target.files[0]);
     reader.onload = function () {
-      setState({...state, organizationLogoURL:reader.result});
+      setState({ ...state, companyLogoURL: reader.result });
     };
     reader.onerror = function (error) {
       console.log('Error: ', error);
@@ -38,27 +38,28 @@ const CustomerCreateView = () => {
   }
 
   const handleChange = (event) => {
+    console.log('event.', event.target.value)
     setState({
       ...state,
       [event.target.name]: event.target.value
     });
   };
 
-  const createOrganization = async () => {
+  const createCompany = async () => {
     try {
-      state.organizationAddress = [{
+      state.companyAddress = [{
         address: state.address,
         city: state.city,
         state: state.state,
         country: state.country,
         zipcode: state.zipcode
       }]
-      state.organizationContactPerson = {
-        name: state.organizationContactName,
-        phone: state.organizationContactPhone
+      state.companyContactPerson = {
+        name: state.companyContactName,
+        phone: state.companyContactPhone
       }
-      const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create Org Response..', createOrgResponse)
+      const createOrgResponse = await axios.post('http://localhost:4000/company/create', state, { headers: { token: localStorage.getItem('empJWT') } });
+      console.log('create company Response..', state)
     } catch (error) {
       console.log('org create error', error)
     }
@@ -69,10 +70,10 @@ const CustomerCreateView = () => {
       <Container maxWidth="lg">
         <Grid container spacing={3} >
           <Grid item lg={4} md={6} xs={12} >
-            <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL}/>
+            <Logo uploadcompanylogo={uploadCompanyLogo} companyLogoURL={state.companyLogoURL} />
           </Grid>
           <Grid item lg={8} md={6} xs={12} >
-            <CreateForm handleChange={handleChange} createOrganization={createOrganization} />
+            <CreateForm handleChange={handleChange} createCompany={createCompany} />
           </Grid>
         </Grid>
       </Container>

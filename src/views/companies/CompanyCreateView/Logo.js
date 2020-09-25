@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }) => {
+const Logo = ({ companyLogoURL, uploadcompanylogo, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -41,7 +41,7 @@ const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }
         >
           <Avatar
             className={classes.avatar}
-            src={organizationLogoURL}
+            src={companyLogoURL}
           />
         </Box>
       </CardContent>
@@ -52,7 +52,7 @@ const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }
           className={classes.input}
           id="contained-button-file"
           type="file"
-          onChange={uploadOrganizationLogo}
+          onChange={uploadcompanylogo}
         />
         <label htmlFor="contained-button-file">
           <Button variant="contained" color="primary" component="span">  Logo </Button>
