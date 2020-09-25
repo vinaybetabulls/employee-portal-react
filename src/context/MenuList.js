@@ -119,6 +119,11 @@ const Menu = [
         icon: UserIcon,
         title: 'Account'
       },
+      {
+        href: '/app/employee/create',
+        icon: UserIcon,
+        title: 'Create Employee'
+      },
     ]
   }
 ]

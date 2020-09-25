@@ -14,6 +14,7 @@ import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 
 import CompanyList from 'src/views/companies/CompanyList';
 import CompanyCreateView from './views/companies/CompanyCreateView';
+import Employee from './views/employees/Employee';
 
 const routes = [
   {
@@ -28,6 +29,7 @@ const routes = [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
+      { path: 'employee/create', element: <Employee /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
