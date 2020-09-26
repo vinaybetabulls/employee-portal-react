@@ -15,7 +15,7 @@ const Menu = [
       {
         href: '/app/customers',
         icon: UsersIcon,
-        title: 'Customers'
+        title: 'Organizations'
       },
       {
         href: '/app/products',
@@ -54,7 +54,7 @@ const Menu = [
       {
         href: '/app/customers',
         icon: UsersIcon,
-        title: 'Customers'
+        title: 'Organizations'
       },
       {
         href: '/app/products',
@@ -93,7 +93,7 @@ const Menu = [
       {
         href: '/app/customers',
         icon: UsersIcon,
-        title: 'Customers'
+        title: 'Organizations'
       },
       {
         href: '/app/products',
@@ -112,7 +112,7 @@ const Menu = [
       {
         href: '/app/customers',
         icon: UsersIcon,
-        title: 'Customers',
+        title: 'Organizations',
       },
       {
         href: '/app/account',

@@ -59,9 +59,10 @@ const LoginView = () => {
             onSubmit={async (values) => {
               try {
                 const emp = await axios.post('http://localhost:4000/employee/login', { username: values.email, password: values.password });
-                console.log(emp.data.jwt)
-                const { jwt, isFirstTimeLogin } = emp.data;
-                localStorage.setItem('empJWT', jwt)
+                console.log(emp.data)
+                const { jwt, isFirstTimeLogin, companyLogoURL } = emp.data;
+                localStorage.setItem('empJWT', jwt);
+                localStorage.setItem('companyLogoURL', companyLogoURL)
                 jwt && setIsAuthenticated(true);
                 if (!isFirstTimeLogin) {
                   navigate('app/dashboard')

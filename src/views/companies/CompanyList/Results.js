@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 // import moment from 'moment';
@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
-
+import { AppContext } from 'src/context/AppContext';
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Results = ({ className }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+  const { decoded: { user: { permissions } } } = useContext(AppContext);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
   const [companies, setCompanies] = useState([]);
@@ -137,9 +138,9 @@ const Results = ({ className }) => {
                 <TableCell>
                   Company Address
                 </TableCell>
-                <TableCell>
+                {permissions.includes('DELETE') && <TableCell>
                   Delete
-                </TableCell>
+                </TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -188,11 +189,11 @@ const Results = ({ className }) => {
                   <TableCell>
                     {`${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`}
                   </TableCell>
-                  <TableCell>
+                  {permissions.includes('DELETE') && <TableCell>
                     <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
-                  </TableCell>
+                  </TableCell>}
                   {/* <TableCell>
                     {customer.phone}
                   </TableCell>
