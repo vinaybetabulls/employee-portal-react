@@ -140,7 +140,7 @@ export default function Employee() {
     if (activeStep === steps.length - 1) {
       const createEmp = await axios.post('http://localhost:4000/employee/create', state, {
         headers: {
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoic3VwZXJhZG1pbiIsInJvbGVzIjpbIlNVUEVSX0FETUlOIl0sInBlcm1pc3Npb25zIjpbIkFERElUSU9OQUwiLCJDUkVBVEUiLCJERUxFVEUiLCJFRElUIiwiVklFVyJdLCJlbXBVbmlxdWVJZCI6IjQzYzRlN2Y1LTBlMGItNDY2OS1hNzFmLTk5NTJlODY1ZmQ2YyIsImlzRmlyc3RUaW1lTG9naW4iOmZhbHNlfSwiaWF0IjoxNjAxMTUyMjEzLCJleHAiOjE2MDEyMzg2MTN9.vE7eFMxuIOKqkktOHzyDKk7XOyrVyw95o3ZRu3lob54"
+          token: localStorage.getItem('empJWT')
         }
       });
       console.log(createEmp);
