@@ -14,7 +14,7 @@ import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 
 import CompanyList from 'src/views/companies/CompanyList';
 import CompanyCreateView from './views/companies/CompanyCreateView';
-import Employee from './views/employees/Employee';
+import Employee from './views/employees/AddEmployee/Employee';
 
 const routes = [
   {

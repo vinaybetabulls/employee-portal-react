@@ -25,17 +25,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddressForm() {
+export default function PersonalDetails({ state, setState, handleChange }) {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setState(...state, { "dob": new Date(date) });
   };
+
+  const handleEmpAdd = (event) => {
+    let { employeeAddress: ea } = state
+    let employeeAddress = { ...ea, [event.target.name]: event.target.value}
+    setState({
+      ...state, employeeAddress
+    })
+    //setState({ ...state, ...employeeAddress[0], [event.target.name]: event.target.value})
+  }
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Personal Details
+        Personal Details {JSON.stringify(state)}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -46,6 +54,8 @@ export default function AddressForm() {
             label="First name"
             fullWidth
             autoComplete="given-name"
+            value={state.firstName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -55,7 +65,8 @@ export default function AddressForm() {
             name="middleName"
             label="Middle name"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-name" value={state.middleName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -65,17 +76,19 @@ export default function AddressForm() {
             name="lastName"
             label="Last name"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="family-name" value={state.lastName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <TextField
+          <TextField
             required
             id="phone"
             name="phone"
             label="Phone"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="family-name" value={state.phone}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -85,7 +98,8 @@ export default function AddressForm() {
             name="userName"
             label="UserName"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="family-name" value={state.userName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -95,23 +109,25 @@ export default function AddressForm() {
             name="email"
             label="Email"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="family-name" value={state.email}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="fatherName"
-            name="fatherName"
+            id="fathersName"
+            name="fathersName"
             label="Father Name"
             fullWidth
-            autoComplete="family-name"
+            autoComplete="family-name" value={state.fatherName}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Gender</InputLabel>
-            <Select native >
+            <Select native name="gender" value={state.gender} onChange={handleChange}>
               <option aria-label="None" value="" />
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -127,7 +143,7 @@ export default function AddressForm() {
             name="bloodGroup"
             label="Blood Group"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-name" value={state.bloodGroup} onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -137,25 +153,24 @@ export default function AddressForm() {
             name="maritalStatus"
             label="Marital Status"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-name" value={state.maritalStatus} onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {/* <Grid container justify="space-around"> */}
-              <KeyboardDatePicker style={{minWidth:'100%'}}
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Date picker inline"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-              />
+            <KeyboardDatePicker
+              margin="normal"
+              id="date-picker-dialog"
+              label="Date picker dialog"
+              format="MM/dd/yyyy"
+              name="dob"
+              value={state.dob}
+              onChange={handleChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
         </Grid>
@@ -166,7 +181,7 @@ export default function AddressForm() {
             name="aadharCardNumber"
             label="Aadhar Card"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-name" value={state.aadharCardNumber} onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -176,9 +191,9 @@ export default function AddressForm() {
             name="panCardNumber"
             label="Pan Card"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-name" value={state.panCardNumber} onChange={handleChange}
           />
-        </Grid>      
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -186,7 +201,7 @@ export default function AddressForm() {
             name="motherTounge"
             label="Mother Tounge"
             fullWidth
-            autoComplete="shipping address-line1"
+            autoComplete="shipping address-line1" value={state.motherTounge} onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -196,26 +211,26 @@ export default function AddressForm() {
             name="nationality"
             label="Nationality"
             fullWidth
-            autoComplete="shipping address-line1"
+            autoComplete="shipping address-line1" value={state.nationality} onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="zip"
-            name="zip"
+            id="zipcode"
+            name="zipcode"
             label="Zip / Postal code"
             fullWidth
-            autoComplete="shipping postal-code"
+            autoComplete="shipping postal-code"  onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="address2"
-            name="address2"
-            label="Address line 2"
+            id="address"
+            name="address"
+            label="Address line"
             fullWidth
-            autoComplete="shipping address-line2"
+            autoComplete="shipping address-line2" onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -225,12 +240,12 @@ export default function AddressForm() {
             name="city"
             label="City"
             fullWidth
-            autoComplete="shipping address-level2"
+            autoComplete="shipping address-level2"  onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-        </Grid>     
+          <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             required
@@ -238,13 +253,13 @@ export default function AddressForm() {
             name="country"
             label="Country"
             fullWidth
-            autoComplete="shipping country"
+            autoComplete="shipping country" onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Active Employee"
+            control={<Checkbox color="secondary" name="isActive" value="yes" />}
+            label="Active Employee" checked={state.isActive} 
           />
         </Grid>
       </Grid>
