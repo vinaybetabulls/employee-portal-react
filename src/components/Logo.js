@@ -15,10 +15,14 @@ const Logo = (props) => {
   const [companyLogo, setCompanyLogo] = useState('/static/logo.svg');
   useEffect(() => {
     const companyLogoURL = localStorage.getItem('companyLogoURL');
-    if (companyLogoURL) {
+    console.log(companyLogoURL)
+    if (companyLogoURL == null) {
       setCompanyLogo(companyLogoURL)
     }
-  }, [])
+    else {
+      setCompanyLogo('/static/logo.svg')
+    }
+  }, [companyLogo])
   return (
     <img
       class={classes.root}
