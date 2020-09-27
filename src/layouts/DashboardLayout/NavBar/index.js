@@ -68,7 +68,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       display="flex"
       flexDirection="column"
     >
-      <Box
+      {/* <Box
         alignItems="center"
         display="flex"
         flexDirection="column"
@@ -94,6 +94,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           {user.jobTitle}
         </Typography>
       </Box>
+       */}
       <Divider />
       <Box p={2}>
         <List>
@@ -108,7 +109,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </List>
       </Box>
       <Box flexGrow={1} />
-      
+
     </Box>
   );
 

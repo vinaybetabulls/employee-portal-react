@@ -42,7 +42,7 @@ const Toolbar = ({ className, ...rest }) => {
         display="flex"
         justifyContent="flex-end"
       >
-        {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/company/createcompany"> Add Company </Button>}
+        {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/company/create"> Add Company </Button>}
       </Box>
       <Box mt={3}>
         <Card>

@@ -263,7 +263,7 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
             type="button"
             onClick={createCompany}
           >
-            Create organization
+            Create Company
           </Button>
         </Box>
       </Card>

@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
-import CustomerListView from 'src/views/customer/CustomerListView';
+import OrganizationView from 'src/views/customer/CustomerListView';
 import DashboardView from 'src/views/reports/DashboardView';
 import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
@@ -23,10 +23,10 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: 'account', element: <AccountView /> },
-      { path: 'customers', element: <CustomerListView /> },
-      { path: 'create', element: <CustomerCreateView /> },
+      { path: 'organizaiton/view', element: <OrganizationView /> },
+      { path: 'organization/create', element: <CustomerCreateView /> },
       { path: 'company/view', element: <CompanyList /> },
-      { path: 'company/createcompany', element: <CompanyCreateView /> },
+      { path: 'company/create', element: <CompanyCreateView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },

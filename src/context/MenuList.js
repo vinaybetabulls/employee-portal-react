@@ -13,34 +13,19 @@ const Menu = [
   {
     role1: [
       {
-        href: '/app/customers',
+        href: '/app/organizaiton/view',
         icon: UsersIcon,
         title: 'Organizations'
       },
       {
-        href: '/app/products',
-        icon: ShoppingBagIcon,
-        title: 'Products'
+        href: '/app/company/view',
+        icon: UsersIcon,
+        title: 'Companies'
       },
       {
-        href: '/app/settings',
-        icon: SettingsIcon,
-        title: 'Settings'
-      },
-      {
-        href: '/login',
-        icon: LockIcon,
-        title: 'Login'
-      },
-      {
-        href: '/register',
-        icon: UserPlusIcon,
-        title: 'Register'
-      },
-      {
-        href: '/404',
-        icon: AlertCircleIcon,
-        title: 'Error'
+        href: '/app/employee/view',
+        icon: UsersIcon,
+        title: 'Employees'
       }
     ],
   },
@@ -52,53 +37,43 @@ const Menu = [
         title: 'Dashboard'
       },
       {
-        href: '/app/customers',
+        href: '/app/organizaiton/view',
         icon: UsersIcon,
         title: 'Organizations'
       },
       {
-        href: '/app/products',
-        icon: ShoppingBagIcon,
-        title: 'Products'
+        href: '/app/company/view',
+        icon: UsersIcon,
+        title: 'Companies'
       },
       {
-        href: '/app/account',
-        icon: UserIcon,
-        title: 'Account'
+        href: '/app/employee/view',
+        icon: UsersIcon,
+        title: 'Employees'
       },
+      // {
+      //   href: '/app/account',
+      //   icon: UserIcon,
+      //   title: 'Account'
+      // },
       {
         href: '/app/settings',
         icon: SettingsIcon,
         title: 'Settings'
       },
-      {
-        href: '/login',
-        icon: LockIcon,
-        title: 'Login'
-      },
-      {
-        href: '/register',
-        icon: UserPlusIcon,
-        title: 'Register'
-      },
-      {
-        href: '/404',
-        icon: AlertCircleIcon,
-        title: 'Error'
-      }
     ]
   },
   {
     role2: [
       {
-        href: '/app/customers',
+        href: 'app/organizaiton/view',
         icon: UsersIcon,
         title: 'Organizations'
       },
       {
-        href: '/app/products',
-        icon: ShoppingBagIcon,
-        title: 'Products'
+        href: '/app/company/view',
+        icon: UsersIcon,
+        title: 'Companies'
       },
     ]
   },
@@ -108,22 +83,7 @@ const Menu = [
         href: '/app/settings',
         icon: SettingsIcon,
         title: 'Change Password'
-      },
-      {
-        href: '/app/customers',
-        icon: UsersIcon,
-        title: 'Organizations',
-      },
-      {
-        href: '/app/account',
-        icon: UserIcon,
-        title: 'Account'
-      },
-      {
-        href: '/app/employee/create',
-        icon: UserIcon,
-        title: 'Create Employee'
-      },
+      }
     ]
   }
 ]

@@ -25,7 +25,7 @@ const Logo = (props) => {
   }, [companyLogo])
   return (
     <img
-      class={classes.root}
+      className={classes.root}
       alt="Logo"
       src={companyLogo}
       {...props}

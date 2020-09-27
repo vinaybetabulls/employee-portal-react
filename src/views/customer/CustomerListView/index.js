@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomerListView = () => {
+const OrganizationView = () => {
   const classes = useStyles();
 
   return (
@@ -35,4 +35,4 @@ const CustomerListView = () => {
   );
 };
 
-export default CustomerListView;
+export default OrganizationView;

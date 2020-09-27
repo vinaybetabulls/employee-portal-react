@@ -34,7 +34,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
 
   const handleEmpAdd = (event) => {
     let { employeeAddress: ea } = state
-    let employeeAddress = { ...ea, [event.target.name]: event.target.value}
+    let employeeAddress = { ...ea, [event.target.name]: event.target.value }
     setState({
       ...state, employeeAddress
     })
@@ -43,7 +43,6 @@ export default function PersonalDetails({ state, setState, handleChange }) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Personal Details {JSON.stringify(state)}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -221,7 +220,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="zipcode"
             label="Zip / Postal code"
             fullWidth
-            autoComplete="shipping postal-code"  onChange={handleEmpAdd}
+            autoComplete="shipping postal-code" onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12}>
@@ -240,7 +239,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="city"
             label="City"
             fullWidth
-            autoComplete="shipping address-level2"  onChange={handleEmpAdd}
+            autoComplete="shipping address-level2" onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -259,7 +258,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="isActive" value="yes" />}
-            label="Active Employee" checked={state.isActive} 
+            label="Active Employee" checked={state.isActive}
           />
         </Grid>
       </Grid>

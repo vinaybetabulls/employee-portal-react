@@ -70,123 +70,122 @@ export default function WorkExperience({ state, setState, handleChange }) {
 
   const handleExpChange = (event) => {
     let { workExperience: we } = state
-    let workExperience = { ...we, [event.target.name]: event.target.value}
+    let workExperience = { ...we, [event.target.name]: event.target.value }
     setState({
       ...state, workExperience
     })
   }
 
 
-useEffect(() => {
-  const getLists = async () => {
-    await getOrganizationsList();
-  };
-  getLists();
-}, [])
-  
+  useEffect(() => {
+    const getLists = async () => {
+      await getOrganizationsList();
+    };
+    getLists();
+  }, [])
 
 
-return (
-  <React.Fragment>
-    <Typography variant="h6" gutterBottom>
-      Working Details {JSON.stringify(state)}
-    </Typography>
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Job Type</InputLabel>
-          <Select native name="jobType" onChange={handleChange}>
-            <option aria-label="None" value="" />
-            <option value="contractor">Contractor</option>
-            <option value="permenent">Permenent</option>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Work Type</InputLabel>
-          <Select native name="workType" onChange={handleChange}>
-            <option aria-label="None" value="" />
-            <option value="fullTime">Full Time</option>
-            <option value="PartTime">Part Time</option>
-            <option value="freelance">Freelance</option>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel>
-        <FormControl className={classes.formControlsize}>
-          <InputLabel htmlFor="age-native-simple">Years</InputLabel>
-          <Select native name="years" onChange={handleExpChange}>
-            <option aria-label="None" value="" />
-            <option value={0}>0</option>
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-          </Select>
-        </FormControl>{" "}
-        <FormControl className={classes.formControlsize}>
-          <InputLabel htmlFor="age-native-simple">Months</InputLabel>
-          <Select native name="months" onChange={handleExpChange}>
-            <option aria-label="None" value="" />
-            <option value={0}>0</option>
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
-          <Select native name="organization" onChange={handleSelectChange} >
-            <option aria-label="None" value="" />
-            {
-              organizationsList.length > 0 && organizationsList.map(org => <option key={org.orgUniqueId} value={org.orgUniqueId} data={org.organizationName}>{org.organizationName}</option>)
-            }
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Company</InputLabel>
-          <Select native name="company" onChange={handleSelectChange}>
-            <option aria-label="None" value="" />
-            {
-              companiesList.length > 0 && companiesList.map(cmp => <option key={cmp.companyUniqId} value={cmp.companyUniqId}>{cmp.name}</option>)
-            }
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Designation</InputLabel>
-          <Select native name="jobType">
-            <option aria-label="None" value="" />
-            <option value={12345}>Developer</option>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-native-simple">Department</InputLabel>
-          <Select native name="workType">
-            <option aria-label="None" value="" />
-            <option value={12345}>UI</option>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <TextField
-          required
-          id="empId"
-          label="EmpID"
-          name="empId"
-          fullWidth
-          autoComplete="cc-csc"
-          onChange={handleChange}
-        />
-      </Grid>
 
-    </Grid>
-  </React.Fragment>
-);
+  return (
+    <React.Fragment>
+      <Typography variant="h6" gutterBottom>
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Job Type</InputLabel>
+            <Select native name="jobType" onChange={handleChange}>
+              <option aria-label="None" value="" />
+              <option value="contractor">Contractor</option>
+              <option value="permenent">Permenent</option>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Work Type</InputLabel>
+            <Select native name="workType" onChange={handleChange}>
+              <option aria-label="None" value="" />
+              <option value="fullTime">Full Time</option>
+              <option value="PartTime">Part Time</option>
+              <option value="freelance">Freelance</option>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel>
+          <FormControl className={classes.formControlsize}>
+            <InputLabel htmlFor="age-native-simple">Years</InputLabel>
+            <Select native name="years" onChange={handleExpChange}>
+              <option aria-label="None" value="" />
+              <option value={0}>0</option>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+            </Select>
+          </FormControl>{" "}
+          <FormControl className={classes.formControlsize}>
+            <InputLabel htmlFor="age-native-simple">Months</InputLabel>
+            <Select native name="months" onChange={handleExpChange}>
+              <option aria-label="None" value="" />
+              <option value={0}>0</option>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
+            <Select native name="organization" onChange={handleSelectChange} >
+              <option aria-label="None" value="" />
+              {
+                organizationsList.length > 0 && organizationsList.map(org => <option key={org.orgUniqueId} value={org.orgUniqueId} data={org.organizationName}>{org.organizationName}</option>)
+              }
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Company</InputLabel>
+            <Select native name="company" onChange={handleSelectChange}>
+              <option aria-label="None" value="" />
+              {
+                companiesList.length > 0 && companiesList.map(cmp => <option key={cmp.companyUniqId} value={cmp.companyUniqId}>{cmp.name}</option>)
+              }
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Designation</InputLabel>
+            <Select native name="jobType">
+              <option aria-label="None" value="" />
+              <option value={12345}>Developer</option>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-native-simple">Department</InputLabel>
+            <Select native name="workType">
+              <option aria-label="None" value="" />
+              <option value={12345}>UI</option>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            required
+            id="empId"
+            label="EmpID"
+            name="empId"
+            fullWidth
+            autoComplete="cc-csc"
+            onChange={handleChange}
+          />
+        </Grid>
+
+      </Grid>
+    </React.Fragment>
+  );
 }

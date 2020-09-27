@@ -31,18 +31,18 @@ const useStyles = makeStyles((theme) => ({
 const Toolbar = ({ className, ...rest }) => {
   const classes = useStyles();
 
-  const { decoded } =useContext(AppContext)
+  const { decoded } = useContext(AppContext)
 
   return (
     <div
-      className={clsx(classes.root, className)} 
+      className={clsx(classes.root, className)}
       {...rest}
     >
       <Box
         display="flex"
         justifyContent="flex-end"
       >
-        {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/create"> Add Organisation </Button>}
+        {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/organization/create"> Add Organisation </Button>}
       </Box>
       <Box mt={3}>
         <Card>
