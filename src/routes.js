@@ -15,6 +15,7 @@ import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 import CompanyList from 'src/views/companies/CompanyList';
 import CompanyCreateView from './views/companies/CompanyCreateView';
 import Employee from './views/employees/AddEmployee/Employee';
+import EmployeestListView from './views/employees/ViewEmployee'
 
 const routes = [
   {
@@ -24,12 +25,13 @@ const routes = [
       { path: 'account', element: <AccountView /> },
       { path: 'customers', element: <CustomerListView /> },
       { path: 'create', element: <CustomerCreateView /> },
-      { path: 'companies', element: <CompanyList /> },
-      { path: 'createcompany', element: <CompanyCreateView /> },
+      { path: 'company/view', element: <CompanyList /> },
+      { path: 'company/createcompany', element: <CompanyCreateView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: 'employee/create', element: <Employee /> },
+      { path: 'employee/view', element: <EmployeestListView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

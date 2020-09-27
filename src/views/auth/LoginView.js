@@ -53,7 +53,7 @@ const LoginView = () => {
               password: ''
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              email: Yup.string().max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={async (values) => {
@@ -153,12 +153,12 @@ const LoginView = () => {
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
                     helperText={touched.email && errors.email}
-                    label="Email Address"
+                    label="EmpId / Username/ Email Address"
                     margin="normal"
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    type="email"
+                    type="text"
                     value={values.email}
                     variant="outlined"
                   />
