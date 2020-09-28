@@ -15,7 +15,8 @@ import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 import CompanyList from 'src/views/companies/CompanyList';
 import CompanyCreateView from './views/companies/CompanyCreateView';
 import Employee from './views/employees/AddEmployee/Employee';
-import EmployeestListView from './views/employees/ViewEmployee'
+import EmployeestListView from './views/employees/ViewEmployee';
+import PermissionsCreateView from './views/permissions/AddPermissions'
 
 const routes = [
   {
@@ -32,6 +33,7 @@ const routes = [
       { path: 'settings', element: <SettingsView /> },
       { path: 'employee/create', element: <Employee /> },
       { path: 'employee/view', element: <EmployeestListView /> },
+      { path: 'permissions/create', element: <PermissionsCreateView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

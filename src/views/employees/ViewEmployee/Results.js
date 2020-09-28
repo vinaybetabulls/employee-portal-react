@@ -177,7 +177,7 @@ const Results = ({ className }) => {
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {employee.employeeId}
+                    {employee.empId}
                   </TableCell>
                   <TableCell>
                     {employee.email}
