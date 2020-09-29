@@ -51,6 +51,13 @@ const Menu = [
         icon: UsersIcon,
         title: 'Employees'
       },
+
+      {
+        href: '/app/permissions/create',
+        icon: UsersIcon,
+        title: 'Permission'
+      },
+
       // {
       //   href: '/app/account',
       //   icon: UserIcon,
