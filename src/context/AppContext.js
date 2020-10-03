@@ -1,6 +1,6 @@
 import React, { useState, createContext } from "react";
 import jwtDecode from 'jwt-decode';
-import Menu from './MenuList';
+import Menu, {GetRoles} from './MenuList';
 import { LiveTvSharp } from "@material-ui/icons";
 // Create Context Object
 export const AppContext = createContext();
@@ -9,25 +9,14 @@ export const AppContext = createContext();
 export const AppProvider = (props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('empJWT') || false);
     const decoded = isAuthenticated && jwtDecode(localStorage.getItem('empJWT'));
-    console.log('decoded..', decoded);
     const [empId, setEmpId] = useState(decoded && decoded.user?.empUniqueId);
-    console.log('empId..', decoded.user?.empUniqueId)
     /**
      * Get menu list
      */
     const [menuLists, setMenuList] = useState([]);
     const getMenuList = (role) => {
-        console.log('getMenuList...', role)
-        switch (role) {
-            case 'ROLE1':
-                return Menu[0].role1
-            case 'ROLE2':
-                return Menu[2].role2
-            case 'DEFAULT':
-                return Menu[3].default
-            default:
-                return Menu[1].superadmin;
-        }
+        const roles = GetRoles();
+        return roles.includes(role) && Menu[role] || Menu.DEFAULT;
     }
 
     const getList = () => {
@@ -45,7 +34,7 @@ export const AppProvider = (props) => {
             )
                 (new Set)
         );
-        console.log('finalMenu....', finalMenu);
+        //console.log('finalMenu....', finalMenu);
         setMenuList(finalMenu);
         return finalMenu;
     }
@@ -54,6 +43,7 @@ export const AppProvider = (props) => {
         if (decoded.user) {
             setEmpId(decoded.user.empUniqueId);
             let val = getList();
+            console.log(val)
             // setMenuList(val);
         }
     }, [decoded.user?.empUniqueId])

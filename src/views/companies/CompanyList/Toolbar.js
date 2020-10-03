@@ -9,7 +9,7 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  makeStyles
+  makeStyles, Grid
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
@@ -38,34 +38,39 @@ const Toolbar = ({ className, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-        {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/company/create"> Add Company </Button>}
-      </Box>
+
       <Box mt={3}>
         <Card>
           <CardContent>
-            <Box maxWidth={500}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-                placeholder="Search customer"
-                variant="outlined"
-              />
-            </Box>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <Box>
+                  <TextField
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SvgIcon
+                            fontSize="small"
+                            color="action"
+                          >
+                            <SearchIcon />
+                          </SvgIcon>
+                        </InputAdornment>
+                      )
+                    }}
+                    placeholder="Search customer"
+                    variant="outlined"
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Box display="flex" justifyContent="flex-end" mt={2}>
+                  {decoded.user.permissions.includes('CREATE') && <Button color="primary" variant="contained" component={RouterLink} to="/app/company/create"> Add Company </Button>}
+                </Box>
+              </Grid>
+            </Grid>
+
           </CardContent>
         </Card>
       </Box>

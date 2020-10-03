@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     // margin: theme.spacing(1),
     minWidth: "100%",
   },
-  formControlsize: { minWidth: 120 },
+  formControlsize: { minWidth: 160 },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -91,7 +91,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
       <Typography variant="h6" gutterBottom>
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Job Type</InputLabel>
             <Select native name="jobType" onChange={handleChange}>
@@ -101,7 +101,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Work Type</InputLabel>
             <Select native name="workType" onChange={handleChange}>
@@ -112,10 +112,10 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel>
+        <Grid item xs={12} sm={4}>
+          {/* <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel> */}
           <FormControl className={classes.formControlsize}>
-            <InputLabel htmlFor="age-native-simple">Years</InputLabel>
+            <InputLabel htmlFor="age-native-simple">Experience in Years</InputLabel>
             <Select native name="years" onChange={handleExpChange}>
               <option aria-label="None" value="" />
               <option value={0}>0</option>
@@ -124,7 +124,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>{" "}
           <FormControl className={classes.formControlsize}>
-            <InputLabel htmlFor="age-native-simple">Months</InputLabel>
+            <InputLabel htmlFor="age-native-simple">Experience in Months</InputLabel>
             <Select native name="months" onChange={handleExpChange}>
               <option aria-label="None" value="" />
               <option value={0}>0</option>
@@ -133,7 +133,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
             <Select native name="organization" onChange={handleSelectChange} >
@@ -144,7 +144,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Company</InputLabel>
             <Select native name="company" onChange={handleSelectChange}>
@@ -155,7 +155,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Designation</InputLabel>
             <Select native name="jobType">
@@ -164,7 +164,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Department</InputLabel>
             <Select native name="workType">
@@ -173,7 +173,7 @@ export default function WorkExperience({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <TextField
             required
             id="empId"

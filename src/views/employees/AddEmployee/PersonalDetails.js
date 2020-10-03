@@ -14,6 +14,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -42,10 +43,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
   }
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-      </Typography>
+      <Typography variant="h6" gutterBottom></Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="firstName"
@@ -57,7 +57,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="middleName"
@@ -68,7 +68,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="lastName"
@@ -79,40 +79,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="phone"
-            name="phone"
-            label="Phone"
-            fullWidth
-            autoComplete="family-name" value={state.phone}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="userName"
-            name="userName"
-            label="UserName"
-            fullWidth
-            autoComplete="family-name" value={state.userName}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="email"
-            name="email"
-            label="Email"
-            fullWidth
-            autoComplete="family-name" value={state.email}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="fathersName"
@@ -123,7 +90,40 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="userName"
+            name="userName"
+            label="UserName"
+            fullWidth
+            autoComplete="family-name" value={state.userName}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Email"
+            fullWidth
+            autoComplete="family-name" value={state.email}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="phone"
+            name="phone"
+            label="Phone"
+            fullWidth
+            autoComplete="family-name" value={state.phone}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Gender</InputLabel>
             <Select native name="gender" value={state.gender} onChange={handleChange}>
@@ -135,7 +135,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="bloodGroup"
@@ -145,7 +145,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="given-name" value={state.bloodGroup} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="maritalStatus"
@@ -155,7 +155,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="given-name" value={state.maritalStatus} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             {/* <Grid container justify="space-around"> */}
             <KeyboardDatePicker
@@ -166,6 +166,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
               name="dob"
               value={state.dob}
               onChange={handleChange}
+              style={{margin:0, width:"100%"}}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -173,7 +174,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             {/* </Grid> */}
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="aadharCardNumber"
@@ -183,7 +184,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="given-name" value={state.aadharCardNumber} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="panCardNumber"
@@ -193,7 +194,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="given-name" value={state.panCardNumber} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="motherTounge"
@@ -203,7 +204,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="shipping address-line1" value={state.motherTounge} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="nationality"
@@ -213,26 +214,16 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="shipping address-line1" value={state.nationality} onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="zipcode"
-            name="zipcode"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code" onChange={handleEmpAdd}
-          />
-        </Grid>
         <Grid item xs={12}>
           <TextField
             id="address"
             name="address"
-            label="Address line"
+            label="Address"
             fullWidth
             autoComplete="shipping address-line2" onChange={handleEmpAdd}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="city"
@@ -242,10 +233,10 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             autoComplete="shipping address-level2" onChange={handleEmpAdd}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             required
             id="country"
@@ -253,6 +244,16 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             label="Country"
             fullWidth
             autoComplete="shipping country" onChange={handleEmpAdd}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="zipcode"
+            name="zipcode"
+            label="Zip / Postal code"
+            fullWidth
+            autoComplete="shipping postal-code" onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12}>
