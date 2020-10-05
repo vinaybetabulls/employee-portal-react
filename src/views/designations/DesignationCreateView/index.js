@@ -7,6 +7,7 @@ import {
 import Page from 'src/components/Page';
 import CreateForm from './CreateForm';
 import axios from 'axios';
+import Logo from './Logo';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,21 +21,24 @@ const useStyles = makeStyles((theme) => ({
 const DesignationCreate = () => {
   const classes = useStyles();
 
-  const [state, setState] = useState({
-    designationDocURL: null
-  })
+  const [state, setState] = useState({})
 
-  const uploadRolesAndResponsibilities = (evt) => {
-    console.log(evt.target.files[0]);
-    let reader = new FileReader();
-    reader.readAsDataURL(evt.target.files[0]);
-    reader.onload = function () {
-      setState({ ...state, designationDocURL: reader.result });
+  const [file, setFile] = useState({ url: '' });
+
+  const onFileChange = event => {
+    const fileReader = new window.FileReader();
+    const file = event.target.files[0];
+    console.log('file....', file);
+    console.log('file name....', file.name);
+    console.log('file mimetype....', file.type);
+
+    fileReader.onload = fileLoad => {
+      const { result } = fileLoad.target;
+      setFile({ url: result, fileName: file.name, mimeType: file.type });
     };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  }
+
+    fileReader.readAsDataURL(file);
+  };
 
   const handleChange = (event) => {
     setState({
@@ -57,8 +61,11 @@ const DesignationCreate = () => {
     <Page className={classes.root} title="Account" >
       <Container maxWidth="lg">
         <Grid container>
-          <Grid item lg={12} md={12} xs={12} >
-            <CreateForm handleChange={handleChange} createDesignations={createDesignations} uploadRolesAndResponsibilities={uploadRolesAndResponsibilities} designationDocURL={state.designationDocURL} />
+          <Grid item lg={4} md={6} xs={12} >
+            <Logo file={file} onFileChange={onFileChange} />
+          </Grid>
+          <Grid item lg={8} md={6} xs={12} >
+            <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
           </Grid>
         </Grid>
       </Container>

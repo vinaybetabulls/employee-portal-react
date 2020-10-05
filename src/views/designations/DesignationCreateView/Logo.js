@@ -12,7 +12,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-
+import FilePreviewer from 'react-file-previewer';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
 };
@@ -28,36 +28,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }) => {
+const Logo = ({ onFileChange, file, className, ...rest }) => {
   const classes = useStyles();
 
   return (
     <Card className={clsx(classes.root, className)} {...rest} >
+
+      <CardActions>
+        <input type="file" onChange={onFileChange} />
+        <label htmlFor="contained-button-file">
+          <Button variant="contained" color="primary" component="span">  Upload document </Button>
+        </label>
+      </CardActions>
+      <Divider />
       <CardContent>
         <Box
           alignItems="center"
           display="flex"
           flexDirection="column"
         >
-          <Avatar
-            className={classes.avatar}
-            src={organizationLogoURL}
+          <FilePreviewer
+            file={file}
           />
         </Box>
       </CardContent>
-      <Divider />
-      <CardActions>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          type="file"
-          onChange={uploadOrganizationLogo}
-        />
-        <label htmlFor="contained-button-file">
-          <Button variant="contained" color="primary" component="span">  Logo </Button>
-        </label>
-      </CardActions>
+
     </Card>
   );
 };

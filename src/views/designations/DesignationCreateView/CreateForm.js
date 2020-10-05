@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreateForm = ({ createDesignations, handleChange, uploadRolesAndResponsibilities, designationDocURL, className, ...rest }) => {
+const CreateForm = ({ createDesignations, handleChange, className, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -60,7 +60,6 @@ const CreateForm = ({ createDesignations, handleChange, uploadRolesAndResponsibi
             >
               <TextField
                 fullWidth
-                helperText="Please specify the Organization name"
                 label="Designation name"
                 name="designationName"
                 onChange={handleChange}
@@ -70,7 +69,7 @@ const CreateForm = ({ createDesignations, handleChange, uploadRolesAndResponsibi
             </Grid>
             <Grid item md={6} xs={12}>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Level</InputLabel>
+                <InputLabel htmlFor="age-native-simple" >Level</InputLabel>
                 <Select native name="workType" onChange={handleChange}>
                   <option aria-label="None" value="" />
                   <option value="1">Level 1</option>
@@ -80,36 +79,14 @@ const CreateForm = ({ createDesignations, handleChange, uploadRolesAndResponsibi
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item md={6} xs={12}>
-              <input
-                accept="*/*"
-                className={classes.input}
-                id="contained-button-file"
-                type="file"
-                onChange={uploadRolesAndResponsibilities}
-              />
-              <label htmlFor="contained-button-file">
-                <Button variant="contained" color="primary" component="span">  Upload Documnet </Button>
-              </label>
-            </Grid>
             <Grid
               item
               md={6}
               xs={12}
             >
-              <TextareaAutosize aria-label="rolesResponsibilities textarea" rowsMin={6} placeholder="Roles and Responsibilities" />
+              <TextareaAutosize aria-label="rolesResponsibilities textarea" rowsMin={4} placeholder="Roles and Responsibilities" />
             </Grid>
           </Grid>
-          <Box
-            alignItems="center"
-            display="flex"
-            flexDirection="column"
-          >
-            <Avatar
-              className={classes.avatar}
-              src={designationDocURL}
-            />
-          </Box>
 
         </CardContent>
         <Divider />
