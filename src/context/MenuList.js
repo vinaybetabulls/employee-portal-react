@@ -10,7 +10,7 @@ import {
 } from 'react-feather';
 
 const Menu = {
-  role1: [
+  ROLE1: [
     {
       href: '/app/organizaiton/view',
       icon: UsersIcon,
@@ -52,7 +52,12 @@ const Menu = {
     {
       href: '/app/permissions/create',
       icon: UsersIcon,
-      title: 'Permission'
+      title: 'Permissions'
+    },
+    {
+      href: '/app/designations/create',
+      icon: UsersIcon,
+      title: 'Designations'
     },
 
     // {
@@ -66,7 +71,7 @@ const Menu = {
       title: 'Settings'
     },
   ],
-  role2: [
+  ROLE2: [
     {
       href: 'app/organizaiton/view',
       icon: UsersIcon,
