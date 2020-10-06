@@ -50,12 +50,12 @@ const Menu = {
     },
 
     {
-      href: '/app/permissions/create',
+      href: '/app/permission/create',
       icon: UsersIcon,
       title: 'Permissions'
     },
     {
-      href: '/app/designations/create',
+      href: '/app/designation/view',
       icon: UsersIcon,
       title: 'Designations'
     },

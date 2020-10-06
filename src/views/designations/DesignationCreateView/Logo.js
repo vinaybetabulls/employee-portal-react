@@ -35,7 +35,12 @@ const Logo = ({ onFileChange, file, className, ...rest }) => {
     <Card className={clsx(classes.root, className)} {...rest} >
 
       <CardActions>
-        <input type="file" onChange={onFileChange} />
+        <input
+          className={classes.input}
+          id="contained-button-file"
+          type="file"
+          onChange={onFileChange}
+        />
         <label htmlFor="contained-button-file">
           <Button variant="contained" color="primary" component="span">  Upload document </Button>
         </label>

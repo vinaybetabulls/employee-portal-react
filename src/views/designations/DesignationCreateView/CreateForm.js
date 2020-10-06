@@ -61,7 +61,7 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
               <TextField
                 fullWidth
                 label="Designation name"
-                name="designationName"
+                name="name"
                 onChange={handleChange}
                 required
                 variant="outlined"
@@ -70,7 +70,7 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
             <Grid item md={6} xs={12}>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple" >Level</InputLabel>
-                <Select native name="workType" onChange={handleChange}>
+                <Select native name="level" onChange={handleChange}>
                   <option aria-label="None" value="" />
                   <option value="1">Level 1</option>
                   <option value="2">Level 2</option>
@@ -84,7 +84,7 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
               md={6}
               xs={12}
             >
-              <TextareaAutosize aria-label="rolesResponsibilities textarea" rowsMin={4} placeholder="Roles and Responsibilities" />
+              <TextareaAutosize name="rolesAndResponsibilities" aria-label="rolesResponsibilities" rowsMin={4} placeholder="Roles and Responsibilities" onChange={handleChange} />
             </Grid>
           </Grid>
 

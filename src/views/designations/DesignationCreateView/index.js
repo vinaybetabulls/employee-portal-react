@@ -49,9 +49,9 @@ const DesignationCreate = () => {
 
   const createDesignations = async () => {
     try {
-
-      // const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create designation Response..', state)
+      state.notesURL = file.url;
+      const createOrgResponse = await axios.post('http://localhost:4000/designation/create', state, { headers: { token: localStorage.getItem('empJWT') } });
+      console.log('create designation Response..', createOrgResponse)
     } catch (error) {
       console.log('org create error', error)
     }

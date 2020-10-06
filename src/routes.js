@@ -18,6 +18,7 @@ import Employee from './views/employees/AddEmployee/Employee';
 import EmployeestListView from './views/employees/ViewEmployee';
 import PermissionsCreateView from './views/permissions/AddPermissions';
 import DesignationCreate from './views/designations/DesignationCreateView';
+import DesignationsList from './views/designations/DesignationListView';
 
 const routes = [
   {
@@ -34,8 +35,9 @@ const routes = [
       { path: 'settings', element: <SettingsView /> },
       { path: 'employee/create', element: <Employee /> },
       { path: 'employee/view', element: <EmployeestListView /> },
-      { path: 'permissions/create', element: <PermissionsCreateView /> },
-      { path: 'designations/create', element: <DesignationCreate /> },
+      { path: 'permission/create', element: <PermissionsCreateView /> },
+      { path: 'designation/create', element: <DesignationCreate /> },
+      { path: 'designation/view', element: <DesignationsList /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
