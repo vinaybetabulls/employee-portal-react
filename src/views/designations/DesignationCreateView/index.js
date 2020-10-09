@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Container,
   Grid,
-  makeStyles
+  makeStyles, AppBar, Toolbar, Typography
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import CreateForm from './CreateForm';
@@ -15,7 +15,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
-  }
+  },
+  appBar: {
+    position: 'relative',
+  },
 }));
 
 const DesignationCreate = () => {
@@ -58,18 +61,27 @@ const DesignationCreate = () => {
   }
 
   return (
-    <Page className={classes.root} title="Account" >
-      <Container maxWidth="lg">
-        <Grid container>
-          <Grid item lg={4} md={6} xs={12} >
-            <Logo file={file} onFileChange={onFileChange} />
+    <>
+      <AppBar position="absolute" color="default" className={classes.appBar}>
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap>
+            Create Designation
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Page className={classes.root} title="Account" >
+        <Container maxWidth="lg">
+          <Grid container>
+            <Grid item lg={4} md={6} xs={12} >
+              <Logo file={file} onFileChange={onFileChange} />
+            </Grid>
+            <Grid item lg={8} md={6} xs={12} >
+              <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
+            </Grid>
           </Grid>
-          <Grid item lg={8} md={6} xs={12} >
-            <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Page>
+        </Container>
+      </Page>
+    </>
   );
 };
 

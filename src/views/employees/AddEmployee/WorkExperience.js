@@ -76,15 +76,12 @@ export default function WorkExperience({ state, setState, handleChange }) {
     })
   }
 
-
   useEffect(() => {
     const getLists = async () => {
       await getOrganizationsList();
     };
     getLists();
   }, [])
-
-
 
   return (
     <React.Fragment>

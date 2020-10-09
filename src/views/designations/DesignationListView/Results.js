@@ -103,7 +103,7 @@ const Results = ({ className }) => {
     setPage(newPage);
   };
   function truncate(str) {
-    return (str.length > 35) ? str.substring(0, 34) + " .." : str;
+    return (str && str.length > 35) ? str.substring(0, 34) + " .." : str;
   };
 
   return (
@@ -141,8 +141,7 @@ const Results = ({ className }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {console.log('table designations..', designations)}
-              {designations.length > 0 && designations.slice(0, limit).map((designation) => (
+              {designations && designations.length > 0 && designations.slice(0, limit).map((designation) => (
                 <TableRow
                   hover
                   key={designation.desgUniqueId}
@@ -199,7 +198,7 @@ const Results = ({ className }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={designations.length || 0}
+        count={designations && designations.length || 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}

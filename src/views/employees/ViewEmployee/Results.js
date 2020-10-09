@@ -73,6 +73,9 @@ const Results = ({ className }) => {
   const [employees, setEmployees] = useState([]);
   const [empUniqId, setEmpUniqId] = useState("")
   const { decoded: { user: { permissions, roles } } } = useContext(AppContext);
+  const [state, setState] = useState({ roles: roles, permissions: permissions });
+  const [open, setOpen] = useState(false);
+
   const getEmployees = async () => {
     const employeeList = await axios.get('http://localhost:4000/employee/employees/list', {
       headers: {
@@ -81,7 +84,6 @@ const Results = ({ className }) => {
     })
     console.log('employeeList..', employeeList.data)
     setEmployees(employeeList.data.employees);
-
   }
   useEffect(() => {
     getEmployees();
@@ -95,15 +97,8 @@ const Results = ({ className }) => {
     getEmployees();
   }
   const handleSelectAll = (event) => {
-    let newSelectedCustomerIds;
-
-    if (event.target.checked) {
-      newSelectedCustomerIds = employees.map((employee) => employee.empUniqueId);
-    } else {
-      newSelectedCustomerIds = [];
-    }
-
-    setSelectedCustomerIds(newSelectedCustomerIds);
+    console.log(event.target.checked);
+    event.target.checked ? setState({ ...state, permissions: availablePermissions }) : setState({ ...state, permissions: [] });
   };
 
   const handleSelectOne = (event, id) => {
@@ -133,7 +128,7 @@ const Results = ({ className }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-  const [open, setOpen] = React.useState(false);
+  
 
   const handleClickOpen = ((empUniqueId) => {
     setOpen(true); setEmpUniqId(empUniqueId); return true;
@@ -143,16 +138,17 @@ const Results = ({ className }) => {
     setOpen(false);
   };
 
-  const [state, setState] = React.useState({ roles: roles, permissions: permissions });
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
   const handleUpdate = async () => {
     console.log(':: handleUpdate ::', state)
-    const settingRoles = await axios.put(`http://localhost:4000/employee/updatePermissionRoles/${empUniqId}`, state, {headers: {
-      token: localStorage.getItem('empJWT')
-    }});
+    const settingRoles = await axios.put(`http://localhost:4000/employee/updatePermissionRoles/${empUniqId}`, state, {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    });
     console.log(settingRoles);
     setOpen(false);
   }
@@ -251,7 +247,7 @@ const Results = ({ className }) => {
         </Box>
       </PerfectScrollbar>
       <TablePagination component="div" count={employees.length || 0} onChangePage={handlePageChange} onChangeRowsPerPage={handleLimitChange} page={page} rowsPerPage={limit} rowsPerPageOptions={[5, 10, 25]} />
-      <Dialog
+      <Dialog fullWidth="true" maxWidth="sm"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -259,60 +255,63 @@ const Results = ({ className }) => {
       >
         <DialogTitle id="alert-dialog-title">{"Set Roles & Permissions"}</DialogTitle>
         <DialogContent dividers={true}>
-          <DialogContentText id="alert-dialog-description">
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-mutiple-checkbox-label">Roles</InputLabel>
-                  <Select
-                    labelId="demo-mutiple-checkbox-label"
-                    id="demo-mutiple-checkbox"
-                    multiple
-                    value={state.roles}
-                    onChange={handleChange}
-                    input={<Input />}
-                    renderValue={(selected) => selected.join(', ')}
-                    MenuProps={MenuProps}
-                    name="roles"
-                  >
-                    {!!rolesList && rolesList.map((role) => (
-                      <MenuItem key={role} value={role}>
-                        <Checkbox checked={state.roles.indexOf(role) > -1} />
-                        <ListItemText primary={role} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+          {/* <DialogContentText id="alert-dialog-description"> */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-mutiple-checkbox-label">Roles</InputLabel>
+                <Select
+                  labelId="demo-mutiple-checkbox-label"
+                  id="demo-mutiple-checkbox"
+                  multiple
+                  value={state.roles}
+                  onChange={handleChange}
+                  input={<Input />}
+                  renderValue={(selected) => selected.join(', ')}
+                  MenuProps={MenuProps}
+                  name="roles" >
+                  {!!rolesList && rolesList.map((role) => (
+                    <MenuItem key={role} value={role}>
+                      <Checkbox checked={state.roles.indexOf(role) > -1} />
+                      <ListItemText primary={role} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
-          </DialogContentText>
-          <DialogContentText id="alert-dialog-description">
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="age-native-simple">Permissions</InputLabel>
-                  <Select
-                    labelId="demo-mutiple-checkbox-label"
-                    id="demo-mutiple-checkbox"
-                    multiple
-                    value={state.permissions}
-                    onChange={handleChange}
-                    input={<Input />}
-                    renderValue={(selected) => selected.join(', ')}
-                    MenuProps={MenuProps}
-                    name="permissions"
-                  >
-                    {!!availablePermissions && availablePermissions.map((per) => (
-                      <MenuItem key={per} value={per}>
-                        <Checkbox checked={state.permissions.indexOf(per) > -1} />
-                        <ListItemText primary={per} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+          </Grid>
+          {/* </DialogContentText> */}
+          {/* <DialogContentText id="alert-dialog-description"> */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">Permissions</InputLabel>
+                <Select
+                  labelId="demo-mutiple-checkbox-label"
+                  id="demo-mutiple-checkbox"
+                  multiple
+                  value={state.permissions}
+                  onChange={handleChange}
+                  input={<Input />}
+                  renderValue={(selected) => selected.join(', ')}
+                  MenuProps={MenuProps}
+                  name="permissions"
+                >
+                  <MenuItem>
+                    <Checkbox onChange={handleSelectAll} checked={state.permissions.length === availablePermissions.length}/>
+                    <ListItemText primary="Select All" />
+                  </MenuItem>
+                  {!!availablePermissions && availablePermissions.map((per) => (
+                    <MenuItem key={per} value={per}>
+                      <Checkbox checked={state.permissions.indexOf(per) > -1} />
+                      <ListItemText primary={per} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
-          </DialogContentText>
+          </Grid>
+          {/* </DialogContentText> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

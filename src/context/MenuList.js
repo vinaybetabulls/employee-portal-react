@@ -1,24 +1,21 @@
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
   Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  Users as UsersIcon,
+  Award as AwardIcon, Briefcase as BriefcaseIcon
 } from 'react-feather';
-
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import ApartmentIcon from '@material-ui/icons/Apartment';
 const Menu = {
   ROLE1: [
     {
       href: '/app/organizaiton/view',
-      icon: UsersIcon,
+      icon: AccountBalanceIcon,
       title: 'Organizations'
     },
     {
       href: '/app/company/view',
-      icon: UsersIcon,
+      icon: ApartmentIcon,
       title: 'Companies'
     },
     {
@@ -35,12 +32,12 @@ const Menu = {
     },
     {
       href: '/app/organizaiton/view',
-      icon: UsersIcon,
+      icon: AccountBalanceIcon,
       title: 'Organizations'
     },
     {
       href: '/app/company/view',
-      icon: UsersIcon,
+      icon: ApartmentIcon,
       title: 'Companies'
     },
     {
@@ -48,23 +45,16 @@ const Menu = {
       icon: UsersIcon,
       title: 'Employees'
     },
-
-    {
-      href: '/app/permission/create',
-      icon: UsersIcon,
-      title: 'Permissions'
-    },
     {
       href: '/app/designation/view',
-      icon: UsersIcon,
+      icon: AwardIcon,
       title: 'Designations'
     },
-
-    // {
-    //   href: '/app/account',
-    //   icon: UserIcon,
-    //   title: 'Account'
-    // },
+    {
+      href: '/app/department/view',
+      icon: BriefcaseIcon,
+      title: 'Departments'
+    },
     {
       href: '/app/settings',
       icon: SettingsIcon,
@@ -74,12 +64,12 @@ const Menu = {
   ROLE2: [
     {
       href: 'app/organizaiton/view',
-      icon: UsersIcon,
+      icon: AccountBalanceIcon,
       title: 'Organizations'
     },
     {
       href: '/app/company/view',
-      icon: UsersIcon,
+      icon: ApartmentIcon,
       title: 'Companies'
     },
   ],
