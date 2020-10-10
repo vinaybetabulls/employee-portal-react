@@ -73,7 +73,7 @@ const Results = ({ className }) => {
   const [employees, setEmployees] = useState([]);
   const [empUniqId, setEmpUniqId] = useState("")
   const { decoded: { user: { permissions, roles } } } = useContext(AppContext);
-  const [state, setState] = useState({ roles: roles, permissions: permissions });
+  const [state, setState] = useState({roles:[], permissions:[]});
   const [open, setOpen] = useState(false);
 
   const getEmployees = async () => {
@@ -130,8 +130,11 @@ const Results = ({ className }) => {
   };
   
 
-  const handleClickOpen = ((empUniqueId) => {
-    setOpen(true); setEmpUniqId(empUniqueId); return true;
+  const handleClickOpen = ((empUniqueId, employeePermissions) => {
+    setOpen(true);
+    setEmpUniqId(empUniqueId);
+    setState({...state, roles: employeePermissions[0].roles, permissions:employeePermissions[0].permissions})
+    return true;
   });
 
   const handleClose = () => {
@@ -231,7 +234,7 @@ const Results = ({ className }) => {
                     {`${employee.company.name}`}
                   </TableCell>
                   {roles.includes('SUPER_ADMIN') && <TableCell>
-                    <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId)}>
+                    <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId, employee.employeePermissions)}>
                       Set
                     </Button>
                   </TableCell>}

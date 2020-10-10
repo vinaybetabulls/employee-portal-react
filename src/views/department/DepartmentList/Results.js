@@ -48,7 +48,7 @@ const Results = ({ className }) => {
       }
     })
     console.log('designaiotns list....', departmentsList.data)
-    setDepartments(departmentsList.data.companies);
+    setDepartments(departmentsList.data.departments);
 
   }
   useEffect(() => {
@@ -103,17 +103,18 @@ const Results = ({ className }) => {
                   <TableCell> {departments.departmentCategory} </TableCell>
                   <TableCell>
                     {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" /> </IconButton>
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
+                        <VisibilityIcon color="primary" fontSize="small" /> </IconButton>
                     }
                     {
                       permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
                         <EditIcon fontSize="small" /> </IconButton>
                     }
                     {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
-                        <VisibilityIcon color="primary" fontSize="small" /> </IconButton>
+                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
+                        <DeleteIcon color="error" fontSize="small" /> </IconButton>
                     }
+
                   </TableCell>
                 </TableRow>
               ))}
