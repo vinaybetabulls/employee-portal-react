@@ -6,6 +6,7 @@ import {
 } from 'react-feather';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import ApartmentIcon from '@material-ui/icons/Apartment';
+
 const Menu = {
   ROLE1: [
     {
@@ -63,7 +64,7 @@ const Menu = {
   ],
   ROLE2: [
     {
-      href: 'app/organizaiton/view',
+      href: '/app/organizaiton/view',
       icon: AccountBalanceIcon,
       title: 'Organizations'
     },
@@ -80,10 +81,10 @@ const Menu = {
       title: 'Change Password'
     }
   ]
-}
+};
 
 export const GetRoles = () => {
   return Object.keys(Menu);
-}
+};
 
 export default Menu;

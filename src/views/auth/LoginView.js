@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
   Box,
   Button,
   Container,
-  Grid,
-  Link,
   TextField,
   Typography,
   makeStyles
@@ -29,11 +27,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginView = () => {
-  console.log(process.env)
+  console.log(process.env);
   const classes = useStyles();
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
+  const { setIsAuthenticated, setMenuList } = useContext(AppContext);
 
+  useEffect(() => {
+    setMenuList([]);
+    setIsAuthenticated(false);
+  }, []);
   return (
 
     <Page
@@ -59,16 +61,16 @@ const LoginView = () => {
             onSubmit={async (values) => {
               try {
                 const emp = await axios.post('http://localhost:4000/employee/login', { username: values.email, password: values.password });
-                console.log(emp.data)
+                console.log(emp.data);
                 const { jwt, isFirstTimeLogin, companyLogoURL } = emp.data;
                 localStorage.setItem('empJWT', jwt);
-                localStorage.setItem('companyLogoURL', companyLogoURL)
+                localStorage.setItem('companyLogoURL', companyLogoURL.companyLogoURL);
                 jwt && setIsAuthenticated(true);
                 if (!isFirstTimeLogin) {
-                  navigate('app/dashboard')
+                  navigate('app/dashboard');
                 }
                 else {
-                  navigate('changepassowrd')
+                  navigate('changepassowrd');
                 }
                 localStorage.setItem('empJWT', jwt);
               } catch (error) {
@@ -85,6 +87,7 @@ const LoginView = () => {
               touched,
               values
             }) => (
+                // eslint-disable-next-line react/jsx-indent
                 <form onSubmit={handleSubmit}>
                   <Box mb={3}>
                     <Typography
@@ -92,14 +95,14 @@ const LoginView = () => {
                       variant="h2"
                     >
                       Sign in
-                  </Typography>
+                    </Typography>
                     <Typography
                       color="textSecondary"
                       gutterBottom
                       variant="body2"
                     >
                       Sign in to the employee portal
-                  </Typography>
+                    </Typography>
                   </Box>
                   {/* <Grid
                   container
@@ -185,7 +188,7 @@ const LoginView = () => {
                       variant="contained"
                     >
                       Sign in now
-                  </Button>
+                    </Button>
                   </Box>
                   {/* <Typography
                     color="textSecondary"
@@ -202,6 +205,7 @@ const LoginView = () => {
                   </Link>
                   </Typography> */}
                 </form>
+                // eslint-disable-next-line indent
               )}
           </Formik>
         </Container>

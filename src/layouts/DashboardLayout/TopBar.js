@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
   AppBar,
-  Badge,
   Box,
   Hidden,
   IconButton,
@@ -12,9 +11,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
+import { AppContext } from '../../context/AppContext';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -31,10 +30,14 @@ const TopBar = ({
 }) => {
   const navigate = useNavigate();
   const classes = useStyles();
+  const { setIsAuthenticated, setMenuList } = useContext(AppContext);
   const handleLogout = () => {
     localStorage.removeItem('empJWT');
-    navigate('/')
-  }
+    localStorage.removeItem('companyLogoURL');
+    setMenuList([]);
+    setIsAuthenticated(false);
+    navigate('/');
+  };
   return (
     <AppBar
       className={clsx(classes.root, className)}
