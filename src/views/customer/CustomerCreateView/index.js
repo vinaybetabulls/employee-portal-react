@@ -5,9 +5,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import axios from 'axios';
 import Logo from './Logo';
 import CreateForm from './CreateForm';
-import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,19 +23,19 @@ const CompanyCreateView = () => {
 
   const [state, setState] = useState({
     organizationLogoURL: null
-  })
+  });
 
   const uploadOrganizationLogo = (evt) => {
     console.log(evt.target.files[0]);
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(evt.target.files[0]);
-    reader.onload = function () {
+    reader.onload = () => {
       setState({ ...state, organizationLogoURL: reader.result });
     };
-    reader.onerror = function (error) {
+    reader.onerror = (error) => {
       console.log('Error: ', error);
     };
-  }
+  };
 
   const handleChange = (event) => {
     setState({
@@ -52,26 +52,26 @@ const CompanyCreateView = () => {
         state: state.state,
         country: state.country,
         zipcode: state.zipcode
-      }]
+      }];
       state.organizationContactPerson = {
         name: state.organizationContactName,
         phone: state.organizationContactPhone
-      }
+      };
       const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create Org Response..', createOrgResponse)
+      console.log('create Org Response..', createOrgResponse);
     } catch (error) {
-      console.log('org create error', error)
+      console.log('org create error', error);
     }
-  }
+  };
 
   return (
-    <Page className={classes.root} title="Account" >
+    <Page className={classes.root} title="Organization">
       <Container maxWidth="lg">
-        <Grid container spacing={3} >
-          <Grid item lg={4} md={6} xs={12} >
+        <Grid container spacing={3}>
+          <Grid item lg={4} md={6} xs={12}>
             <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL} />
           </Grid>
-          <Grid item lg={8} md={6} xs={12} >
+          <Grid item lg={8} md={6} xs={12}>
             <CreateForm handleChange={handleChange} createOrganization={createOrganization} />
           </Grid>
         </Grid>

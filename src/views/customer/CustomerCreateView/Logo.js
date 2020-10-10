@@ -9,7 +9,6 @@ import {
   CardActions,
   CardContent,
   Divider,
-  Typography,
   makeStyles
 } from '@material-ui/core';
 
@@ -28,11 +27,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Logo = ({ organizationLogoURL,uploadOrganizationLogo, className, ...rest }) => {
+const Logo = ({
+  // eslint-disable-next-line react/prop-types
+  organizationLogoURL, uploadOrganizationLogo, className, ...rest
+}) => {
   const classes = useStyles();
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest} >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
         <Box
           alignItems="center"

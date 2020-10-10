@@ -11,10 +11,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Button,
+  CardActions,
+  Avatar,
+  Card,
+  Divider,
+  Box,
+  CardContent
+} from '@material-ui/core';
+import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -24,9 +34,16 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  avatar: {
+    width: theme.spacing(12),
+    height: theme.spacing(12),
+  },
+  input: {
+    display: 'none',
+  },
 }));
 
-export default function PersonalDetails({ state, setState, handleChange }) {
+export default function PersonalDetails({ state, setState, handleChange, profileImageChange }) {
   const classes = useStyles();
   const handleEmpAdd = (event) => {
     const { employeeAddress: ea } = state;
@@ -39,7 +56,39 @@ export default function PersonalDetails({ state, setState, handleChange }) {
   return (
     <>
       <Typography variant="h6" gutterBottom />
+      <Grid container>
+        <Grid item xs={12} sm={4}>
+          <Card className={clsx(classes.root)}>
+            <CardContent>
+              <Box
+                alignItems="center"
+                display="flex"
+                flexDirection="column"
+              >
+                <Avatar
+                  className={classes.avatar}
+                  src={state.profileImageURL}
+                />
+              </Box>
+            </CardContent>
+            <Divider />
+            <CardActions>
+              <input
+                accept="image/*"
+                className={classes.input}
+                id="contained-button-file"
+                type="file"
+                onChange={profileImageChange}
+              />
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" color="primary" component="span"> Profile </Button>
+              </label>
+            </CardActions>
+          </Card>
+        </Grid>
+      </Grid>
       <Grid container spacing={3}>
+
         <Grid item xs={12} sm={4}>
           <TextField
             required

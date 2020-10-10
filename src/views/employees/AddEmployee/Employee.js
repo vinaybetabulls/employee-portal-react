@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Personal Details', 'Working Details'];
 
-function getStepContent(step, state, setState, handleChange) {
+function getStepContent(step, state, setState, handleChange, profileImageChange) {
   switch (step) {
     case 0:
-      return <PersonalDetails state={state} setState={setState} handleChange={handleChange} />;
+      return <PersonalDetails state={state} setState={setState} handleChange={handleChange} profileImageChange={profileImageChange} />;
     case 1:
       return <WorkExperience state={state} setState={setState} handleChange={handleChange} />;
     default:
@@ -89,7 +89,7 @@ export default function Employee() {
     maritalStatus: null,
     aadharCardNumber: null,
     panCardNumber: null,
-    profileImageURL: null,
+    profileImageURL: '',
     dateOfJoining: '2020-09-26T07:37:51.390Z',
     organization: {
       id: 'string',
@@ -137,6 +137,17 @@ export default function Employee() {
     setActiveStep(activeStep - 1);
   };
 
+  const profileImageChange = (evt) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(evt.target.files[0]);
+    reader.onload = () => {
+      setState({ ...state, profileImageURL: reader.result });
+    };
+    reader.onerror = (error) => {
+      console.log('Error: ', error);
+    };
+  }
+
   return (
     <>
       <CssBaseline />
@@ -173,7 +184,7 @@ export default function Employee() {
             ) : (
                 // eslint-disable-next-line react/jsx-indent
                 <>
-                  {getStepContent(activeStep, state, setState, handleChange)}
+                  {getStepContent(activeStep, state, setState, handleChange, profileImageChange)}
                   <div className={classes.buttons}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} className={classes.button}>
