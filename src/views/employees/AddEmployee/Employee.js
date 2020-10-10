@@ -8,12 +8,10 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import PersonalDetails from './PersonalDetails';
 import WorkExperience from './WorkExperience';
-import Review from './Review';
-import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -69,59 +67,59 @@ export default function Employee() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [state, setState] = useState({
-    "firstName": null,
-    "lastName": null,
-    "middleName": null,
-    "userName": null,
-    "email": null,
-    "phone": null,
-    "isActive": true,
-    "jobType": null,
-    "workType": null,
-    "bloodGroup": null,
-    "workExperience": {
-      "years": 0,
-      "months": 0
+    firstName: null,
+    lastName: null,
+    middleName: null,
+    userName: null,
+    email: null,
+    phone: null,
+    isActive: true,
+    jobType: null,
+    workType: null,
+    bloodGroup: null,
+    workExperience: {
+      years: 0,
+      months: 0
     },
-    "dob": new Date(),
-    "fathersName": null,
-    "gender": null,
-    "motherTounge": null,
-    "nationality": null,
-    "maritalStatus": null,
-    "aadharCardNumber": null,
-    "panCardNumber": null,
-    "profileImageURL": null,
-    "dateOfJoining": "2020-09-26T07:37:51.390Z",
-    "organization": {
-      "id": "string",
-      "name": "string"
+    dob: new Date(),
+    fathersName: null,
+    gender: null,
+    motherTounge: null,
+    nationality: null,
+    maritalStatus: null,
+    aadharCardNumber: null,
+    panCardNumber: null,
+    profileImageURL: null,
+    dateOfJoining: '2020-09-26T07:37:51.390Z',
+    organization: {
+      id: 'string',
+      name: 'string'
     },
-    "company": {
-      "id": "string",
-      "name": "string"
+    company: {
+      id: 'string',
+      name: 'string'
     },
-    "designation": {
-      "id": "string",
-      "name": "string"
+    designation: {
+      id: 'string',
+      name: 'string'
     },
-    "department": {
-      "id": "string",
-      "name": "string"
+    department: {
+      id: 'string',
+      name: 'string'
     },
-    "empId": "string",
-    "employeeAddress": {
-      "address": "#123, Building 20, Mindspace",
-      "city": "string",
-      "state": "string",
-      "country": "string",
-      "zipcode": "string"
+    empId: 'string',
+    employeeAddress: {
+      address: '#123, Building 20, Mindspace',
+      city: 'string',
+      state: 'string',
+      country: 'string',
+      zipcode: 'string'
     }
-  })
+  });
 
   const handleChange = (evt) => {
-    setState({ ...state, [evt.target.name]: evt.target.value })
-  }
+    setState({ ...state, [evt.target.name]: evt.target.value });
+  };
 
   const handleNext = async () => {
     if (activeStep === steps.length - 1) {
@@ -140,7 +138,7 @@ export default function Employee() {
   };
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
@@ -161,18 +159,20 @@ export default function Employee() {
               </Step>
             ))}
           </Stepper>
-          <React.Fragment>
+          <>
             {activeStep === steps.length ? (
-              <React.Fragment>
+              <>
                 <Typography variant="h5" gutterBottom>
                   Thank you for registering your employee.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Please provide the password to the employee, so that he can login and check/update their profile
+                  Please provide the password to the employee, so that he can login and check/update
+                  their profile
                 </Typography>
-              </React.Fragment>
+              </>
             ) : (
-                <React.Fragment>
+                // eslint-disable-next-line react/jsx-indent
+                <>
                   {getStepContent(activeStep, state, setState, handleChange)}
                   <div className={classes.buttons}>
                     {activeStep !== 0 && (
@@ -189,11 +189,12 @@ export default function Employee() {
                       {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
                     </Button>
                   </div>
-                </React.Fragment>
+                </>
+                // eslint-disable-next-line indent
               )}
-          </React.Fragment>
+          </>
         </Paper>
       </main>
-    </React.Fragment>
+    </>
   );
 }

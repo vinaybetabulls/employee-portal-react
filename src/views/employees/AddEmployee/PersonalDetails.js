@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
@@ -14,12 +15,11 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     // margin: theme.spacing(1),
-    minWidth: "100%",
+    minWidth: '100%',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -28,22 +28,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PersonalDetails({ state, setState, handleChange }) {
   const classes = useStyles();
-
-  const handleDateChange = (date) => {
-    setState(...state, { "dob": new Date(date) });
-  };
-
   const handleEmpAdd = (event) => {
-    let { employeeAddress: ea } = state
-    let employeeAddress = { ...ea, [event.target.name]: event.target.value }
+    const { employeeAddress: ea } = state;
+    const employeeAddress = { ...ea, [event.target.name]: event.target.value };
     setState({
       ...state, employeeAddress
-    })
-    //setState({ ...state, ...employeeAddress[0], [event.target.name]: event.target.value})
-  }
+    });
+    // setState({ ...state, ...employeeAddress[0], [event.target.name]: event.target.value})
+  };
   return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom></Typography>
+    <>
+      <Typography variant="h6" gutterBottom />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <TextField
@@ -64,7 +59,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="middleName"
             label="Middle name"
             fullWidth
-            autoComplete="given-name" value={state.middleName}
+            autoComplete="given-name"
+            value={state.middleName}
             onChange={handleChange}
           />
         </Grid>
@@ -75,7 +71,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="lastName"
             label="Last name"
             fullWidth
-            autoComplete="family-name" value={state.lastName}
+            autoComplete="family-name"
+            value={state.lastName}
             onChange={handleChange}
           />
         </Grid>
@@ -86,7 +83,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="fathersName"
             label="Father Name"
             fullWidth
-            autoComplete="family-name" value={state.fatherName}
+            autoComplete="family-name"
+            value={state.fatherName}
             onChange={handleChange}
           />
         </Grid>
@@ -97,7 +95,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="userName"
             label="UserName"
             fullWidth
-            autoComplete="family-name" value={state.userName}
+            autoComplete="family-name"
+            value={state.userName}
             onChange={handleChange}
           />
         </Grid>
@@ -108,7 +107,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="email"
             label="Email"
             fullWidth
-            autoComplete="family-name" value={state.email}
+            autoComplete="family-name"
+            value={state.email}
             onChange={handleChange}
           />
         </Grid>
@@ -119,7 +119,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="phone"
             label="Phone"
             fullWidth
-            autoComplete="family-name" value={state.phone}
+            autoComplete="family-name"
+            value={state.phone}
             onChange={handleChange}
           />
         </Grid>
@@ -142,7 +143,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="bloodGroup"
             label="Blood Group"
             fullWidth
-            autoComplete="given-name" value={state.bloodGroup} onChange={handleChange}
+            autoComplete="given-name"
+            value={state.bloodGroup}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -152,7 +155,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="maritalStatus"
             label="Marital Status"
             fullWidth
-            autoComplete="given-name" value={state.maritalStatus} onChange={handleChange}
+            autoComplete="given-name"
+            value={state.maritalStatus}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -166,7 +171,7 @@ export default function PersonalDetails({ state, setState, handleChange }) {
               name="dob"
               value={state.dob}
               onChange={handleChange}
-              style={{margin:0, width:"100%"}}
+              style={{ margin: 0, width: '100%' }}
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
@@ -181,7 +186,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="aadharCardNumber"
             label="Aadhar Card"
             fullWidth
-            autoComplete="given-name" value={state.aadharCardNumber} onChange={handleChange}
+            autoComplete="given-name"
+            value={state.aadharCardNumber}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -191,7 +198,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="panCardNumber"
             label="Pan Card"
             fullWidth
-            autoComplete="given-name" value={state.panCardNumber} onChange={handleChange}
+            autoComplete="given-name"
+            value={state.panCardNumber}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -201,7 +210,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="motherTounge"
             label="Mother Tounge"
             fullWidth
-            autoComplete="shipping address-line1" value={state.motherTounge} onChange={handleChange}
+            autoComplete="shipping address-line1"
+            value={state.motherTounge}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -211,7 +222,9 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="nationality"
             label="Nationality"
             fullWidth
-            autoComplete="shipping address-line1" value={state.nationality} onChange={handleChange}
+            autoComplete="shipping address-line1"
+            value={state.nationality}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12}>
@@ -220,7 +233,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="address"
             label="Address"
             fullWidth
-            autoComplete="shipping address-line2" onChange={handleEmpAdd}
+            autoComplete="shipping address-line2"
+            onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -230,7 +244,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="city"
             label="City"
             fullWidth
-            autoComplete="shipping address-level2" onChange={handleEmpAdd}
+            autoComplete="shipping address-level2"
+            onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -243,7 +258,8 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="country"
             label="Country"
             fullWidth
-            autoComplete="shipping country" onChange={handleEmpAdd}
+            autoComplete="shipping country"
+            onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -253,16 +269,18 @@ export default function PersonalDetails({ state, setState, handleChange }) {
             name="zipcode"
             label="Zip / Postal code"
             fullWidth
-            autoComplete="shipping postal-code" onChange={handleEmpAdd}
+            autoComplete="shipping postal-code"
+            onChange={handleEmpAdd}
           />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="isActive" value="yes" />}
-            label="Active Employee" checked={state.isActive}
+            label="Active Employee"
+            checked={state.isActive}
           />
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   );
 }
