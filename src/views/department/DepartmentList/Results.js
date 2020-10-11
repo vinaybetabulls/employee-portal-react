@@ -8,7 +8,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -26,11 +25,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
 const useStyles = makeStyles((theme) => ({
   root: {},
-  avatar: {
-    marginRight: theme.spacing(2)
-  },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(0),
+    padding: "5px"
   },
 }));
 
@@ -84,7 +81,7 @@ const Results = ({ className }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Table>
+          <Table  size="small">
             <TableHead>
               <TableRow>
                 <TableCell> Department Name </TableCell>
@@ -104,15 +101,15 @@ const Results = ({ className }) => {
                   <TableCell>
                     {
                       permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
-                        <VisibilityIcon color="primary" fontSize="small" /> </IconButton>
+                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
                     }
                     {
                       permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
-                        <EditIcon fontSize="small" /> </IconButton>
+                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
                     }
                     {
                       permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" /> </IconButton>
+                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
                     }
 
                   </TableCell>

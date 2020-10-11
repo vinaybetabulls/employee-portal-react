@@ -112,20 +112,9 @@ const Results = ({ className }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedCustomerIds.length === organizations.length}
-                    color="primary"
-                    indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < organizations.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell> */}
                 <TableCell>
                   Designation Name
                 </TableCell>
@@ -147,13 +136,6 @@ const Results = ({ className }) => {
                   key={designation.desgUniqueId}
                   selected={selectedCustomerIds.indexOf(designation.desgUniqueId) !== -1}
                 >
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.orgUniqueId)}
-                      value="true"
-                    />
-                  </TableCell> */}
                   <TableCell>
                     <Box
                       alignItems="center"
