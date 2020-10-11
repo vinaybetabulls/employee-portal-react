@@ -21,6 +21,7 @@ import DesignationCreate from './views/designations/DesignationCreateView';
 import DesignationsList from './views/designations/DesignationListView';
 import CreateView from './views/department/DepartmentCreate';
 import DepartmentsList from './views/department/DepartmentList';
+import EmployeeProfiletView from './views/employees/ProfileView';
 
 const routes = [
   {
@@ -42,6 +43,7 @@ const routes = [
       { path: 'designation/view', element: <DesignationsList /> },
       { path: 'department/view', element: <DepartmentsList /> },
       { path: 'department/create', element: <CreateView /> },
+      { path: 'employee/profile', element: <EmployeeProfiletView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   makeStyles
 } from '@material-ui/core';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxHeight: '52px',
@@ -14,15 +15,15 @@ const Logo = (props) => {
   const classes = useStyles();
   const [companyLogo, setCompanyLogo] = useState('/static/logo.svg');
   useEffect(() => {
-    const companyLogoURL = localStorage.getItem('companyLogoURL');
-    console.log(companyLogoURL);
-    if (companyLogoURL != null) {
+    const companyLogoURL = localStorage.getItem('companyLogoURL') || '/static/logo.svg';
+    if (companyLogoURL !== null || companyLogoURL !== 'undefined') {
+      console.log('companyLogoURL...', companyLogoURL);
       setCompanyLogo(companyLogoURL);
-    }
-    else {
+    } else {
+      console.log('jfnasjksagdasg');
       setCompanyLogo('/static/logo.svg');
     }
-  }, [companyLogo])
+  }, []);
   return (
     <img
       className={classes.root}

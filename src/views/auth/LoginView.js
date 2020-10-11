@@ -64,7 +64,9 @@ const LoginView = () => {
                 console.log(emp.data);
                 const { jwt, isFirstTimeLogin, companyLogoURL } = emp.data;
                 localStorage.setItem('empJWT', jwt);
-                localStorage.setItem('companyLogoURL', companyLogoURL?.companyLogoURL);
+                if (companyLogoURL) {
+                  localStorage.setItem('companyLogoURL', companyLogoURL?.companyLogoURL);
+                }
                 jwt && setIsAuthenticated(true);
                 if (!isFirstTimeLogin) {
                   navigate('app/dashboard');
