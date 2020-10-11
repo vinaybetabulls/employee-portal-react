@@ -16,17 +16,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const DepartmentsList = () => {
+const DepartmentsList = ({isAdded}) => {
   const classes = useStyles();
 
   return (
     <Page className={classes.root} title="Departments" >
-      <Container maxWidth={false}>
-        <Toolbar />
+      {/* <Container maxWidth={false}> */}
+        {/* <Toolbar /> */}
         <Box mt={3}>
-          <Results />
+          <Results isAdded={isAdded}/>
         </Box>
-      </Container>
+      {/* </Container> */}
     </Page>
   );
 };

@@ -52,7 +52,7 @@ const Menu = {
       title: 'Designations'
     },
     {
-      href: '/app/department/view',
+      href: '/app/departments',
       icon: BriefcaseIcon,
       title: 'Departments'
     },

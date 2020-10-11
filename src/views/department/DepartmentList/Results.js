@@ -31,36 +31,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Results = ({ className }) => {
+const Results = ({ className, getdepartmentss, departments }) => {
   const classes = useStyles();
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const { decoded: { user: { permissions } } } = useContext(AppContext);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const [departments, setDepartments] = useState([]);
-  const getdepartmentss = async () => {
-    const departmentsList = await axios.get('http://localhost:4000/department/list', {
+
+  const deletedepartments = async (departmentUniqueId) => {
+    console.log('departmentUniqueId delete icon', departmentUniqueId)
+    await axios.delete(`http://localhost:4000/deleteDepartmentById/${departmentUniqueId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
     })
-    console.log('designaiotns list....', departmentsList.data)
-    setDepartments(departmentsList.data.departments);
-
-  }
-  useEffect(() => {
     getdepartmentss();
-  }, [])
-  const deletedepartments = async (designaiotnId) => {
-    console.log('designaiotnId delete icon', designaiotnId)
-    await axios.delete(`http://localhost:4000/department/${designaiotnId}`, {
-      headers: {
-        token: localStorage.getItem('empJWT')
-      }
-    })
-
-    getdepartmentss();
-
   }
 
   const handleLimitChange = (event) => {
@@ -80,8 +64,8 @@ const Results = ({ className }) => {
       className={clsx(classes.root, className)}
     >
       <PerfectScrollbar>
-        <Box minWidth={1050}>
-          <Table  size="small">
+        <Box >
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell> Department Name </TableCell>
@@ -91,7 +75,7 @@ const Results = ({ className }) => {
             </TableHead>
             <TableBody>
               {departments && departments.length > 0 && departments.slice(0, limit).map((departments) => (
-                <TableRow hover key={departments.departmentUniqueId} selected={selectedCustomerIds.indexOf(departments.departmentUniqueId) !== -1} >
+                <TableRow hover key={departments.departmentUniqueId} >
                   <TableCell>
                     <Box alignItems="center" display="flex" >
                       <Typography color="textPrimary" variant="body1" > {departments.departmentName} </Typography>

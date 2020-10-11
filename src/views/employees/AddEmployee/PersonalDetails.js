@@ -56,7 +56,7 @@ export default function PersonalDetails({ state, setState, handleChange, profile
   return (
     <>
       <Typography variant="h6" gutterBottom />
-      <Grid container>
+      {/* <Grid container>
         <Grid item xs={12} sm={4}>
           <Card className={clsx(classes.root)}>
             <CardContent>
@@ -86,7 +86,7 @@ export default function PersonalDetails({ state, setState, handleChange, profile
             </CardActions>
           </Card>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <TextField

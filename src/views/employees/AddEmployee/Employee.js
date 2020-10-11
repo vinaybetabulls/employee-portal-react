@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import PersonalDetails from './PersonalDetails';
 import WorkExperience from './WorkExperience';
+import UploadPicture from './UploadPicture';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ['Personal Details', 'Working Details'];
+const steps = ['Personal Details', 'Working Details', 'Upload Picture'];
 
 function getStepContent(step, state, setState, handleChange, profileImageChange) {
   switch (step) {
@@ -58,6 +59,8 @@ function getStepContent(step, state, setState, handleChange, profileImageChange)
       return <PersonalDetails state={state} setState={setState} handleChange={handleChange} profileImageChange={profileImageChange} />;
     case 1:
       return <WorkExperience state={state} setState={setState} handleChange={handleChange} />;
+    case 2: 
+      return <UploadPicture profileImageChange={profileImageChange} state={state}/>
     default:
       throw new Error('Unknown step');
   }
@@ -118,11 +121,13 @@ export default function Employee() {
   });
 
   const handleChange = (evt) => {
+    console.log(state)
     setState({ ...state, [evt.target.name]: evt.target.value });
   };
 
   const handleNext = async () => {
     if (activeStep === steps.length - 1) {
+      console.log(state);
       const createEmp = await axios.post('http://localhost:4000/employee/create', state, {
         headers: {
           token: localStorage.getItem('empJWT')
@@ -177,8 +182,7 @@ export default function Employee() {
                   Thank you for registering your employee.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Please provide the password to the employee, so that he can login and check/update
-                  their profile
+                  Employee Created Successfully!. Please provide the password to the employee, so that he can login and check/update their profile
                 </Typography>
               </>
             ) : (
