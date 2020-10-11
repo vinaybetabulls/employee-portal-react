@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   Avatar,
   Box,
@@ -24,11 +26,9 @@ import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
 const useStyles = makeStyles((theme) => ({
   root: {},
-  avatar: {
-    marginRight: theme.spacing(2)
-  },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(0),
+    padding: "5px"
   },
 }));
 
@@ -109,20 +109,9 @@ const Results = ({ className }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedCustomerIds.length === organizations.length}
-                    color="primary"
-                    indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < organizations.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell> */}
                 <TableCell>
                   Company Name
                 </TableCell>
@@ -138,26 +127,18 @@ const Results = ({ className }) => {
                 <TableCell>
                   Company Address
                 </TableCell>
-                {permissions.includes('DELETE') && <TableCell>
-                  Delete
-                </TableCell>}
+                <TableCell>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {console.log('table companies..', companies)}
-              {companies.length > 0 && companies.slice(0, limit).map((company) => (
+              {companies && companies.length > 0 && companies.slice(0, limit).map((company) => (
                 <TableRow
                   hover
                   key={company.orgUniqueId}
                   selected={selectedCustomerIds.indexOf(company.orgUniqueId) !== -1}
                 >
-                  {/* <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.orgUniqueId)}
-                      value="true"
-                    />
-                  </TableCell> */}
                   <TableCell>
                     <Box
                       alignItems="center"
@@ -189,17 +170,21 @@ const Results = ({ className }) => {
                   <TableCell>
                     {`${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`}
                   </TableCell>
-                  {permissions.includes('DELETE') && <TableCell>
-                    <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>}
-                  {/* <TableCell>
-                    {customer.phone}
-                  </TableCell>
                   <TableCell>
-                    {moment(customer.createdAt).format('DD/MM/YYYY')}
-                  </TableCell> */}
+                    {
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={company.companyUniqeId}>
+                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
+                    }
+                    {
+                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
+                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                    }
+                    {
+                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
+                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                    }
+
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

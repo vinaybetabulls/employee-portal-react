@@ -88,7 +88,6 @@ export default function PersonalDetails({ state, setState, handleChange, profile
         </Grid>
       </Grid>
       <Grid container spacing={3}>
-
         <Grid item xs={12} sm={4}>
           <TextField
             required

@@ -38,6 +38,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import getInitials from 'src/utils/getInitials';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
 import { GetRoles } from '../../../context/MenuList';
@@ -50,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     // margin: theme.spacing(1),
     minWidth: "100%",
+  },
+  margin: {
+    margin: theme.spacing(0),
+    padding: "5px"
   },
 }));
 
@@ -163,33 +169,31 @@ const Results = ({ className }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Employees Name
+                  Name
                 </TableCell>
                 <TableCell>
-                  Employee Id
+                  Id
                 </TableCell>
                 <TableCell>
-                  Employee Email
+                  Email
                 </TableCell>
                 <TableCell>
-                  Employee Phone
+                  Phone
                 </TableCell>
                 <TableCell>
-                  Employee Organizaton
+                  Organizaton
                 </TableCell>
                 <TableCell>
-                  Employee Company
+                  Company
                 </TableCell>
-                {roles.includes('SUPER_ADMIN') && <TableCell>
-                  Set Permissions
-                </TableCell>}
-                {permissions.includes('DELETE') && <TableCell>
-                  Delete
-                </TableCell>}
+                {roles.includes('SUPER_ADMIN') && <TableCell> Set Permissions </TableCell>}
+                <TableCell>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -238,11 +242,21 @@ const Results = ({ className }) => {
                       Set
                     </Button>
                   </TableCell>}
-                  {permissions.includes('DELETE') && <TableCell>
-                    <IconButton aria-label="delete" className={classes.margin} id={employee.empUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>}
+                  <TableCell>
+                    {
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId}>
+                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
+                    }
+                    {
+                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId}>
+                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                    }
+                    {
+                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
+                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                    }
+
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
