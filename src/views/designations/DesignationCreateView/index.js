@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Grid,
-  makeStyles, AppBar, Toolbar, Typography
+  makeStyles, AppBar, Toolbar, Typography, IconButton
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import axios from 'axios';
 import CreateForm from './CreateForm';
 import Logo from './Logo';
+import Results from '../DesignationListView/Results';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +27,10 @@ const useStyles = makeStyles((theme) => ({
 const DesignationCreate = () => {
   const classes = useStyles();
 
+  const [designations, setDesignations] = useState([]);
   const [state, setState] = useState({});
-
+  const [isCreated, setIsCreated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
   const [file, setFile] = useState({ url: '' });
   const [downloadURL, setDownloadURL] = useState('');
   const [fileBlob, setBlob] = useState('');
@@ -56,11 +61,26 @@ const DesignationCreate = () => {
     });
   };
 
+  const getDesignations = async () => {
+    const designationsList = await axios.get('http://localhost:4000/designation/list', {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    })
+    console.log('designaiotns list....', designationsList.data)
+    setDesignations(designationsList.data.designations);
+
+  }
+  useEffect(() => {
+    getDesignations();
+  }, [isCreated])
+
   const createDesignations = async () => {
     try {
       state.notesURL = file.url;
       const createOrgResponse = await axios.post('http://localhost:4000/designation/create', state, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create designation Response..', createOrgResponse);
+      setIsCreated(true); setState({}); setShowAlert(true);
     } catch (error) {
       console.log('org create error', error);
     }
@@ -68,21 +88,32 @@ const DesignationCreate = () => {
 
   return (
     <>
-      <AppBar position="absolute" color="default" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Create Designation
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Page className={classes.root} title="Account">
         <Container maxWidth="lg">
-          <Grid container>
+          {
+            showAlert && <Alert severity="success" action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }>
+              Designation added successfully! </Alert>
+          }
+          <Grid container spacing={3}>
             <Grid item lg={4} md={6} xs={12}>
               <Logo file={file} onFileChange={onFileChange} downloadURL={downloadURL} fileBlob={fileBlob} />
             </Grid>
             <Grid item lg={8} md={6} xs={12}>
               <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
+            </Grid>
+            <Grid item lg={12} md={12} xs={12}>
+              <Results getDesignations={getDesignations} designations={designations} />
             </Grid>
           </Grid>
         </Container>

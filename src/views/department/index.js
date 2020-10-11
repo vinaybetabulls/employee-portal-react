@@ -64,8 +64,6 @@ const Departments = () => {
     }
   }
 
-  const handleClose = () => setShowAlert(false);
-
   useEffect(() => {
     getdepartmentss();
   }, [isCreated])

@@ -11,7 +11,7 @@ import {
   makeStyles,
   Paper,
   Grid,
-  Typography,
+  Typography, IconButton,
   Link
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
@@ -55,7 +55,6 @@ const Logo = ({
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-
       <CardActions>
         <input
           className={classes.input}
@@ -67,36 +66,21 @@ const Logo = ({
           <Button variant="contained" color="primary" component="span">  Upload document </Button>
         </label>
       </CardActions>
-      <Divider />
       <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
-          <Paper className={classes.paper}>
-            {file.fileName && (
-              <Grid
-                container
-                wrap="nowrap"
-                spacing={2}
-                direction="row"
-                justify="center"
-                alignItems="center"
-
-              >
-                <a onClick={downloadFile}>
-                  <Grid item xs>
-                    <Typography noWrap>{file.fileName}</Typography>
-                  </Grid>
-                  <Grid item xs>
-                    <GetAppIcon />
-                  </Grid>
-                </a>
+        {file.fileName && (
+          <>
+            <Grid container wrap="nowrap">
+              <Grid item md={6} xs={12}>
+                <Typography noWrap>{file.fileName}</Typography>
               </Grid>
-            )}
-          </Paper>
-        </Box>
+              <Grid item md={6} xs={12}>
+                <IconButton aria-label="delete" className={classes.margin} size="small" onClick={downloadFile}>
+                  <GetAppIcon fontSize="inherit" />
+                </IconButton>
+              </Grid>
+            </Grid>
+          </>
+        )}
       </CardContent>
 
     </Card>

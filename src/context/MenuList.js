@@ -47,7 +47,7 @@ const Menu = {
       title: 'Employees'
     },
     {
-      href: '/app/designation/view',
+      href: '/app/designations',
       icon: AwardIcon,
       title: 'Designations'
     },

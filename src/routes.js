@@ -40,8 +40,7 @@ const routes = [
       { path: 'employee/create', element: <Employee /> },
       { path: 'employee/view', element: <EmployeestListView /> },
       { path: 'permission/create', element: <PermissionsCreateView /> },
-      { path: 'designation/create', element: <DesignationCreate /> },
-      { path: 'designation/view', element: <DesignationsList /> },
+      { path: 'designations', element: <DesignationCreate /> },
       { path: 'employee/profile', element: <EmployeeProfiletView /> },
       { path: 'departments', element: <Departments />},
       { path: '*', element: <Navigate to="/404" /> }

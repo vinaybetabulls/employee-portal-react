@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     // margin: theme.spacing(1),
     minWidth: "100%",
   },
+  teaxtareaStyles: {
+    width: "100%",
+  },
 }));
 
 const CreateForm = ({ createDesignations, handleChange, className, ...rest }) => {
@@ -70,7 +73,6 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
                   name="name"
                   onChange={handleChange}
                   required
-                  variant="outlined"
                 />
               </Grid>
               <Grid item md={6} xs={12}>
@@ -87,10 +89,10 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
               </Grid>
               <Grid
                 item
-                md={6}
+                md={12}
                 xs={12}
               >
-                <TextareaAutosize name="rolesAndResponsibilities" aria-label="rolesResponsibilities" rowsMin={4} placeholder="Roles and Responsibilities" onChange={handleChange} />
+                <TextareaAutosize className={classes.teaxtareaStyles} name="rolesAndResponsibilities" aria-label="rolesResponsibilities" rowsMin={4} placeholder="Roles and Responsibilities" onChange={handleChange} />
               </Grid>
             </Grid>
 

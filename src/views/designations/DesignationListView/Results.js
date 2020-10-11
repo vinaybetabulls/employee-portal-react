@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   Avatar,
   Box,
@@ -32,26 +34,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Results = ({ className }) => {
+const Results = ({ className, getDesignations, designations }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const { decoded: { user: { permissions } } } = useContext(AppContext);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const [designations, setDesignations] = useState([]);
-  const getDesignations = async () => {
-    const designationsList = await axios.get('http://localhost:4000/designation/list', {
-      headers: {
-        token: localStorage.getItem('empJWT')
-      }
-    })
-    console.log('designaiotns list....', designationsList.data)
-    setDesignations(designationsList.data.designations);
-
-  }
-  useEffect(() => {
-    getDesignations();
-  }, [])
+  
   const deleteDesignation = async (designaiotnId) => {
     console.log('designaiotnId delete icon', designaiotnId)
     await axios.delete(`http://localhost:4000/designation/${designaiotnId}`, {
@@ -63,37 +52,6 @@ const Results = ({ className }) => {
     getDesignations();
 
   }
-  const handleSelectAll = (event) => {
-    let newSelectedCustomerIds;
-
-    if (event.target.checked) {
-      newSelectedCustomerIds = designations.map((designation) => designation.desgUniqueId);
-    } else {
-      newSelectedCustomerIds = [];
-    }
-
-    setSelectedCustomerIds(newSelectedCustomerIds);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedCustomerIds.indexOf(id);
-    let newSelectedCustomerIds = [];
-
-    if (selectedIndex === -1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds, id);
-    } else if (selectedIndex === 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(1));
-    } else if (selectedIndex === selectedCustomerIds.length - 1) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(selectedCustomerIds.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedCustomerIds = newSelectedCustomerIds.concat(
-        selectedCustomerIds.slice(0, selectedIndex),
-        selectedCustomerIds.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedCustomerIds(newSelectedCustomerIds);
-  };
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -116,17 +74,17 @@ const Results = ({ className }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Designation Name
+                  Designation
                 </TableCell>
                 <TableCell>
-                  Designation Level
+                  Level
                 </TableCell>
                 <TableCell>
-                  Designation Roles
+                  Roles & Responsibilites
                 </TableCell>
-                {permissions.includes('DELETE') && <TableCell>
-                  Delete
-                </TableCell>}
+                <TableCell>
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -141,12 +99,12 @@ const Results = ({ className }) => {
                       alignItems="center"
                       display="flex"
                     >
-                      <Avatar
+                      {/* <Avatar
                         className={classes.avatar}
                         src={designation.notesURL}
                       >
                         {getInitials(designation.name)}
-                      </Avatar>
+                      </Avatar> */}
                       <Typography
                         color="textPrimary"
                         variant="body1"
@@ -161,17 +119,21 @@ const Results = ({ className }) => {
                   <TableCell>
                     {truncate(designation.rolesAndResponsibilities)}
                   </TableCell>
-                  {permissions.includes('DELETE') && <TableCell>
-                    <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>}
-                  {/* <TableCell>
-                    {customer.phone}
-                  </TableCell>
                   <TableCell>
-                    {moment(customer.createdAt).format('DD/MM/YYYY')}
-                  </TableCell> */}
+                    {
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={designation.desgUniqueId}>
+                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
+                    }
+                    {
+                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={designation.desgUniqueId}>
+                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                    }
+                    {
+                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>
+                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                    }
+
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
