@@ -2,17 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Avatar,
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
   Divider,
+  makeStyles,
+  Paper,
+  Grid,
   Typography,
-  makeStyles
+  Link
 } from '@material-ui/core';
-import FilePreviewer from 'react-file-previewer';
+import GetAppIcon from '@material-ui/icons/GetApp';
+// import FilePreviewer from 'react-file-previewer';
+
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
 };
@@ -28,11 +32,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Logo = ({ onFileChange, file, className, ...rest }) => {
+// eslint-disable-next-line react/prop-types
+const Logo = ({
+  // eslint-disable-next-line react/prop-types
+  onFileChange, file, className, downloadURL, fileBlob, ...rest
+}) => {
   const classes = useStyles();
+  console.log('file...in logo..', file);
+  const downloadFile = () => {
+    console.log('download pdf..');
+    if (navigator.appVersion.toString().indexOf('.NET') > 0) {
+      window.navigator.msSaveOrOpenBlob(fileBlob, file.fileName);
+    } else {
+      const link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = file.fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest} >
+    <Card className={clsx(classes.root, className)} {...rest}>
 
       <CardActions>
         <input
@@ -52,9 +74,28 @@ const Logo = ({ onFileChange, file, className, ...rest }) => {
           display="flex"
           flexDirection="column"
         >
-          <FilePreviewer
-            file={file}
-          />
+          <Paper className={classes.paper}>
+            {file.fileName && (
+              <Grid
+                container
+                wrap="nowrap"
+                spacing={2}
+                direction="row"
+                justify="center"
+                alignItems="center"
+
+              >
+                <a onClick={downloadFile}>
+                  <Grid item xs>
+                    <Typography noWrap>{file.fileName}</Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <GetAppIcon />
+                  </Grid>
+                </a>
+              </Grid>
+            )}
+          </Paper>
         </Box>
       </CardContent>
 
@@ -63,7 +104,8 @@ const Logo = ({ onFileChange, file, className, ...rest }) => {
 };
 
 Logo.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  file: PropTypes.any
 };
 
 export default Logo;

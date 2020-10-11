@@ -5,8 +5,8 @@ import {
   makeStyles, AppBar, Toolbar, Typography
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import CreateForm from './CreateForm';
 import axios from 'axios';
+import CreateForm from './CreateForm';
 import Logo from './Logo';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,23 +24,29 @@ const useStyles = makeStyles((theme) => ({
 const DesignationCreate = () => {
   const classes = useStyles();
 
-  const [state, setState] = useState({})
+  const [state, setState] = useState({});
 
   const [file, setFile] = useState({ url: '' });
+  const [downloadURL, setDownloadURL] = useState('');
+  const [fileBlob, setBlob] = useState('');
 
-  const onFileChange = event => {
+  const onFileChange = (event) => {
     const fileReader = new window.FileReader();
-    const file = event.target.files[0];
-    console.log('file....', file);
-    console.log('file name....', file.name);
-    console.log('file mimetype....', file.type);
+    const iputFile = event.target.files[0];
+    console.log('file....', iputFile);
+    console.log('file name....', iputFile.name);
+    console.log('file mimetype....', iputFile.type);
 
-    fileReader.onload = fileLoad => {
+    fileReader.onload = (fileLoad) => {
       const { result } = fileLoad.target;
-      setFile({ url: result, fileName: file.name, mimeType: file.type });
+      setFile({ url: result, fileName: iputFile.name, mimeType: iputFile.type });
     };
 
-    fileReader.readAsDataURL(file);
+    fileReader.readAsDataURL(iputFile);
+    const blob = new Blob([iputFile], { type: iputFile.type });
+    const objectURL = window.URL.createObjectURL(blob);
+    setDownloadURL(objectURL);
+    setBlob(blob);
   };
 
   const handleChange = (event) => {
@@ -54,11 +60,11 @@ const DesignationCreate = () => {
     try {
       state.notesURL = file.url;
       const createOrgResponse = await axios.post('http://localhost:4000/designation/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create designation Response..', createOrgResponse)
+      console.log('create designation Response..', createOrgResponse);
     } catch (error) {
-      console.log('org create error', error)
+      console.log('org create error', error);
     }
-  }
+  };
 
   return (
     <>
@@ -69,13 +75,13 @@ const DesignationCreate = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Page className={classes.root} title="Account" >
+      <Page className={classes.root} title="Account">
         <Container maxWidth="lg">
           <Grid container>
-            <Grid item lg={4} md={6} xs={12} >
-              <Logo file={file} onFileChange={onFileChange} />
+            <Grid item lg={4} md={6} xs={12}>
+              <Logo file={file} onFileChange={onFileChange} downloadURL={downloadURL} fileBlob={fileBlob} />
             </Grid>
-            <Grid item lg={8} md={6} xs={12} >
+            <Grid item lg={8} md={6} xs={12}>
               <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
             </Grid>
           </Grid>
