@@ -2,24 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  Divider,
   makeStyles,
-  Paper,
   Grid,
-  Typography, IconButton,
-  Link
+  Typography, IconButton
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 // import FilePreviewer from 'react-file-previewer';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {},

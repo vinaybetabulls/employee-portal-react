@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import {
   Container,
   Grid,
-  makeStyles
+  makeStyles,
+  IconButton
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import axios from 'axios';
+import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
 import Logo from './Logo';
 import CreateForm from './CreateForm';
-import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,19 +26,22 @@ const CreateOrganization = () => {
 
   const [state, setState] = useState({
     organizationLogoURL: null
-  })
+  });
+  const [showAlert, setShowAlert] = useState(false);
+  const [severityValue, setSeverityValue] = useState('success');
+  const [responseMessage, setResponseMessage] = useState('');
 
   const uploadOrganizationLogo = (evt) => {
     console.log(evt.target.files[0]);
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(evt.target.files[0]);
-    reader.onload = function () {
+    reader.onload = () => {
       setState({ ...state, organizationLogoURL: reader.result });
     };
-    reader.onerror = function (error) {
+    reader.onerror = (error) => {
       console.log('Error: ', error);
     };
-  }
+  };
 
   const handleChange = (event) => {
     setState({
@@ -45,6 +51,7 @@ const CreateOrganization = () => {
   };
 
   const addOrganization = async () => {
+    alert('skjdglsdf');
     try {
       state.organizationAddress = [{
         address: state.address,
@@ -52,26 +59,72 @@ const CreateOrganization = () => {
         state: state.state,
         country: state.country,
         zipcode: state.zipcode
-      }]
+      }];
       state.organizationContactPerson = {
         name: state.organizationContactName,
         phone: state.organizationContactPhone
-      }
+      };
       const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create Org Response..', createOrgResponse)
+      console.log('create Org Response....', createOrgResponse);
+      setShowAlert(true);
+      setSeverityValue('success');
+      setResponseMessage('Organization created successfully.');
     } catch (error) {
-      console.log('org create error', error)
+      alert('hi....');
+      console.error('org create error....', error.data);
+      setSeverityValue('error');
+      setShowAlert(true);
+      if (error.response.data.statusCode === 409) {
+        setResponseMessage('Organization already existed.');
+      }
+      if (error.response.data.statusCode === 403) {
+        setResponseMessage('You don\'t have a permission to create organization.');
+      }
+      if (error.response.data.statusCode === 400) {
+        setResponseMessage('Please enter all mandatory data');
+      }
+      if (error.response.data.statusCode === 401) {
+        setResponseMessage('Authenitcation exception.');
+      } else {
+        setResponseMessage('Something went wrong. Kindly retry.');
+      }
     }
-  }
+  };
 
   return (
-    <Page className={classes.root} title="Account" >
+    <Page className={classes.root} title="Account">
       <Container maxWidth="lg">
-        <Grid container spacing={3} >
-          <Grid item lg={4} md={6} xs={12} >
-            <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL} />
+        {
+          showAlert && (
+            <Alert
+              severity={severityValue}
+              action={(
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShowAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              )}
+            >
+              {responseMessage}
+              {' '}
+
+            </Alert>
+          )
+        }
+        <Grid container spacing={3}>
+          <Grid item lg={4} md={6} xs={12}>
+            <Logo
+              uploadOrganizationLogo={uploadOrganizationLogo}
+              organizationLogoURL={state.organizationLogoURL}
+            />
           </Grid>
-          <Grid item lg={8} md={6} xs={12} >
+          <Grid item lg={8} md={6} xs={12}>
             <CreateForm handleChange={handleChange} createOrganization={addOrganization} />
           </Grid>
         </Grid>

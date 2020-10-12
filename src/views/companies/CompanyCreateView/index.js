@@ -6,10 +6,10 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import axios from 'axios';
+import CloseIcon from '@material-ui/icons/Close';
+import { Alert } from '@material-ui/lab';
 import Logo from './Logo';
 import CreateForm from './CreateForm';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,27 +65,34 @@ const CustomerCreateView = () => {
       console.log('create company Response..', createOrgResponse);
       setShowAlert(true); setState({});
     } catch (error) {
-      console.log('org create error', error);
-    };
+      console.log('org create error.....', error);
+    }
   };
 
   return (
     <Page className={classes.root} title="Account">
       <Container maxWidth="lg">
         {
-          showAlert && <Alert severity="success" action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setShowAlert(false);
-              }}
+          showAlert && (
+            <Alert
+              severity="success"
+              action={(
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShowAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              )}
             >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }>
-            Company added successfully! </Alert>
+              Company added successfully!
+              {' '}
+            </Alert>
+          )
         }
         <Grid container spacing={3}>
           <Grid item lg={4} md={6} xs={12}>

@@ -38,6 +38,12 @@
                           "react/forbid-prop-types": "off",
                             "react/jsx-filename-extension": "off",
                               "react/jsx-props-no-spreading": "off",
-                                "react/require-default-props": "off"
+                                "react/require-default-props": "off",
+                                "jsx-a11y/label-has-associated-control": [ 2, {
+      "labelComponents": ["CustomInputLabel"],
+      "labelAttributes": ["label"],
+      "controlComponents": ["CustomInput"],
+      "depth": 3,
+    }],
   }
 }

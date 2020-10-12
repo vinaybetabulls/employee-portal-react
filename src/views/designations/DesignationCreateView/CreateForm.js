@@ -15,14 +15,13 @@ import {
   InputLabel,
   FormControl,
   TextareaAutosize,
-  Avatar, AppBar, Toolbar, Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   formControl: {
     margin: theme.spacing(1),
-    minWidth: "100%",
+    minWidth: '100%',
   },
   input: {
     display: 'none',
@@ -31,21 +30,19 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
-  formControl: {
-    // margin: theme.spacing(1),
-    minWidth: "100%",
-  },
   teaxtareaStyles: {
-    width: "100%",
+    width: '100%',
   },
 }));
 
-const CreateForm = ({ createDesignations, handleChange, className, ...rest }) => {
+const CreateForm = ({
+  createDesignations, handleChange, className, ...rest
+}) => {
   const classes = useStyles();
 
   return (
     <>
-      
+
       <form
         autoComplete="off"
         noValidate
@@ -77,7 +74,7 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
               </Grid>
               <Grid item md={6} xs={12}>
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="age-native-simple" >Level</InputLabel>
+                  <InputLabel htmlFor="age-native-simple">Level</InputLabel>
                   <Select native name="level" onChange={handleChange}>
                     <option aria-label="None" value="" />
                     <option value="1">Level 1</option>
@@ -110,7 +107,7 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
               onClick={createDesignations}
             >
               Create Designation
-          </Button>
+            </Button>
           </Box>
         </Card>
       </form>
@@ -120,7 +117,9 @@ const CreateForm = ({ createDesignations, handleChange, className, ...rest }) =>
 };
 
 CreateForm.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  createDesignations: PropTypes.func,
+  handleChange: PropTypes.func
 };
 
 export default CreateForm;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -8,14 +8,13 @@ import {
   Container,
   TextField,
   Typography,
-  makeStyles
+  makeStyles, IconButton
 } from '@material-ui/core';
-// import FacebookIcon from 'src/icons/Facebook';
-// import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
 import { AppContext } from 'src/context/AppContext';
 import axios from 'axios';
-
+import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,10 +26,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginView = () => {
-  console.log(process.env);
   const classes = useStyles();
   const navigate = useNavigate();
   const { setIsAuthenticated, setMenuList } = useContext(AppContext);
+  const [showAlert, setShowAlert] = useState(false);
+  const [severityValue, setSeverityValue] = useState('success');
+  const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
     setMenuList([]);
@@ -61,22 +62,27 @@ const LoginView = () => {
             onSubmit={async (values) => {
               try {
                 const emp = await axios.post('http://localhost:4000/employee/login', { username: values.email, password: values.password });
-                console.log(emp.data);
                 const { jwt, isFirstTimeLogin, companyLogoURL } = emp.data;
                 localStorage.setItem('empJWT', jwt);
                 if (companyLogoURL) {
                   localStorage.setItem('companyLogoURL', companyLogoURL?.companyLogoURL);
                 }
-                jwt && setIsAuthenticated(true);
+                if (jwt) setIsAuthenticated(true);
                 if (!isFirstTimeLogin) {
                   navigate('app/dashboard');
-                }
-                else {
+                } else {
                   navigate('changepassowrd');
                 }
-                localStorage.setItem('empJWT', jwt);
               } catch (error) {
-                console.log(error);
+                console.debug(error.response);
+                console.error('status code', error.response.data.statusCode);
+                setShowAlert(true);
+                setSeverityValue('error');
+                if (error.response.data.statusCode === 404) {
+                  setResponseMessage('Please enter valid employee details.');
+                } else {
+                  setResponseMessage('Something went wrong. Kindly retry.');
+                }
               }
             }}
           >
@@ -105,55 +111,30 @@ const LoginView = () => {
                     >
                       Sign in to the employee portal
                     </Typography>
+                    {
+                      showAlert && (
+                        <Alert
+                          severity={severityValue}
+                          action={(
+                            <IconButton
+                              aria-label="close"
+                              color="inherit"
+                              size="small"
+                              onClick={() => {
+                                setShowAlert(false);
+                              }}
+                            >
+                              <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                          )}
+                        >
+                          {responseMessage}
+                          {' '}
+
+                        </Alert>
+                      )
+                    }
                   </Box>
-                  {/* <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid> */}
-                  {/* <Box
-                    mt={3}
-                    mb={1}
-                  >
-                    <Typography
-                      align="center"
-                      color="textSecondary"
-                      variant="body1"
-                    >
-                      or login with email address
-                  </Typography>
-                  </Box> */}
                   <TextField
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
@@ -192,20 +173,6 @@ const LoginView = () => {
                       Sign in now
                     </Button>
                   </Box>
-                  {/* <Typography
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    Don&apos;t have an account?
-                  {' '}
-                    <Link
-                      component={RouterLink}
-                      to="/register"
-                      variant="h6"
-                    >
-                      Sign up
-                  </Link>
-                  </Typography> */}
                 </form>
                 // eslint-disable-next-line indent
               )}
