@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateOrganization = () => {
   const classes = useStyles();
-
   const [state, setState] = useState({
     organizationLogoURL: null
   });
@@ -51,7 +50,6 @@ const CreateOrganization = () => {
   };
 
   const addOrganization = async () => {
-    alert('skjdglsdf');
     try {
       state.organizationAddress = [{
         address: state.address,
@@ -70,20 +68,16 @@ const CreateOrganization = () => {
       setSeverityValue('success');
       setResponseMessage('Organization created successfully.');
     } catch (error) {
-      alert('hi....');
       console.error('org create error....', error.data);
       setSeverityValue('error');
       setShowAlert(true);
       if (error.response.data.statusCode === 409) {
         setResponseMessage('Organization already existed.');
-      }
-      if (error.response.data.statusCode === 403) {
+      } else if (error.response.data.statusCode === 403) {
         setResponseMessage('You don\'t have a permission to create organization.');
-      }
-      if (error.response.data.statusCode === 400) {
+      } else if (error.response.data.statusCode === 400) {
         setResponseMessage('Please enter all mandatory data');
-      }
-      if (error.response.data.statusCode === 401) {
+      } else if (error.response.data.statusCode === 401) {
         setResponseMessage('Authenitcation exception.');
       } else {
         setResponseMessage('Something went wrong. Kindly retry.');

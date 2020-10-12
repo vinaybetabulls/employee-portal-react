@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
 const CustomerCreateView = () => {
   const classes = useStyles();
   const [showAlert, setShowAlert] = useState(false);
+  const [severityValue, setSeverityValue] = useState('success');
+  const [responseMessage, setResponseMessage] = useState('');
 
   const [state, setState] = useState({
     companyLogoURL: null
@@ -63,9 +65,24 @@ const CustomerCreateView = () => {
       };
       const createOrgResponse = await axios.post('http://localhost:4000/company/create', state, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create company Response..', createOrgResponse);
-      setShowAlert(true); setState({});
+      setShowAlert(true);
+      setSeverityValue('success');
+      setState({});
     } catch (error) {
-      console.log('org create error.....', error);
+      console.error('company create error.....', error.response.data.statusCode === 400);
+      setSeverityValue('error');
+      setShowAlert(true);
+      if (error.response.data.statusCode === 409) {
+        setResponseMessage('Organization already existed.');
+      } else if (error.response.data.statusCode === 403) {
+        setResponseMessage('You don\'t have a permission to create organization.');
+      } else if (error.response.data.statusCode === 400) {
+        setResponseMessage('Please enter all mandatory fields');
+      } else if (error.response.data.statusCode === 401) {
+        setResponseMessage('Authenitcation exception.');
+      } else {
+        setResponseMessage('Something went wrong. Kindly retry.');
+      }
     }
   };
 
@@ -75,7 +92,7 @@ const CustomerCreateView = () => {
         {
           showAlert && (
             <Alert
-              severity="success"
+              severity={severityValue}
               action={(
                 <IconButton
                   aria-label="close"
@@ -89,7 +106,7 @@ const CustomerCreateView = () => {
                 </IconButton>
               )}
             >
-              Company added successfully!
+              {responseMessage}
               {' '}
             </Alert>
           )

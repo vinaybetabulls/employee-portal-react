@@ -20,7 +20,9 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
+const CreateForm = ({
+  createCompany, handleChange, className, ...rest
+}) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
   useEffect(() => {
@@ -34,14 +36,12 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
         return {
           organizationName: organization.organizationName,
           orgUniqueId: organization.orgUniqueId
-        }
-      })
-      console.log('vinay organizationSelect..', organizationSelect)
-      setOrganizationsList(organizationSelect)
-      console.log('company create organizations...', organizationSelect)
-    }
-    getOrganizationsList()
-  }, [])
+        };
+      });
+      setOrganizationsList(organizationSelect);
+    };
+    getOrganizationsList();
+  }, []);
   return (
     <form
       autoComplete="off"
@@ -173,9 +173,14 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                 SelectProps={{ native: true }}
                 variant="outlined"
               >
-                <MenuItem value=""> <em>None</em> </MenuItem>
+                <MenuItem value="">
+                  {' '}
+                  <em>None</em>
+                  {' '}
+                </MenuItem>
                 {
-                  organizationsList.length > 0 && organizationsList.map(org => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>{org.organizationName}</MenuItem>)
+                  // eslint-disable-next-line max-len
+                  organizationsList.length > 0 && organizationsList.map((org) => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>{org.organizationName}</MenuItem>)
                 }
               </Select>
             </Grid>
@@ -272,7 +277,9 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
 };
 
 CreateForm.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  createCompany: PropTypes.func,
+  handleChange: PropTypes.func
 };
 
 export default CreateForm;

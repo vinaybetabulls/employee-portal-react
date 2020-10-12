@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import clsx from 'clsx';
@@ -42,8 +42,6 @@ const CreateForm = ({
         organizationName: Yup.string().max(255).required('Email is required'),
         organizationCode: Yup.string().max(255).required('Password is required')
       })}
-      onSubmit={async (values) => {
-      }}
     >
       {({
         errors,
@@ -168,6 +166,7 @@ const CreateForm = ({
                     <TextField
                       // eslint-disable-next-line max-len
                       error={Boolean(touched.organizationContactPhone && errors.organizationContactPhone)}
+                      // eslint-disable-next-line max-len
                       helperText={touched.organizationContactPhone && errors.organizationContactPhone}
                       fullWidth
                       label="Organization Contact Phone"
