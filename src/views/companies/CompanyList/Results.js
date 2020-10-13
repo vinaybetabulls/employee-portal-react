@@ -19,7 +19,7 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles
+  makeStyles, Link
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
@@ -176,7 +176,7 @@ const Results = ({ className }) => {
                         <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
                     }
                     {
-                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
+                      permissions.includes('EDIT') && <IconButton component={Link} href={`/app/company/edit/${company.companyUniqeId}`} aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
                         <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
                     }
                     {

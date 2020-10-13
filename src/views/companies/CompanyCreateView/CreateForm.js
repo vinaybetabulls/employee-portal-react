@@ -17,16 +17,26 @@ import {
   MenuItem
 } from '@material-ui/core';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({
-  createCompany, handleChange, className, ...rest
-}) => {
+const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
+  const { companyUniqeId } = useParams();
+
+  const getCompanyById = async (companyUniqeId) => {
+    const companyDetails = await axios.get(`http://localhost:4000/company/${companyUniqeId}`, {
+      headers: {
+        token: localStorage.getItem('empJWT')
+      }
+    });
+    console.log(companyDetails);
+  }
+
   useEffect(() => {
     const getOrganizationsList = async () => {
       const organizations = await axios.get('http://localhost:4000/organization/list', {
@@ -44,6 +54,7 @@ const CreateForm = ({
     };
     getOrganizationsList();
   }, []);
+  
   return (
     <Formik
       initialValues={{
@@ -88,6 +99,7 @@ const CreateForm = ({
             className={clsx(classes.root, className)}
             {...rest}
           >
+            {companyUniqeId } 
             <Card>
               <CardHeader
                 title="Create Company"
@@ -107,14 +119,13 @@ const CreateForm = ({
                       error={Boolean(touched.companyName && errors.companyName)}
                       helperText={touched.companyName && errors.companyName}
                       fullWidth
-                      helperText="Please specify the Company name"
                       label="Company name"
                       name="companyName"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.companyName}
+                      defaultValue={values.companyName || ""}
                     />
                   </Grid>
                   <Grid
@@ -132,7 +143,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.companyCode}
+                      defaultValue={values.companyCode || ""}
                     />
                   </Grid>
                   <Grid
@@ -150,7 +161,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.companyEmail}
+                      defaultValue={values.companyEmail || ""}
                     />
                   </Grid>
                   <Grid
@@ -168,7 +179,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       type="number"
                       variant="outlined"
-                      value={values.companyPhone}
+                      defaultValue={values.companyPhone || ""}
                     />
                   </Grid>
                   <Grid
@@ -186,7 +197,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       type="text"
                       variant="outlined"
-                      value={values.companyContactName}
+                      defaultValue={values.companyContactName || ""}
                     />
                   </Grid>
                   <Grid
@@ -204,7 +215,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       type="number"
                       variant="outlined"
-                      value={values.companyContactPhone}
+                      defaultValue={values.companyContactPhone || ""}
                     />
                   </Grid>
                   <Grid
@@ -222,7 +233,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       type="text"
                       variant="outlined"
-                      value={values.companyDescription}
+                      defaultValue={values.companyDescription || ""}
                     />
                   </Grid>
                   <Grid
@@ -249,7 +260,6 @@ const CreateForm = ({
                         {' '}
                       </MenuItem>
                       {
-                        // eslint-disable-next-line max-len
                         organizationsList.length > 0 && organizationsList.map((org) => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>{org.organizationName}</MenuItem>)
                       }
                     </Select>
@@ -262,7 +272,7 @@ const CreateForm = ({
                     <TextField
                       error={Boolean(touched.address && errors.address)}
                       helperText={touched.address && errors.address}
-                      value={values.address}
+                      defaultValue={values.address || ""}
                       fullWidth
                       label="Address"
                       name="address"
@@ -287,7 +297,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.country}
+                      defaultValue={values.country || ""}
                     />
                   </Grid>
                   <Grid
@@ -305,7 +315,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.state}
+                      defaultValue={values.state || ""}
                     />
                   </Grid>
                   <Grid
@@ -319,7 +329,7 @@ const CreateForm = ({
                       name="country"
                       onChange={handleChange}
                       required
-                      variant="outlined"
+                      variant="outlined" defaultValue={values.country || ""}
                     />
                   </Grid>
                   <Grid
@@ -337,7 +347,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.zip}
+                      defaultValue={values.zip || ""}
                     />
                   </Grid>
                 </Grid>

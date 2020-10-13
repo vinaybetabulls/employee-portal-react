@@ -34,6 +34,7 @@ const routes = [
       { path: 'organization/create', element: <CustomerCreateView /> },
       { path: 'company/view', element: <CompanyList /> },
       { path: 'company/create', element: <CompanyCreateView /> },
+      { path: 'company/edit/:companyUniqeId', element: <CompanyCreateView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
