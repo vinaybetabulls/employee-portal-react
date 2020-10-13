@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CreateForm = ({
-  createCompany, handleChange, className, ...rest
+  createCompany, handleChange1, className, ...rest
 }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
@@ -56,28 +56,37 @@ const CreateForm = ({
         address: '',
         city: '',
         country: '',
-        zip: '',
+        zipcode: '',
+        state: '',
         companyOrganizationId: ''
       }}
       validationSchema={Yup.object().shape({
         companyName: Yup.string().max(255).required('Company name is required'),
         companyCode: Yup.string().max(255).required('Company code is required'),
-        companyEmail: Yup.string().max(255).required('Company email is required'),
+        companyEmail: Yup.string().email().max(255).required('Company email is required'),
         companyPhone: Yup.string().max(255).required('Company phone is required'),
         companyContactPhone: Yup.string().max(255).required('Company contact person phone is required'),
         companyContactName: Yup.string().max(255).required('Company contact person name is required'),
         address: Yup.string().max(255).required('Company address is required'),
         city: Yup.string().max(255).required('Company city is required'),
+        state: Yup.string().max(255).required('Company state is required'),
         country: Yup.string().max(255).required('Company country is required'),
-        zip: Yup.string().max(255).required('Company zip is required'),
-        companyOrganizationId: Yup.string().max(255).required('Select organizaiton'),
+        zipcode: Yup.string().max(255).required('Company zip is required'),
+        // companyOrganizationId: Yup.number().max(255).required('Select organizaiton'),
 
       })}
+      onSubmit={async (values) => {
+
+        console.log('on submit values....', values);
+        createCompany(values);
+      }}
     >
       {({
         errors,
         handleBlur,
         isSubmitting,
+        handleSubmit,
+        handleChange,
         touched,
         values
       }) => (
@@ -86,7 +95,7 @@ const CreateForm = ({
             autoComplete="off"
             noValidate
             className={clsx(classes.root, className)}
-            {...rest}
+            onSubmit={handleSubmit}
           >
             <Card>
               <CardHeader
@@ -107,7 +116,6 @@ const CreateForm = ({
                       error={Boolean(touched.companyName && errors.companyName)}
                       helperText={touched.companyName && errors.companyName}
                       fullWidth
-                      helperText="Please specify the Company name"
                       label="Company name"
                       name="companyName"
                       onChange={handleChange}
@@ -166,7 +174,7 @@ const CreateForm = ({
                       name="companyPhone"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      type="number"
+                      type="string"
                       variant="outlined"
                       value={values.companyPhone}
                     />
@@ -202,7 +210,7 @@ const CreateForm = ({
                       name="companyContactPhone"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      type="number"
+                      type="string"
                       variant="outlined"
                       value={values.companyContactPhone}
                     />
@@ -278,8 +286,8 @@ const CreateForm = ({
                     xs={12}
                   >
                     <TextField
-                      error={Boolean(touched.country && errors.country)}
-                      helperText={touched.country && errors.country}
+                      error={Boolean(touched.city && errors.city)}
+                      helperText={touched.city && errors.city}
                       fullWidth
                       label="City"
                       name="city"
@@ -287,7 +295,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.country}
+                      value={values.city}
                     />
                   </Grid>
                   <Grid
@@ -328,8 +336,8 @@ const CreateForm = ({
                     xs={12}
                   >
                     <TextField
-                      error={Boolean(touched.zip && errors.zip)}
-                      helperText={touched.zip && errors.zip}
+                      error={Boolean(touched.zipcode && errors.zipcode)}
+                      helperText={touched.zipcode && errors.zipcode}
                       fullWidth
                       label="Zip"
                       name="zipcode"
@@ -337,7 +345,7 @@ const CreateForm = ({
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      value={values.zip}
+                      value={values.zipcode}
                     />
                   </Grid>
                 </Grid>
@@ -351,8 +359,7 @@ const CreateForm = ({
                 <Button
                   color="primary"
                   variant="contained"
-                  type="button"
-                  onClick={createCompany}
+                  type="submit"
                   disabled={isSubmitting}
                 >
                   Create Company
@@ -369,7 +376,7 @@ const CreateForm = ({
 CreateForm.propTypes = {
   className: PropTypes.string,
   createCompany: PropTypes.func,
-  handleChange: PropTypes.func
+  handleChange1: PropTypes.func
 };
 
 export default CreateForm;
