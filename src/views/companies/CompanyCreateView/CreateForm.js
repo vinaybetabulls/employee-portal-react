@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CreateForm = ({
-  createCompany, handleChange1, className, ...rest
+  createCompany, className
 }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
@@ -76,7 +76,6 @@ const CreateForm = ({
 
       })}
       onSubmit={async (values) => {
-
         console.log('on submit values....', values);
         createCompany(values);
       }}
@@ -322,6 +321,7 @@ const CreateForm = ({
                     xs={12}
                   >
                     <TextField
+
                       fullWidth
                       label="Country"
                       name="country"
@@ -375,8 +375,7 @@ const CreateForm = ({
 
 CreateForm.propTypes = {
   className: PropTypes.string,
-  createCompany: PropTypes.func,
-  handleChange1: PropTypes.func
+  createCompany: PropTypes.func
 };
 
 export default CreateForm;

@@ -24,6 +24,7 @@ import {
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -40,18 +41,17 @@ const Results = ({ className, getDesignations, designations }) => {
   const { decoded: { user: { permissions } } } = useContext(AppContext);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  
+
   const deleteDesignation = async (designaiotnId) => {
-    console.log('designaiotnId delete icon', designaiotnId)
+    console.log('designaiotnId delete icon', designaiotnId);
     await axios.delete(`http://localhost:4000/designation/${designaiotnId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
 
     getDesignations();
-
-  }
+  };
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -61,8 +61,8 @@ const Results = ({ className, getDesignations, designations }) => {
     setPage(newPage);
   };
   function truncate(str) {
-    return (str && str.length > 35) ? str.substring(0, 34) + " .." : str;
-  };
+    return (str && str.length > 35) ? `${str.substring(0, 34)} ..` : str;
+  }
 
   return (
     <Card
@@ -88,60 +88,75 @@ const Results = ({ className, getDesignations, designations }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {designations && designations.length > 0 && designations.slice(0, limit).map((designation) => (
-                <TableRow
-                  hover
-                  key={designation.desgUniqueId}
-                  selected={selectedCustomerIds.indexOf(designation.desgUniqueId) !== -1}
-                >
-                  <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
-                    >
-                      {/* <Avatar
+              {designations && designations.length > 0
+                && designations.slice(0, limit).map((designation) => (
+                  <TableRow
+                    hover
+                    key={designation.desgUniqueId}
+                    selected={selectedCustomerIds.indexOf(designation.desgUniqueId) !== -1}
+                  >
+                    <TableCell>
+                      <Box
+                        alignItems="center"
+                        display="flex"
+                      >
+                        {/* <Avatar
                         className={classes.avatar}
                         src={designation.notesURL}
                       >
                         {getInitials(designation.name)}
                       </Avatar> */}
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                        {designation.name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {designation.level}
-                  </TableCell>
-                  <TableCell>
-                    {truncate(designation.rolesAndResponsibilities)}
-                  </TableCell>
-                  <TableCell>
-                    {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={designation.desgUniqueId}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
-                    }
-                    {
-                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={designation.desgUniqueId}>
-                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
-                    }
-                    {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
-                    }
+                        <Typography
+                          color="textPrimary"
+                          variant="body1"
+                        >
+                          {designation.name}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      {designation.level}
+                    </TableCell>
+                    <TableCell>
+                      {truncate(designation.rolesAndResponsibilities)}
+                    </TableCell>
+                    <TableCell>
+                      {
+                        permissions.includes('VIEW') && (
+                          <IconButton aria-label="view" className={classes.margin} id={designation.desgUniqueId}>
+                            <VisibilityIcon color="primary" fontSize="small" size="small" />
+                            {' '}
+                          </IconButton>
+                        )
+                      }
+                      {
+                        permissions.includes('EDIT') && (
+                          <IconButton aria-label="edit" className={classes.margin} id={designation.desgUniqueId}>
+                            <EditIcon fontSize="small" size="small" />
+                            {' '}
+                          </IconButton>
+                        )
+                      }
+                      {
+                        permissions.includes('DELETE') && (
+                          <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>
+                            <DeleteIcon color="error" fontSize="small" size="small" />
+                            {' '}
 
-                  </TableCell>
-                </TableRow>
-              ))}
+                          </IconButton>
+                        )
+                      }
+
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
       <TablePagination
         component="div"
+        // eslint-disable-next-line no-mixed-operators
         count={designations && designations.length || 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
@@ -154,7 +169,10 @@ const Results = ({ className, getDesignations, designations }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  getDesignations: PropTypes.func,
+  designations: PropTypes.any
+
 };
 
 export default Results;

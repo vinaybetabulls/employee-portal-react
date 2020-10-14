@@ -6,10 +6,10 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import axios from 'axios';
+import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
 import Logo from './Logo';
 import CreateForm from './CreateForm';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
 const CompanyCreateView = () => {
   const classes = useStyles();
   const [showAlert, setShowAlert] = useState(false);
+  const [severityValue, setSeverityValue] = useState('success');
+  const [responseMessage, setResponseMessage] = useState('');
   const [state, setState] = useState({
     organizationLogoURL: null
   });
@@ -39,31 +41,45 @@ const CompanyCreateView = () => {
     };
   };
 
-  const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value
-    });
-  };
-
-  const createOrganization = async () => {
+  const createOrganization = async (values) => {
     try {
-      state.organizationAddress = [{
-        address: state.address,
-        city: state.city,
-        state: state.state,
-        country: state.country,
-        zipcode: state.zipcode
+      values.organizationAddress = [{
+        address: values.address,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+        zipcode: values.zipcode
       }];
-      state.organizationContactPerson = {
-        name: state.organizationContactName,
-        phone: state.organizationContactPhone
+      values.organizationContactPerson = {
+        name: values.organizationContactName,
+        phone: values.organizationContactPhone
       };
-      const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
+      const createOrgResponse = await axios.post('http://localhost:4000/organization/create', { organizationLogoURL: state.organizationLogoURL, ...values }, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create Org Response..', createOrgResponse);
-      setShowAlert(true); setState({})
+      setShowAlert(true);
+      setSeverityValue('success');
+      setResponseMessage('Company created successfully.');
+      return;
     } catch (error) {
-      console.log('org create error', error);
+      console.error('org create error..........', Object.entries(error));
+      console.error(error);
+      setSeverityValue('error');
+      setShowAlert(true);
+      if ((Object.entries(error)).length === 0) {
+        setResponseMessage('Please enter all madatory fields.');
+      } else if (error.response && error.response.data.statusCode === 409) {
+        setResponseMessage('Company already existed.');
+      } else if (error.response && error.response.data.statusCode === 403) {
+        setResponseMessage('You don\'t have a permission to create organization.');
+      } else if (error.response && error.response.data.statusCode === 400) {
+        setResponseMessage('Please enter all mandatory fields');
+      } else if (error.response && error.response.data.statusCode === 401) {
+        setResponseMessage('Authenitcation exception.');
+      } else {
+        setResponseMessage('Something went wrong. Kindly retry.');
+      }
+      // eslint-disable-next-line no-throw-literal
+      throw 'error';
     }
   };
 
@@ -71,26 +87,37 @@ const CompanyCreateView = () => {
     <Page className={classes.root} title="Organization">
       <Container maxWidth="lg">
         {
-          showAlert && <Alert severity="success" action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setShowAlert(false);
-              }}
+          showAlert && (
+            <Alert
+              severity={severityValue}
+              action={(
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShowAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              )}
             >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }>
-            Organisation added successfully! </Alert>
+              {responseMessage}
+              {' '}
+            </Alert>
+          )
         }
         <Grid container spacing={3}>
           <Grid item lg={4} md={6} xs={12}>
-            <Logo uploadOrganizationLogo={uploadOrganizationLogo} organizationLogoURL={state.organizationLogoURL} />
+            <Logo
+              uploadOrganizationLogo={uploadOrganizationLogo}
+              organizationLogoURL={state.organizationLogoURL}
+
+            />
           </Grid>
           <Grid item lg={8} md={6} xs={12}>
-            <CreateForm handleChange={handleChange} createOrganization={createOrganization} />
+            <CreateForm createOrganization={createOrganization} />
           </Grid>
         </Grid>
       </Container>
