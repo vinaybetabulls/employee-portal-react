@@ -15,6 +15,8 @@ import {
   MenuItem, InputLabel, FormControl, Input
 } from '@material-ui/core';
 import axios from 'axios';
+import * as Yup from 'yup';
+import { useFormik, Field } from 'formik';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -48,6 +50,24 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
   const [companies, setCompanies] = useState([]);
   const theme = useTheme();
 
+  const validationSchema = Yup.object().shape({
+    departmentName: Yup.string().max(255).required('Department name is required'),
+    departmentCategory: Yup.string().max(255).required('Department name is required'),
+    companiesList: Yup.array().of(Yup.string().max(255).required('Companies is required')),
+  })
+
+  const formik = useFormik({
+    initialValues: {
+      departmentName: '',
+      departmentCategory: "",
+      companiesList: [],
+    },
+    validationSchema,
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   useEffect(() => {
     const getCompaniesList = async () => {
       const companies = await axios.get(`http://localhost:4000/company/list`, {
@@ -68,7 +88,7 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
     getCompaniesList()
   }, [])
   return (
-    <form autoComplete="off" noValidate className={clsx(classes.root, className)} {...rest} >
+    <form onSubmit={formik.handleSubmit}  autoComplete="off" noValidate className={clsx(classes.root, className)} {...rest} >
       <Card>
         <CardHeader title="Create Department" />
         <Divider />
@@ -76,22 +96,29 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
           <Grid container spacing={3} >
             <Grid item sm={6} xs={12}>
               <TextField
+                error={Boolean(formik.touched.departmentName && formik.errors.departmentName)}
+                helperText={formik.touched.departmentName && formik.errors.departmentName}
                 id="name"
                 name="departmentName"
                 label="Department Name"
                 fullWidth
                 autoComplete="family-name" defaultValue=""
-                onChange={handleChange} 
+                onChange={formik.handleChange}
+                value={formik.values.departmentName || ''}
               />
             </Grid>
             <Grid item sm={6} xs={12}>
               <FormControl className={classes.formControl} variant="outlined">
                 <InputLabel id="demo-mutiple-name-label">Department Category</InputLabel>
-                <Select labelId="demo-mutiple-name-label" id="demo-mutiple-name"
-                  onChange={handleChange}
+                <Select labelId="demo-mutiple-name-label"
+                  error={Boolean(formik.touched.departmentCategory && formik.errors.departmentCategory)}
+                  helperText={formik.touched.departmentCategory && formik.errors.departmentCategory}
+                  id="demo-mutiple-name"
+                  onChange={formik.handleChange}
+                  value={formik.values.departmentCategory || ''}
                   input={<Input />}
                   MenuProps={MenuProps}  
-                  name="departmentCategory" value={state.departmentCategory || ''} >
+                  name="departmentCategory" >
                   <MenuItem value="low"> Low </MenuItem>
                   <MenuItem value="medium"> Medium </MenuItem>
                   <MenuItem value="high"> High </MenuItem>
@@ -104,14 +131,14 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
                 <Select variant="outlined"
                   labelId="demo-mutiple-name-label"
                   id="demo-mutiple-name"
-                  multiple
-                  value={state.companiesList}
+                  multiple={true}
+                  value={state.companiesList || ''}
                   onChange={handleChange}
                   input={<Input />}
                   MenuProps={MenuProps}
                   name="companiesList"
                 >
-                  {companies.map((cmp) => (
+                  {companies && companies.map((cmp) => (
                     <MenuItem key={cmp.companyUniqeId} value={cmp.companyUniqeId} style={getStyles(cmp.companyName, state.companiesList, theme)}>
                       {cmp.companyName}
                     </MenuItem>
@@ -126,8 +153,7 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
           <Button
             color="primary"
             variant="contained"
-            type="button"
-            onClick={createdepartment}
+            type="submit"
           >
             Create
           </Button>

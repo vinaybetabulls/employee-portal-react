@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
+import { Formik, FieldArray, Field, Form } from 'formik';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -23,10 +23,13 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
+
+const CreateForm = ({ createCompany, handleChange1, className, ...rest }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
   const { companyUniqeId } = useParams();
+  const [companyDetails, setCompaniesDetails] = useState({});
+  const [cmpAddress, setCmpAddress] = useState({});
 
   const getCompanyById = async (companyUniqeId) => {
     const companyDetails = await axios.get(`http://localhost:4000/company/${companyUniqeId}`, {
@@ -34,7 +37,40 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
         token: localStorage.getItem('empJWT')
       }
     });
-    console.log(companyDetails);
+    setCompaniesDetails(companyDetails.data.companies[0]);
+    setCmpAddress(companyDetails.data.companies[0].companyAddress[0]);
+  }
+
+  const obj = {
+    "companyName": "CTS-KCH",
+    "companyCode": "CTS-KCH-0056",
+    "companyEmail": "cts@cts.com",
+    "companyPhone": "12345676",
+    "companyOrganizationId": "c192faff-12b1-4c08-b090-7679c605c8b0",
+    "companyDescription": "description",
+    "companyAddress": [
+      {
+        "_id": "5f83079609ca8709e1b608ad",
+        "address": "Cochin",
+        "city": "Cochin",
+        "state": "Cochin",
+        "country": "india",
+        "zipcode": "122345"
+      },
+      {
+        "_id": "5f83079609ca8709e1b608ad",
+        "address": "Cochin",
+        "city": "Cochin",
+        "state": "Cochin",
+        "country": "india",
+        "zipcode": "00000"
+      }
+    ],
+    "companyUniqeId": "387d3677-af94-4b4b-befc-55292c0e43fe",
+    "createdBy": {
+      "empUserName": "superadmin",
+      "empUniqueId": "2b21fad4-df16-441e-93c5-e78df11bfccc"
+    },
   }
 
   useEffect(() => {
@@ -53,68 +89,79 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
       setOrganizationsList(organizationSelect);
     };
     getOrganizationsList();
+    companyUniqeId && getCompanyById(companyUniqeId);
   }, []);
-  
-  return (
-    <Formik
-      initialValues={{
-        companyName: '',
-        companyCode: '',
-        companyEmail: '',
-        companyPhone: '',
-        companyContactPhone: '',
-        companyContactName: '',
+  let initialValues = {
+    companyName: '',
+    companyCode: '',
+    companyEmail: '',
+    companyPhone: '',
+    companyContactPhone: '',
+    companyContactName: '',
+    companyDescription: '',
+    companyAddress: [
+      {
         address: '',
         city: '',
         country: '',
-        zip: '',
-        companyOrganizationId: ''
-      }}
-      validationSchema={Yup.object().shape({
-        companyName: Yup.string().max(255).required('Company name is required'),
-        companyCode: Yup.string().max(255).required('Company code is required'),
-        companyEmail: Yup.string().max(255).required('Company email is required'),
-        companyPhone: Yup.string().max(255).required('Company phone is required'),
-        companyContactPhone: Yup.string().max(255).required('Company contact person phone is required'),
-        companyContactName: Yup.string().max(255).required('Company contact person name is required'),
+        zipcode: '',
+        state: '',
+      }
+    ],
+    companyOrganizationId: ''
+  }
+  let formValues = companyUniqeId ? obj : initialValues;
+  const schema = Yup.object().shape({
+    companyName: Yup.string().max(255).required('Company name is required'),
+    companyCode: Yup.string().max(255).required('Company code is required'),
+    companyEmail: Yup.string().email().max(255).required('Company email is required'),
+    companyPhone: Yup.string().max(255).required('Company phone is required'),
+    // companyContactPhone: Yup.string().max(255).required('Company contact person phone is required'),
+    // companyContactName: Yup.string().max(255).required('Company contact person name is required'),
+    // companyDescription: Yup.string().max(255).required('Description is required'),
+    // address: Yup.string().max(255).required('Company address is required'),
+    // city: Yup.string().max(255).required('Company city is required'),
+    // state: Yup.string().max(255).required('Company state is required'),
+    // country: Yup.string().max(255).required('Company country is required'),
+    // zipcode: Yup.string().max(255).required('Company zip is required'),
+    // companyOrganizationId: Yup.number().max(255).required('Select organizaiton'),
+    companyAddress: Yup.array().of(
+      Yup.object().shape({
         address: Yup.string().max(255).required('Company address is required'),
         city: Yup.string().max(255).required('Company city is required'),
+        state: Yup.string().max(255).required('Company state is required'),
         country: Yup.string().max(255).required('Company country is required'),
-        zip: Yup.string().max(255).required('Company zip is required'),
-        companyOrganizationId: Yup.string().max(255).required('Select organizaiton'),
-
-      })}
+        zipcode: Yup.string().max(255).required('Company zip is required')
+      })
+    )
+  })
+  let index = 0;
+  return (
+    <Formik enableReinitialize
+      initialValues={formValues || ""}
+      validationSchema={schema}
+      onSubmit={async (values) => {
+        console.log('on submit values....', values);
+        //createCompany(values);
+      }}
     >
       {({
         errors,
         handleBlur,
         isSubmitting,
+        handleSubmit,
+        handleChange,
         touched,
         values
       }) => (
           // eslint-disable-next-line react/jsx-indent
-          <form
-            autoComplete="off"
-            noValidate
-            className={clsx(classes.root, className)}
-            {...rest}
-          >
-            {companyUniqeId } 
+          <Form autoComplete="off" noValidate className={clsx(classes.root, className)} onSubmit={handleSubmit} >
             <Card>
-              <CardHeader
-                title="Create Company"
-              />
+              <CardHeader title="Create Company" />
               <Divider />
               <CardContent>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                <Grid container spacing={3} >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyName && errors.companyName)}
                       helperText={touched.companyName && errors.companyName}
@@ -123,16 +170,12 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       name="companyName"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      required type="text"
                       variant="outlined"
-                      defaultValue={values.companyName || ""}
+                      value={values.companyName || ''}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyCode && errors.companyCode)}
                       helperText={touched.companyCode && errors.companyCode}
@@ -143,14 +186,10 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      defaultValue={values.companyCode || ""}
+                      value={values.companyCode || ''}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyEmail && errors.companyEmail)}
                       helperText={touched.companyEmail && errors.companyEmail}
@@ -161,14 +200,10 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      defaultValue={values.companyEmail || ""}
+                      value={values.companyEmail || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyPhone && errors.companyPhone)}
                       helperText={touched.companyPhone && errors.companyPhone}
@@ -177,16 +212,12 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       name="companyPhone"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      type="number"
+                      type="string"
                       variant="outlined"
-                      defaultValue={values.companyPhone || ""}
+                      value={values.companyPhone || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyContactName && errors.companyContactName)}
                       helperText={touched.companyContactName && errors.companyContactName}
@@ -197,14 +228,10 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onBlur={handleBlur}
                       type="text"
                       variant="outlined"
-                      defaultValue={values.companyContactName || ""}
+                      value={values.companyContactName || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyContactPhone && errors.companyContactPhone)}
                       helperText={touched.companyContactPhone && errors.companyContactPhone}
@@ -213,16 +240,12 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       name="companyContactPhone"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      type="number"
+                      type="string"
                       variant="outlined"
-                      defaultValue={values.companyContactPhone || ""}
+                      value={values.companyContactPhone || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.companyDescription && errors.companyDescription)}
                       helperText={touched.companyDescription && errors.companyDescription}
@@ -231,16 +254,12 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       name="companyDescription"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      type="text"
+                      type="text" required
                       variant="outlined"
-                      defaultValue={values.companyDescription || ""}
+                      value={values.companyDescription || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <Select
                       error={Boolean(touched.companyOrganizationId && errors.companyOrganizationId)}
                       helperText={touched.companyOrganizationId && errors.companyOrganizationId}
@@ -250,9 +269,8 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       required
-                      select
-                      SelectProps={{ native: true }}
                       variant="outlined"
+                      value={values.companyOrganizationId || ""}
                     >
                       <MenuItem value="">
                         {' '}
@@ -260,19 +278,15 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                         {' '}
                       </MenuItem>
                       {
-                        organizationsList.length > 0 && organizationsList.map((org) => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>{org.organizationName}</MenuItem>)
+                        organizationsList.length > 0 && organizationsList.map((org) => <MenuItem key={org.orgUniqueId} value={org.orgUniqueId} >{org.organizationName}</MenuItem>)
                       }
                     </Select>
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.address && errors.address)}
                       helperText={touched.address && errors.address}
-                      defaultValue={values.address || ""}
+                      value={values.address || cmpAddress.address || ""}
                       fullWidth
                       label="Address"
                       name="address"
@@ -282,14 +296,10 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       variant="outlined"
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
-                      error={Boolean(touched.country && errors.country)}
-                      helperText={touched.country && errors.country}
+                      error={Boolean(touched.city && errors.city)}
+                      helperText={touched.city && errors.city}
                       fullWidth
                       label="City"
                       name="city"
@@ -297,14 +307,10 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      defaultValue={values.country || ""}
+                      value={values.city || cmpAddress.city || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       error={Boolean(touched.state && errors.state)}
                       helperText={touched.state && errors.state}
@@ -315,41 +321,38 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                       onBlur={handleBlur}
                       required
                       variant="outlined"
-                      defaultValue={values.state || ""}
+                      value={values.state || cmpAddress.state || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
+                  <Grid item md={6} xs={12} >
                     <TextField
                       fullWidth
                       label="Country"
-                      name="country"
+                      name={`values.companyAddress[${index}].country`}
                       onChange={handleChange}
                       required
-                      variant="outlined" defaultValue={values.country || ""}
+                      variant="outlined" value={values.companyAddress[index].country || ""}
                     />
                   </Grid>
-                  <Grid
-                    item
-                    md={6}
-                    xs={12}
-                  >
-                    <TextField
-                      error={Boolean(touched.zip && errors.zip)}
-                      helperText={touched.zip && errors.zip}
-                      fullWidth
-                      label="Zip"
-                      name="zipcode"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      defaultValue={values.zip || ""}
-                    />
-                  </Grid>
+                  <FieldArray
+                    name="companyAddress"
+                    render={arrayHelpers => (
+                      <>{values.companyAddress.map((cmpAddr, index) => (
+                        <><p>{values.companyAddress[index].zipcode}</p>
+                          <Grid item md={6} xs={12} key={index}>
+                            <Field component={TextField}
+                              fullWidth
+                              label="Zip"
+                              name={`values.companyAddress.${index}.zipcode`}
+                              required
+                              variant="outlined"
+                              onChange={handleChange}
+                              defaultValue={values.companyAddress[index].zipcode || ''}
+                            />
+                          </Grid></>))}</>
+                    )}
+                  />
+
                 </Grid>
               </CardContent>
               <Divider />
@@ -361,15 +364,14 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
                 <Button
                   color="primary"
                   variant="contained"
-                  type="button"
-                  onClick={createCompany}
+                  type="submit"
                   disabled={isSubmitting}
                 >
                   Create Company
                 </Button>
               </Box>
             </Card>
-          </form>
+          </Form>
           // eslint-disable-next-line indent
         )}
     </Formik>
@@ -379,7 +381,7 @@ const CreateForm = ({ createCompany, handleChange, className, ...rest }) => {
 CreateForm.propTypes = {
   className: PropTypes.string,
   createCompany: PropTypes.func,
-  handleChange: PropTypes.func
+  handleChange1: PropTypes.func
 };
 
 export default CreateForm;

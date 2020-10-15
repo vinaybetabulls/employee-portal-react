@@ -50,30 +50,32 @@ const CustomerCreateView = () => {
     });
   };
 
-  const createCompany = async () => {
+  const createCompany = async (values) => {
+    console.log('values.....', values);
     try {
-      state.companyAddress = [{
-        address: state.address,
-        city: state.city,
-        state: state.state,
-        country: state.country,
-        zipcode: state.zipcode
+      values.companyAddress = [{
+        address: values.address,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+        zipcode: values.zipcode
       }];
-      state.companyContactPerson = {
-        name: state.companyContactName,
-        phone: state.companyContactPhone
+      values.companyContactPerson = {
+        name: values.companyContactName,
+        phone: values.companyContactPhone
       };
-      const createOrgResponse = await axios.post('http://localhost:4000/company/create', state, { headers: { token: localStorage.getItem('empJWT') } });
+      const createOrgResponse = await axios.post('http://localhost:4000/company/create', { ...values, companyLogoURL: state.companyLogoURL }, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create company Response..', createOrgResponse);
       setShowAlert(true);
       setSeverityValue('success');
+      setResponseMessage('Company created successfully.');
       setState({});
     } catch (error) {
       console.error('company create error.....', error.response.data.statusCode === 400);
       setSeverityValue('error');
       setShowAlert(true);
       if (error.response.data.statusCode === 409) {
-        setResponseMessage('Organization already existed.');
+        setResponseMessage('Company already existed.');
       } else if (error.response.data.statusCode === 403) {
         setResponseMessage('You don\'t have a permission to create organization.');
       } else if (error.response.data.statusCode === 400) {
