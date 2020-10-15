@@ -74,10 +74,10 @@ const DesignationCreate = () => {
     getDesignations();
   }, [isCreated]);
 
-  const createDesignations = async () => {
+  const createDesignations = async (values) => {
     try {
       state.notesURL = file.url;
-      const createOrgResponse = await axios.post('http://localhost:4000/designation/create', state, { headers: { token: localStorage.getItem('empJWT') } });
+      const createOrgResponse = await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create designation Response..', createOrgResponse);
       setIsCreated(true); setState({}); setShowAlert(true);
     } catch (error) {

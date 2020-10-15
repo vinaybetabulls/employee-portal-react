@@ -7,7 +7,6 @@ import {
   Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -28,39 +27,41 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     margin: theme.spacing(0),
-    padding: "5px"
+    padding: '5px'
   }
 }));
 
 const Results = ({ className }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(0);
   const [organizations, setOrganizations] = useState([]);
   const { decoded: { user: { permissions } } } = useContext(AppContext);
+  const [totalOrgnizations, setTotalOrganizations] = useState(0);
   const getOrganization = async () => {
-    const organizationsList = await axios.get('http://localhost:4000/organization/list', {
+    const organizationsList = await axios.get(`http://localhost:4000/organization/list?pageNumber=${page}&pageLimit=${limit}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
-    console.log('organizationsList..', organizationsList.data)
+    });
+    console.log('organizationsList..', organizationsList.data);
+    setTotalOrganizations(organizationsList.data.totalOrganizaitons);
     setOrganizations(organizationsList.data.organizations);
-
-  }
+    // setLimit(organizationsList.data.pageLimit);
+  };
   useEffect(() => {
     getOrganization();
-  }, [])
+  }, [page, limit]);
   console.log('customers....', organizations);
   const deleteOrganization = async (orgId) => {
     await axios.delete(`http://localhost:4000/organization/${orgId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
     getOrganization();
-  }
+  };
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -95,10 +96,12 @@ const Results = ({ className }) => {
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
+    // getOrganization();
   };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
+    // getOrganization();
   };
 
   return (
@@ -170,16 +173,22 @@ const Results = ({ className }) => {
                   </TableCell>
                   <TableCell>
                     {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={customer.orgUniqueId}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('VIEW') && (
+                        <IconButton aria-label="view" className={classes.margin} id={customer.orgUniqueId}>
+                          <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={customer.orgUniqueId}>
-                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('EDIT') && (
+                        <IconButton aria-label="edit" className={classes.margin} id={customer.orgUniqueId}>
+                          <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={customer.orgUniqueId} onClick={() => deleteOrganization(customer.orgUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('DELETE') && (
+                        <IconButton aria-label="delete" className={classes.margin} id={customer.orgUniqueId} onClick={() => deleteOrganization(customer.orgUniqueId)}>
+                          <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      )
                     }
                   </TableCell>
                 </TableRow>
@@ -190,7 +199,7 @@ const Results = ({ className }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={organizations.length || 0}
+        count={totalOrgnizations || 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}

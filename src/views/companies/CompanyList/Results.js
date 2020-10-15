@@ -173,7 +173,7 @@ const Results = ({ className }) => {
                   <TableCell>
                     {
                       permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={company.companyUniqeId}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
+                        <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
                     }
                     {
                       permissions.includes('EDIT') && <IconButton component={Link} href={`/app/company/edit/${company.companyUniqeId}`} aria-label="edit" className={classes.margin} id={company.companyUniqeId}>

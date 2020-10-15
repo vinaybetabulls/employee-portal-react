@@ -23,8 +23,9 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-
-const CreateForm = ({ createCompany, handleChange1, className, ...rest }) => {
+const CreateForm = ({
+  createCompany, className
+}) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
   const { companyUniqeId } = useParams();
@@ -326,6 +327,7 @@ const CreateForm = ({ createCompany, handleChange1, className, ...rest }) => {
                   </Grid>
                   <Grid item md={6} xs={12} >
                     <TextField
+
                       fullWidth
                       label="Country"
                       name={`values.companyAddress[${index}].country`}
@@ -380,8 +382,7 @@ const CreateForm = ({ createCompany, handleChange1, className, ...rest }) => {
 
 CreateForm.propTypes = {
   className: PropTypes.string,
-  createCompany: PropTypes.func,
-  handleChange1: PropTypes.func
+  createCompany: PropTypes.func
 };
 
 export default CreateForm;
