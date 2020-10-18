@@ -1,12 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+// import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   Avatar,
   Box,
   Card,
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -14,59 +19,55 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles
+  makeStyles, Link
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
-
 const useStyles = makeStyles((theme) => ({
   root: {},
-  avatar: {
+  margin: {
     margin: theme.spacing(0),
-    padding: '5px'
-  }
+    padding: "5px"
+  },
 }));
 
 const Results = ({ className }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
-  const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(0);
-  const [organizations, setOrganizations] = useState([]);
   const { decoded: { user: { permissions } } } = useContext(AppContext);
-  const [totalOrgnizations, setTotalOrganizations] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(0);
+  const [companies, setCompanies] = useState([]);
   const getOrganization = async () => {
-    const organizationsList = await axios.get(`http://localhost:4000/organization/list?pageNumber=${page}&pageLimit=${limit}`, {
+    const companiesList = await axios.get('http://localhost:4000/company/list', {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    });
-    console.log('organizationsList..', organizationsList.data);
-    setTotalOrganizations(organizationsList.data.totalOrganizaitons);
-    setOrganizations(organizationsList.data.organizations);
-    // setLimit(organizationsList.data.pageLimit);
-  };
+    })
+    console.log('organizationsList..', companiesList.data)
+    setCompanies(companiesList.data.companies);
+
+  }
   useEffect(() => {
     getOrganization();
-  }, [page, limit]);
-  console.log('customers....', organizations);
-  const deleteOrganization = async (orgId) => {
-    await axios.delete(`http://localhost:4000/organization/${orgId}`, {
+  }, [])
+  const deleteCompany = async (companyId) => {
+    console.log('delete icon', companyId)
+    await axios.delete(`http://localhost:4000/company/${companyId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    });
+    })
+
     getOrganization();
-  };
+
+  }
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = organizations.map((customer) => customer.orgUniqueId);
+      newSelectedCustomerIds = companies.map((company) => company.orgUniqueId);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -96,12 +97,10 @@ const Results = ({ className }) => {
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
-    // getOrganization();
   };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    // getOrganization();
   };
 
   return (
@@ -114,19 +113,22 @@ const Results = ({ className }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Organization Name
+                  Company Name
                 </TableCell>
                 <TableCell>
-                  Organization Code
+                  Company Code
                 </TableCell>
                 <TableCell>
-                  Organization Email
+                  Organisation
                 </TableCell>
                 <TableCell>
-                  Organization Phone
+                  Company Email
                 </TableCell>
                 <TableCell>
-                  Organization Address
+                  Company Phone
+                </TableCell>
+                <TableCell>
+                  Company Address
                 </TableCell>
                 <TableCell>
                   Actions
@@ -134,11 +136,11 @@ const Results = ({ className }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {organizations.length > 0 && organizations.slice(0, limit).map((customer) => (
+              {companies && companies.length > 0 && companies.slice(0, limit).map((company) => (
                 <TableRow
                   hover
-                  key={customer.orgUniqueId}
-                  selected={selectedCustomerIds.indexOf(customer.orgUniqueId) !== -1}
+                  key={company.orgUniqueId}
+                  selected={selectedCustomerIds.indexOf(company.orgUniqueId) !== -1}
                 >
                   <TableCell>
                     <Box
@@ -147,49 +149,47 @@ const Results = ({ className }) => {
                     >
                       <Avatar
                         className={classes.avatar}
-                        src={customer.organizationLogoURL}
+                        src={company.companyLogoURL}
                       >
-                        {getInitials(customer.organizationName)}
+                        {getInitials(company.companyName)}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.organizationName}
+                        {company.organizationName}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {customer.organizationCode}
+                    {company.companyCode}
                   </TableCell>
                   <TableCell>
-                    {customer.organizationEmail}
+                    {company.organizationName}
                   </TableCell>
                   <TableCell>
-                    {customer.organizationPhone}
+                    {company.companyEmail}
                   </TableCell>
                   <TableCell>
-                    {`${customer.organizationAddress[0].city}, ${customer.organizationAddress[0].state}, ${customer.organizationAddress[0].country}`}
+                    {company.companyPhone}
+                  </TableCell>
+                  <TableCell>
+                    {`${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`}
                   </TableCell>
                   <TableCell>
                     {
-                      permissions.includes('VIEW') && (
-                        <IconButton aria-label="view" className={classes.margin} id={customer.orgUniqueId} href={`/app/organization/${customer.orgUniqueId}`}>
-                          <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
-                      )
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={company.companyUniqeId} href={`/app/company/${company.companyUniqeId}`}>
+                        <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
                     }
                     {
-                      permissions.includes('EDIT') && (
-                        <IconButton aria-label="edit" className={classes.margin} id={customer.orgUniqueId}>
-                          <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
-                      )
+                      permissions.includes('EDIT') && <IconButton component={Link} href={`/app/company/edit/${company.companyUniqeId}`} aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
+                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
                     }
                     {
-                      permissions.includes('DELETE') && (
-                        <IconButton aria-label="delete" className={classes.margin} id={customer.orgUniqueId} onClick={() => deleteOrganization(customer.orgUniqueId)}>
-                          <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
-                      )
+                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
+                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
                     }
+
                   </TableCell>
                 </TableRow>
               ))}
@@ -199,7 +199,7 @@ const Results = ({ className }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={totalOrgnizations || 0}
+        count={companies.length || 0}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleLimitChange}
         page={page}
