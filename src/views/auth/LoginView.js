@@ -69,7 +69,7 @@ const LoginView = () => {
                 }
                 if (jwt) setIsAuthenticated(true);
                 if (!isFirstTimeLogin) {
-                  navigate('app/dashboard');
+                  navigate('app/organizaiton/view');
                 } else {
                   navigate('changepassowrd');
                 }

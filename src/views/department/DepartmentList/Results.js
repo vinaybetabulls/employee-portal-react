@@ -92,7 +92,7 @@ const Results = ({ className, getdepartmentss, departments }) => {
                     {' '}
                   </TableCell>
                   <TableCell>
-                    {
+                    {/* {
                       permissions.includes('VIEW') && (
                         <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
                           <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
@@ -103,7 +103,7 @@ const Results = ({ className, getdepartmentss, departments }) => {
                         <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
                           <EditIcon fontSize="small" size="small" /> </IconButton>
                       )
-                    }
+                    } */}
                     {
                       permissions.includes('DELETE') && (
                         <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>

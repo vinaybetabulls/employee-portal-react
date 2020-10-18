@@ -121,7 +121,7 @@ const Results = ({ className, getDesignations, designations }) => {
                       {truncate(designation.rolesAndResponsibilities)}
                     </TableCell>
                     <TableCell>
-                      {
+                      {/* {
                         permissions.includes('VIEW') && (
                           <IconButton aria-label="view" className={classes.margin} id={designation.desgUniqueId}>
                             <VisibilityIcon color="primary" fontSize="small" size="small" />
@@ -136,7 +136,7 @@ const Results = ({ className, getDesignations, designations }) => {
                             {' '}
                           </IconButton>
                         )
-                      }
+                      } */}
                       {
                         permissions.includes('DELETE') && (
                           <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>

@@ -175,7 +175,7 @@ const Results = ({ className }) => {
                   <TableCell>
                     {
                       permissions.includes('VIEW') && (
-                        <IconButton aria-label="view" className={classes.margin} id={customer.orgUniqueId}>
+                        <IconButton aria-label="view" href={`/app/organization/${customer.orgUniqueId}`} className={classes.margin} id={customer.orgUniqueId}>
                           <VisibilityIcon color="primary" fontSize="small" size="small" />
                           {' '}
                         </IconButton>

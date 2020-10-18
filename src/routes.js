@@ -25,6 +25,8 @@ import Departments from './views/department/index';
 // import CompanyEditView from './views/companies/CompanyEdit/CompanyEditForm';
 import CompanyEditView from './views/companies/CompanyEdit';
 import OrganizationEditView from './views/customer/OrganizationEdit';
+import OrgDetailsPage from './views/customer/OrgDetailsPage';
+import CompanyDetailsPage from './views/companies/CompanyDetailsPage';
 
 const routes = [
   {
@@ -47,6 +49,8 @@ const routes = [
       { path: 'designations', element: <DesignationCreate /> },
       { path: 'employee/profile', element: <EmployeeProfiletView /> },
       { path: 'departments', element: <Departments /> },
+      { path: 'organization/:orgUniqueId', element: <OrgDetailsPage /> },
+      { path: 'company/:companyUniqeId', element: <CompanyDetailsPage /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },

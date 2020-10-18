@@ -26,11 +26,11 @@ const Menu = {
     }
   ],
   SUPER_ADMIN: [
-    {
-      href: '/app/dashboard',
-      icon: BarChartIcon,
-      title: 'Dashboard'
-    },
+    // {
+    //   href: '/app/dashboard',
+    //   icon: BarChartIcon,
+    //   title: 'Dashboard'
+    // },
     {
       href: '/app/organizaiton/view',
       icon: AccountBalanceIcon,

@@ -79,7 +79,7 @@ const Results = ({ className }) => {
   const [employees, setEmployees] = useState([]);
   const [empUniqId, setEmpUniqId] = useState("")
   const { decoded: { user: { permissions, roles } } } = useContext(AppContext);
-  const [state, setState] = useState({roles:[], permissions:[]});
+  const [state, setState] = useState({ roles: [], permissions: [] });
   const [open, setOpen] = useState(false);
 
   const getEmployees = async () => {
@@ -134,12 +134,12 @@ const Results = ({ className }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-  
+
 
   const handleClickOpen = ((empUniqueId, employeePermissions) => {
     setOpen(true);
     setEmpUniqId(empUniqueId);
-    setState({...state, roles: employeePermissions[0].roles, permissions:employeePermissions[0].permissions})
+    setState({ ...state, roles: employeePermissions[0].roles, permissions: employeePermissions[0].permissions })
     return true;
   });
 
@@ -243,14 +243,14 @@ const Results = ({ className }) => {
                     </Button>
                   </TableCell>}
                   <TableCell>
-                    {
+                    {/* {
                       permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId}>
                         <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
                     }
                     {
                       permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId}>
                         <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
-                    }
+                    } */}
                     {
                       permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
                         <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
@@ -315,7 +315,7 @@ const Results = ({ className }) => {
                   name="permissions"
                 >
                   <MenuItem>
-                    <Checkbox onChange={handleSelectAll} checked={state.permissions.length === availablePermissions.length}/>
+                    <Checkbox onChange={handleSelectAll} checked={state.permissions.length === availablePermissions.length} />
                     <ListItemText primary="Select All" />
                   </MenuItem>
                   {!!availablePermissions && availablePermissions.map((per) => (
