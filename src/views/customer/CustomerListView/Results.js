@@ -14,7 +14,8 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles
+  makeStyles,
+  Link
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -175,19 +176,25 @@ const Results = ({ className }) => {
                     {
                       permissions.includes('VIEW') && (
                         <IconButton aria-label="view" className={classes.margin} id={customer.orgUniqueId}>
-                          <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                          <VisibilityIcon color="primary" fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
                       )
                     }
                     {
                       permissions.includes('EDIT') && (
-                        <IconButton aria-label="edit" className={classes.margin} id={customer.orgUniqueId}>
-                          <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                        <IconButton component={Link} href={`/app/organization/edit/${customer.orgUniqueId}`} aria-label="edit" className={classes.margin} id={customer.orgUniqueId}>
+                          <EditIcon fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
                       )
                     }
                     {
                       permissions.includes('DELETE') && (
                         <IconButton aria-label="delete" className={classes.margin} id={customer.orgUniqueId} onClick={() => deleteOrganization(customer.orgUniqueId)}>
-                          <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                          <DeleteIcon color="error" fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
                       )
                     }
                   </TableCell>

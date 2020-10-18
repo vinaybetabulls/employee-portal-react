@@ -11,7 +11,6 @@ import {
   Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -24,11 +23,12 @@ import {
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   margin: {
     margin: theme.spacing(0),
-    padding: "5px"
+    padding: '5px'
   },
 }));
 
@@ -40,29 +40,27 @@ const Results = ({ className }) => {
   const [page, setPage] = useState(0);
   const [companies, setCompanies] = useState([]);
   const getOrganization = async () => {
-    const companiesList = await axios.get('http://localhost:4000/company/list', {
+    const companiesList = await axios.get(`http://localhost:4000/company/list?pageNumber=${page}&pageLimit=${limit}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
-    console.log('organizationsList..', companiesList.data)
+    });
+    console.log('organizationsList..', companiesList.data);
     setCompanies(companiesList.data.companies);
-
-  }
+  };
   useEffect(() => {
     getOrganization();
-  }, [])
+  }, [page, limit]);
   const deleteCompany = async (companyId) => {
-    console.log('delete icon', companyId)
+    console.log('delete icon', companyId);
     await axios.delete(`http://localhost:4000/company/${companyId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
 
     getOrganization();
-
-  }
+  };
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -172,16 +170,28 @@ const Results = ({ className }) => {
                   </TableCell>
                   <TableCell>
                     {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={company.companyUniqeId}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('VIEW') && (
+                        <IconButton aria-label="view" className={classes.margin} id={company.companyUniqeId}>
+                          <VisibilityIcon color="primary" fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('EDIT') && <IconButton component={Link} href={`/app/company/edit/${company.companyUniqeId}`} aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
-                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('EDIT') && (
+                        <IconButton component={Link} href={`/app/company/edit/${company.companyUniqeId}`} aria-label="edit" className={classes.margin} id={company.companyUniqeId}>
+                          <EditIcon fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
-                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('DELETE') && (
+                        <IconButton aria-label="delete" className={classes.margin} id={company.companyUniqeId} onClick={() => deleteCompany(company.companyUniqeId)}>
+                          <DeleteIcon color="error" fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
+                      )
                     }
 
                   </TableCell>

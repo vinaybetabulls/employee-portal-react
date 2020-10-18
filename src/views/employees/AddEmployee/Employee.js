@@ -59,8 +59,8 @@ function getStepContent(step, state, setState, handleChange, profileImageChange)
       return <PersonalDetails state={state} setState={setState} handleChange={handleChange} profileImageChange={profileImageChange} />;
     case 1:
       return <WorkExperience state={state} setState={setState} handleChange={handleChange} />;
-    case 2: 
-      return <UploadPicture profileImageChange={profileImageChange} state={state}/>
+    case 2:
+      return <UploadPicture profileImageChange={profileImageChange} state={state} />;
     default:
       throw new Error('Unknown step');
   }
@@ -121,7 +121,7 @@ export default function Employee() {
   });
 
   const handleChange = (evt) => {
-    console.log(state)
+    console.log(state);
     setState({ ...state, [evt.target.name]: evt.target.value });
   };
 
@@ -151,7 +151,7 @@ export default function Employee() {
     reader.onerror = (error) => {
       console.log('Error: ', error);
     };
-  }
+  };
 
   return (
     <>

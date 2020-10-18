@@ -23,11 +23,12 @@ import {
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {},
   margin: {
     margin: theme.spacing(0),
-    padding: "5px"
+    padding: '5px'
   },
 }));
 
@@ -38,14 +39,14 @@ const Results = ({ className, getdepartmentss, departments }) => {
   const [page, setPage] = useState(0);
 
   const deletedepartments = async (departmentUniqueId) => {
-    console.log('departmentUniqueId delete icon', departmentUniqueId)
+    console.log('departmentUniqueId delete icon', departmentUniqueId);
     await axios.delete(`http://localhost:4000/deleteDepartmentById/${departmentUniqueId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
     getdepartmentss();
-  }
+  };
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -56,15 +57,15 @@ const Results = ({ className, getdepartmentss, departments }) => {
   };
 
   function truncate(str) {
-    return (str.length > 35) ? str.substring(0, 34) + " .." : str;
-  };
+    return (str.length > 35) ? `${str.substring(0, 34)} ..` : str;
+  }
 
   return (
     <Card
       className={clsx(classes.root, className)}
     >
       <PerfectScrollbar>
-        <Box >
+        <Box>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -75,25 +76,39 @@ const Results = ({ className, getdepartmentss, departments }) => {
             </TableHead>
             <TableBody>
               {departments && departments.length > 0 && departments.slice(0, limit).map((departments) => (
-                <TableRow hover key={departments.departmentUniqueId} >
+                <TableRow hover key={departments.departmentUniqueId}>
                   <TableCell>
-                    <Box alignItems="center" display="flex" >
-                      <Typography color="textPrimary" variant="body1" > {departments.departmentName} </Typography>
+                    <Box alignItems="center" display="flex">
+                      <Typography color="textPrimary" variant="body1">
+                        {' '}
+                        {departments.departmentName}
+                        {' '}
+                      </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell> {departments.departmentCategory} </TableCell>
+                  <TableCell>
+                    {' '}
+                    {departments.departmentCategory}
+                    {' '}
+                  </TableCell>
                   <TableCell>
                     {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
+                      permissions.includes('VIEW') && (
+                        <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
+                          <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
-                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('EDIT') && (
+                        <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
+                          <EditIcon fontSize="small" size="small" /> </IconButton>
+                      )
                     }
                     {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('DELETE') && (
+                        <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
+                          <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      )
                     }
 
                   </TableCell>

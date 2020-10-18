@@ -19,25 +19,25 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({
-  createOrganization, className, ...rest
+const EditForm = ({
+  editOrganization, organizationData, className, ...rest
 }) => {
   const classes = useStyles();
 
   return (
     <Formik
       initialValues={{
-        organizationName: '',
-        organizationCode: '',
-        organizationEmail: '',
-        organizationPhone: '',
-        organizationContactPhone: '',
-        organizationContactName: '',
-        address: '',
-        city: '',
-        country: '',
-        zipcode: '',
-        state: ''
+        organizationName: organizationData.organizationName || '',
+        organizationCode: organizationData.organizationCode || '',
+        organizationEmail: organizationData.organizationEmail || '',
+        organizationPhone: organizationData.organizationPhone || '',
+        organizationContactPhone: organizationData.organizationContactPerson.phone || '',
+        organizationContactName: organizationData.organizationContactPerson.name || '',
+        address: organizationData.organizationAddress[0].address || '',
+        city: organizationData.organizationAddress[0].city || '',
+        country: organizationData.organizationAddress[0].country || '',
+        zipcode: organizationData.organizationAddress[0].zipcode || '',
+        state: organizationData.organizationAddress[0].state || ''
       }}
       validationSchema={Yup.object().shape({
         organizationName: Yup.string().max(255).required('Organization name is required'),
@@ -53,10 +53,10 @@ const CreateForm = ({
         zipcode: Yup.string().max(255).required('Organization zipcode is required')
       })}
       onSubmit={async (values, { resetForm }) => {
-        console.log('on submit values....');
+        console.log('on submit values....', values);
         try {
-          await createOrganization(values);
-          resetForm();
+          await editOrganization(values);
+          // resetForm();
         } catch (e) {
           console.log('formik error..', e);
         }
@@ -81,7 +81,7 @@ const CreateForm = ({
           >
             <Card>
               <CardHeader
-                title="Create Organizaton"
+                title="Update Organizaton"
               />
               <Divider />
               <CardContent>
@@ -105,6 +105,7 @@ const CreateForm = ({
                       required
                       variant="outlined"
                       value={values.organizationName}
+                      disabled
                     />
                   </Grid>
                   <Grid
@@ -123,6 +124,7 @@ const CreateForm = ({
                       required
                       variant="outlined"
                       value={values.organizationCode}
+                      disabled
                     />
                   </Grid>
                   <Grid
@@ -304,10 +306,9 @@ const CreateForm = ({
                   variant="contained"
                   type="submit"
                   disabled={!isValid}
-
-                  onClick={createOrganization}
+                  onClick={editOrganization}
                 >
-                  Create organization
+                  Update organization
                 </Button>
               </Box>
             </Card>
@@ -318,9 +319,10 @@ const CreateForm = ({
   );
 };
 
-CreateForm.propTypes = {
+EditForm.propTypes = {
   className: PropTypes.string,
-  createOrganization: PropTypes.func
+  editOrganization: PropTypes.func,
+  organizationData: PropTypes.any
 };
 
-export default CreateForm;
+export default EditForm;

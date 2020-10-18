@@ -24,8 +24,8 @@ const useStyles = makeStyles(() => ({
   root: {}
 }));
 
-const CreateForm = ({
-  createCompany, className
+const CreateCompanyForm = ({
+  editCompany, className, companyDetails
 }) => {
   const classes = useStyles();
   const [organizationsList, setOrganizationsList] = useState([]);
@@ -49,25 +49,26 @@ const CreateForm = ({
   }, []);
 
   const initialValues = {
-    companyName: '',
-    companyCode: '',
-    companyEmail: '',
-    companyPhone: '',
-    companyContactPhone: '',
-    companyDescription: '',
-    address: '',
-    city: '',
-    state: '',
-    country: '',
-    zipcode: ''
+    companyName: companyDetails.companyName || '',
+    companyCode: companyDetails.companyCode || '',
+    companyEmail: companyDetails.companyEmail || '',
+    companyPhone: companyDetails.companyPhone || '',
+    companyContactPhone: companyDetails.companyContactPhone || '',
+    companyContactName: companyDetails.companyContactName || '',
+    companyDescription: companyDetails.companyDescription || '',
+    address: companyDetails.companyAddress[0].address || '',
+    city: companyDetails.companyAddress[0].city || '',
+    state: companyDetails.companyAddress[0].state || '',
+    country: companyDetails.companyAddress[0].country || '',
+    zipcode: companyDetails.companyAddress[0].zipcode || ''
   };
   const schema = Yup.object().shape({
     companyName: Yup.string().max(255).required('Company name is required'),
     companyCode: Yup.string().max(255).required('Company code is required'),
     companyEmail: Yup.string().email().max(255).required('Company email is required'),
     companyPhone: Yup.string().max(255).required('Company phone is required'),
-    companyContactPhone: Yup.string().max(255).required('Company contact person phone is required'),
-    companyContactName: Yup.string().max(255).required('Company contact person name is required'),
+    // companyContactPhone: Yup.string().max(255).required('Company contact person phone is required'),
+    // companyContactName: Yup.string().max(255).required('Company contact person name is required'),
     companyDescription: Yup.string().max(255).required('Description is required'),
     address: Yup.string().max(255).required('Company address is required'),
     city: Yup.string().max(255).required('Company city is required'),
@@ -81,9 +82,14 @@ const CreateForm = ({
       enableReinitialize
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         console.log('on submit values....', values);
-        createCompany(values);
+        try {
+          await editCompany(values);
+          resetForm();
+        } catch (e) {
+          console.log(e);
+        }
       }}
     >
       {({
@@ -98,7 +104,7 @@ const CreateForm = ({
           // eslint-disable-next-line react/jsx-indent
           <Form autoComplete="off" noValidate className={clsx(classes.root, className)} onSubmit={handleSubmit}>
             <Card>
-              <CardHeader title="Create Company" />
+              <CardHeader title="Update Company" />
               <Divider />
               <CardContent>
                 <Grid container spacing={3}>
@@ -115,6 +121,7 @@ const CreateForm = ({
                       type="text"
                       variant="outlined"
                       value={values.companyName}
+                      disabled
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -129,6 +136,7 @@ const CreateForm = ({
                       required
                       variant="outlined"
                       value={values.companyCode}
+                      disabled
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -159,7 +167,7 @@ const CreateForm = ({
                       value={values.companyPhone}
                     />
                   </Grid>
-                  <Grid item md={6} xs={12}>
+                  {/* <Grid item md={6} xs={12}>
                     <TextField
                       error={Boolean(touched.companyContactName && errors.companyContactName)}
                       helperText={touched.companyContactName && errors.companyContactName}
@@ -186,7 +194,7 @@ const CreateForm = ({
                       variant="outlined"
                       value={values.companyContactPhone}
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item md={6} xs={12}>
                     <TextField
                       error={Boolean(touched.companyDescription && errors.companyDescription)}
@@ -315,21 +323,21 @@ const CreateForm = ({
                   type="submit"
                   disabled={isSubmitting}
                 >
-                  Create Company
+                  Update Company
                 </Button>
               </Box>
             </Card>
           </Form>
           // eslint-disable-next-line indent
-        )
-      }
-    </Formik >
+        )}
+    </Formik>
   );
 };
 
-CreateForm.propTypes = {
+CreateCompanyForm.propTypes = {
   className: PropTypes.string,
-  createCompany: PropTypes.func
+  editCompany: PropTypes.func,
+  companyDetails: PropTypes.any
 };
 
-export default CreateForm;
+export default CreateCompanyForm;

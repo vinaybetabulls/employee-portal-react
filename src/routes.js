@@ -19,10 +19,12 @@ import EmployeestListView from './views/employees/ViewEmployee';
 import PermissionsCreateView from './views/permissions/AddPermissions';
 import DesignationCreate from './views/designations/DesignationCreateView';
 import DesignationsList from './views/designations/DesignationListView';
-import CreateView from './views/department/DepartmentCreate';
 import DepartmentsList from './views/department/DepartmentList';
 import EmployeeProfiletView from './views/employees/ProfileView';
 import Departments from './views/department/index';
+// import CompanyEditView from './views/companies/CompanyEdit/CompanyEditForm';
+import CompanyEditView from './views/companies/CompanyEdit';
+import OrganizationEditView from './views/customer/OrganizationEdit';
 
 const routes = [
   {
@@ -32,9 +34,10 @@ const routes = [
       { path: 'account', element: <AccountView /> },
       { path: 'organizaiton/view', element: <OrganizationView /> },
       { path: 'organization/create', element: <CustomerCreateView /> },
+      { path: 'organization/edit/:organizationUniqueId', element: <OrganizationEditView /> },
       { path: 'company/view', element: <CompanyList /> },
       { path: 'company/create', element: <CompanyCreateView /> },
-      { path: 'company/edit/:companyUniqeId', element: <CompanyCreateView /> },
+      { path: 'company/edit/:companyUniqeId', element: <CompanyEditView /> },
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
@@ -43,7 +46,7 @@ const routes = [
       { path: 'permission/create', element: <PermissionsCreateView /> },
       { path: 'designations', element: <DesignationCreate /> },
       { path: 'employee/profile', element: <EmployeeProfiletView /> },
-      { path: 'departments', element: <Departments />},
+      { path: 'departments', element: <Departments /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   },
