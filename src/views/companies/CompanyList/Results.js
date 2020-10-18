@@ -18,7 +18,9 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  makeStyles, Link
+  makeStyles, Link,
+  Tooltip,
+  Button
 } from '@material-ui/core';
 import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
@@ -101,6 +103,14 @@ const Results = ({ className }) => {
     setPage(newPage);
   };
 
+  const truncate = (str) => {
+    return (str && str.length > 35) ? `${str.substring(0, 34)} ..` : str;
+  };
+  const MyComponent = React.forwardRef((props, ref) => {
+    // eslint-disable-next-line react/prop-types
+    return <div {...props} ref={ref}>{truncate(props.title)}</div>;
+  });
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -111,19 +121,25 @@ const Results = ({ className }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Company Name
+                  Name
                 </TableCell>
                 <TableCell>
-                  Company Code
+                  Code
                 </TableCell>
                 <TableCell>
-                  Company Email
+                  Associate Organization
                 </TableCell>
                 <TableCell>
-                  Company Phone
+                  Email
                 </TableCell>
                 <TableCell>
-                  Company Address
+                  Phone
+                </TableCell>
+                {/* <TableCell>
+                  Company Description
+                </TableCell> */}
+                <TableCell>
+                  Address
                 </TableCell>
                 <TableCell>
                   Actions
@@ -160,13 +176,19 @@ const Results = ({ className }) => {
                     {company.companyCode}
                   </TableCell>
                   <TableCell>
+                    {company.organizationName}
+                  </TableCell>
+                  <TableCell>
                     {company.companyEmail}
                   </TableCell>
                   <TableCell>
                     {company.companyPhone}
                   </TableCell>
+                  {/* <TableCell>
+                    {truncate(company.companyDescription)}
+                  </TableCell> */}
                   <TableCell>
-                    {`${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`}
+                    {truncate(`${company.companyAddress[0].address},${company.companyAddress[0].city}, ${company.companyAddress[0].state}, ${company.companyAddress[0].country}`)}
                   </TableCell>
                   <TableCell>
                     {
