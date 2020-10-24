@@ -24,7 +24,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Chip from '@material-ui/core/Chip';
 
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -51,11 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     // margin: theme.spacing(1),
-    minWidth: "100%",
+    minWidth: '100%',
   },
   margin: {
     margin: theme.spacing(0),
-    padding: "5px"
+    padding: '5px'
   },
 }));
 
@@ -77,7 +76,7 @@ const Results = ({ className }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
   const [employees, setEmployees] = useState([]);
-  const [empUniqId, setEmpUniqId] = useState("")
+  const [empUniqId, setEmpUniqId] = useState('');
   const { decoded: { user: { permissions, roles } } } = useContext(AppContext);
   const [state, setState] = useState({ roles: [], permissions: [] });
   const [open, setOpen] = useState(false);
@@ -87,21 +86,21 @@ const Results = ({ className }) => {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
-    console.log('employeeList..', employeeList.data)
+    });
+    console.log('employeeList..', employeeList.data);
     setEmployees(employeeList.data.employees);
-  }
+  };
   useEffect(() => {
     getEmployees();
-  }, [])
+  }, [open]);
   const deleteEmployee = async (empUniqueId) => {
     await axios.delete(`http://localhost:4000/employee/${empUniqueId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
     getEmployees();
-  }
+  };
   const handleSelectAll = (event) => {
     console.log(event.target.checked);
     event.target.checked ? setState({ ...state, permissions: availablePermissions }) : setState({ ...state, permissions: [] });
@@ -135,11 +134,10 @@ const Results = ({ className }) => {
     setPage(newPage);
   };
 
-
   const handleClickOpen = ((empUniqueId, employeePermissions) => {
     setOpen(true);
     setEmpUniqId(empUniqueId);
-    setState({ ...state, roles: employeePermissions[0].roles, permissions: employeePermissions[0].permissions })
+    setState({ ...state, roles: employeePermissions[0].roles, permissions: employeePermissions[0].permissions });
     return true;
   });
 
@@ -152,7 +150,7 @@ const Results = ({ className }) => {
   };
 
   const handleUpdate = async () => {
-    console.log(':: handleUpdate ::', state)
+    console.log(':: handleUpdate ::', state);
     const settingRoles = await axios.put(`http://localhost:4000/employee/updatePermissionRoles/${empUniqId}`, state, {
       headers: {
         token: localStorage.getItem('empJWT')
@@ -160,7 +158,7 @@ const Results = ({ className }) => {
     });
     console.log(settingRoles);
     setOpen(false);
-  }
+  };
 
   const availablePermissions = ['CREATE', 'VIEW', 'EDIT', 'DELETE', 'ADDITIONAL'];
   return (
@@ -212,13 +210,13 @@ const Results = ({ className }) => {
                         className={classes.avatar}
                         src={employee.profileImageURL ? employee.profileImageURL : ''}
                       >
-                        {getInitials(employee.firstName + ' ' + employee.lastName)}
+                        {getInitials(`${employee.firstName} ${employee.lastName}`)}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {employee.firstName + ' ' + employee.lastName}
+                        {`${employee.firstName} ${employee.lastName}`}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -237,23 +235,35 @@ const Results = ({ className }) => {
                   <TableCell>
                     {`${employee.company.name}`}
                   </TableCell>
-                  {roles.includes('SUPER_ADMIN') && <TableCell>
-                    <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId, employee.employeePermissions)}>
-                      Set
-                    </Button>
-                  </TableCell>}
+                  {roles.includes('SUPER_ADMIN') && (
+                    <TableCell>
+                      <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId, employee.employeePermissions)}>
+                        Set
+                      </Button>
+                    </TableCell>
+                  )}
                   <TableCell>
                     {/* {
                       permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId}>
                         <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
-                    }
-                    {
-                      permissions.includes('EDIT') && <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId}>
-                        <EditIcon fontSize="small" fontSize="small" size="small" /> </IconButton>
                     } */}
                     {
-                      permissions.includes('DELETE') && <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
-                        <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                      permissions.includes('EDIT')
+                      && (
+                        <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/${employee.empUniqueId}`}>
+                          <EditIcon fontSize="small" size="small" />
+                        </IconButton>
+                      )
+                    }
+                    ,
+                    {
+                      permissions.includes('DELETE') && (
+                        <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
+                          <DeleteIcon color="error" fontSize="small" size="small" />
+                          {' '}
+
+                        </IconButton>
+                      )
                     }
 
                   </TableCell>
@@ -264,14 +274,16 @@ const Results = ({ className }) => {
         </Box>
       </PerfectScrollbar>
       <TablePagination component="div" count={employees.length || 0} onChangePage={handlePageChange} onChangeRowsPerPage={handleLimitChange} page={page} rowsPerPage={limit} rowsPerPageOptions={[5, 10, 25]} />
-      <Dialog fullWidth="true" maxWidth="sm"
+      <Dialog
+        fullWidth="true"
+        maxWidth="sm"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Set Roles & Permissions"}</DialogTitle>
-        <DialogContent dividers={true}>
+        <DialogTitle id="alert-dialog-title">Set Roles & Permissions</DialogTitle>
+        <DialogContent dividers>
           {/* <DialogContentText id="alert-dialog-description"> */}
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
@@ -286,7 +298,8 @@ const Results = ({ className }) => {
                   input={<Input />}
                   renderValue={(selected) => selected.join(', ')}
                   MenuProps={MenuProps}
-                  name="roles" >
+                  name="roles"
+                >
                   {!!rolesList && rolesList.map((role) => (
                     <MenuItem key={role} value={role}>
                       <Checkbox checked={state.roles.indexOf(role) > -1} />

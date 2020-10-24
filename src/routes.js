@@ -47,7 +47,7 @@ const routes = [
       { path: 'employee/view', element: <EmployeestListView /> },
       { path: 'permission/create', element: <PermissionsCreateView /> },
       { path: 'designations', element: <DesignationCreate /> },
-      { path: 'employee/profile', element: <EmployeeProfiletView /> },
+      { path: 'employee/:empUniqueId', element: <EmployeeProfiletView /> },
       { path: 'departments', element: <Departments /> },
       { path: 'organization/:orgUniqueId', element: <OrgDetailsPage /> },
       { path: 'company/:companyUniqeId', element: <CompanyDetailsPage /> },
