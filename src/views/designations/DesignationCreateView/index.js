@@ -9,8 +9,12 @@ import axios from 'axios';
 import { Alert } from '@material-ui/lab';
 import CloseIcon from '@material-ui/icons/Close';
 import CreateForm from './CreateForm';
+import EditForm from './EditForm';
 import Logo from './Logo';
 import Results from '../DesignationListView/Results';
+import {
+  useParams
+} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +38,8 @@ const DesignationCreate = () => {
   const [file, setFile] = useState({ url: '' });
   const [downloadURL, setDownloadURL] = useState('');
   const [fileBlob, setBlob] = useState('');
+
+  let { desgId } = useParams();
 
   const onFileChange = (event) => {
     const fileReader = new window.FileReader();
@@ -121,9 +127,14 @@ const DesignationCreate = () => {
                 fileBlob={fileBlob}
               />
             </Grid>
+            {
+              desgId != undefined ? <Grid item lg={8} md={6} xs={12}>
+              <EditForm handleChange={handleChange} createDesignations={createDesignations} />
+            </Grid> :
             <Grid item lg={8} md={6} xs={12}>
               <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
             </Grid>
+            }
             <Grid item lg={12} md={12} xs={12}>
               <Results getDesignations={getDesignations} designations={designations} />
             </Grid>

@@ -63,8 +63,9 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
       companiesList: [],
     },
     validationSchema,
-    onSubmit: values => {
+    onSubmit: async values => {
       alert(JSON.stringify(values, null, 2));
+      const createDeptResponse = await axios.post('http://localhost:4000/department/create', values, { headers: { token: localStorage.getItem('empJWT') } });
     },
   });
 
@@ -133,7 +134,7 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
                   id="demo-mutiple-name"
                   multiple={true}
                   value={state.companiesList || ''}
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
                   input={<Input />}
                   MenuProps={MenuProps}
                   name="companiesList"

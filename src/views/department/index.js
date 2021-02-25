@@ -32,6 +32,7 @@ const Departments = () => {
   const [showAlert, setShowAlert] = useState(false)
 
   const handleChange = (event) => {
+    console.log(event.target.value)
     setState({
       ...state,
       [event.target.name]: event.target.value
@@ -50,6 +51,7 @@ const Departments = () => {
 
   const createDepartment = async () => {
     try {
+      console.log(state);
       const createDeptResponse = await axios.post('http://localhost:4000/department/create', state, { headers: { token: localStorage.getItem('empJWT') } });
       console.log('create department Response..', createDeptResponse);
       setIsCreated(true);
