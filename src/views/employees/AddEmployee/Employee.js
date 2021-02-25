@@ -122,8 +122,11 @@ export default function Employee() {
 
   const handleChange = (evt) => {
     console.log(state);
-    if(evt.target?.name) {
-    setState({ ...state, [evt.target.name]: evt.target.value });
+    if (evt instanceof Date) {
+      setState({ ...state, dob: new Date(evt).toISOString() });
+    }
+    else if (evt.target?.name) {
+      setState({ ...state, [evt.target.name]: evt.target.value });
     }
   };
 

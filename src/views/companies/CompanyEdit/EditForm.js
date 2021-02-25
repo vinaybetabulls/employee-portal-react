@@ -48,6 +48,20 @@ const CreateCompanyForm = ({
     getOrganizationsList();
   }, []);
 
+  const getInitalOrganizationValue = () => {
+    if (organizationsList.length > 0) {
+      const org = organizationsList.map((organization) => {
+        if (organization.orgUniqueId === companyDetails.companyOrganizationId) {
+          return organization;
+        }
+      }).filter(neworg => typeof neworg !== 'undefined');
+      const organization = org[0];
+      console.log("organization value", organization.organizationName)
+      return organization?.orgUniqueId;
+    }
+    else return null
+  };
+
   const initialValues = {
     companyName: companyDetails.companyName || '',
     companyCode: companyDetails.companyCode || '',
@@ -101,73 +115,73 @@ const CreateCompanyForm = ({
         touched,
         values
       }) => (
-          // eslint-disable-next-line react/jsx-indent
-          <Form autoComplete="off" noValidate className={clsx(classes.root, className)} onSubmit={handleSubmit}>
-            <Card>
-              <CardHeader title="Update Company" />
-              <Divider />
-              <CardContent>
-                <Grid container spacing={3}>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.companyName && errors.companyName)}
-                      helperText={touched.companyName && errors.companyName}
-                      fullWidth
-                      label="Company name"
-                      name="companyName"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      type="text"
-                      variant="outlined"
-                      value={values.companyName}
-                      disabled
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.companyCode && errors.companyCode)}
-                      helperText={touched.companyCode && errors.companyCode}
-                      fullWidth
-                      label="Company code"
-                      name="companyCode"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.companyCode}
-                      disabled
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.companyEmail && errors.companyEmail)}
-                      helperText={touched.companyEmail && errors.companyEmail}
-                      fullWidth
-                      label="Company Email"
-                      name="companyEmail"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.companyEmail}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.companyPhone && errors.companyPhone)}
-                      helperText={touched.companyPhone && errors.companyPhone}
-                      fullWidth
-                      label="Company Phone"
-                      name="companyPhone"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      type="string"
-                      variant="outlined"
-                      value={values.companyPhone}
-                    />
-                  </Grid>
-                  {/* <Grid item md={6} xs={12}>
+        // eslint-disable-next-line react/jsx-indent
+        <Form autoComplete="off" noValidate className={clsx(classes.root, className)} onSubmit={handleSubmit}>
+          <Card>
+            <CardHeader title="Update Company" />
+            <Divider />
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.companyName && errors.companyName)}
+                    helperText={touched.companyName && errors.companyName}
+                    fullWidth
+                    label="Company name"
+                    name="companyName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    type="text"
+                    variant="outlined"
+                    value={values.companyName}
+                    disabled
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.companyCode && errors.companyCode)}
+                    helperText={touched.companyCode && errors.companyCode}
+                    fullWidth
+                    label="Company code"
+                    name="companyCode"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.companyCode}
+                    disabled
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.companyEmail && errors.companyEmail)}
+                    helperText={touched.companyEmail && errors.companyEmail}
+                    fullWidth
+                    label="Company Email"
+                    name="companyEmail"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.companyEmail}
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.companyPhone && errors.companyPhone)}
+                    helperText={touched.companyPhone && errors.companyPhone}
+                    fullWidth
+                    label="Company Phone"
+                    name="companyPhone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    type="string"
+                    variant="outlined"
+                    value={values.companyPhone}
+                  />
+                </Grid>
+                {/* <Grid item md={6} xs={12}>
                     <TextField
                       error={Boolean(touched.companyContactName && errors.companyContactName)}
                       helperText={touched.companyContactName && errors.companyContactName}
@@ -195,141 +209,141 @@ const CreateCompanyForm = ({
                       value={values.companyContactPhone}
                     />
                   </Grid> */}
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.companyDescription && errors.companyDescription)}
-                      helperText={touched.companyDescription && errors.companyDescription}
-                      fullWidth
-                      label="Company Description"
-                      name="companyDescription"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      type="text"
-                      required
-                      variant="outlined"
-                      value={values.companyDescription}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <Select
-                      error={Boolean(touched.companyOrganizationId && errors.companyOrganizationId)}
-                      helperText={touched.companyOrganizationId && errors.companyOrganizationId}
-                      fullWidth
-                      label="Select Organization"
-                      name="companyOrganizationId"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.companyOrganizationId || ''}
-                    >
-                      <MenuItem value="">
-                        {' '}
-                        <em>None</em>
-                        {' '}
-                      </MenuItem>
-                      {
-                        organizationsList.length > 0
-                        && organizationsList.map((org) => (
-                          <MenuItem selected={org.orgUniqueId === values.companyOrganizationId} key={org.orgUniqueId} value={org.orgUniqueId}>
-                            {org.organizationName}
-                          </MenuItem>
-                        ))
-                      }
-                    </Select>
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.address && errors.address)}
-                      helperText={touched.address && errors.address}
-                      value={values.address}
-                      fullWidth
-                      label="Address"
-                      name="address"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.city && errors.city)}
-                      helperText={touched.city && errors.city}
-                      fullWidth
-                      label="City"
-                      name="city"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.city}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.state && errors.state)}
-                      helperText={touched.state && errors.state}
-                      fullWidth
-                      label="State"
-                      name="state"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.state}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.country && errors.country)}
-                      helperText={touched.state && errors.state}
-                      fullWidth
-                      label="Country"
-                      name="country"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.country}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <TextField
-                      error={Boolean(touched.zipcode && errors.zipcode)}
-                      helperText={touched.zipcode && errors.zipcode}
-                      fullWidth
-                      label="Zip"
-                      name="zipcode"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      variant="outlined"
-                      value={values.zipcode}
-                    />
-                  </Grid>
-
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.companyDescription && errors.companyDescription)}
+                    helperText={touched.companyDescription && errors.companyDescription}
+                    fullWidth
+                    label="Company Description"
+                    name="companyDescription"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    type="text"
+                    required
+                    variant="outlined"
+                    value={values.companyDescription}
+                  />
                 </Grid>
-              </CardContent>
-              <Divider />
-              <Box
-                display="flex"
-                justifyContent="flex-end"
-                p={2}
+                <Grid item md={6} xs={12}>
+                  <Select
+                    error={Boolean(touched.companyOrganizationId && errors.companyOrganizationId)}
+                    helperText={touched.companyOrganizationId && errors.companyOrganizationId}
+                    fullWidth
+                    label="Select Organization"
+                    name="companyOrganizationId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={getInitalOrganizationValue() || ''}
+                  >
+                    <MenuItem value="">
+                      {' '}
+                      <em>None</em>
+                      {' '}
+                    </MenuItem>
+                    {
+                      organizationsList.length > 0
+                      && organizationsList.map((org) => (
+                        <MenuItem selected={org.orgUniqueId === values.companyOrganizationId} key={org.orgUniqueId} value={org.orgUniqueId}>
+                          {org.organizationName}
+                        </MenuItem>
+                      ))
+                    }
+                  </Select>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.address && errors.address)}
+                    helperText={touched.address && errors.address}
+                    value={values.address}
+                    fullWidth
+                    label="Address"
+                    name="address"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.city && errors.city)}
+                    helperText={touched.city && errors.city}
+                    fullWidth
+                    label="City"
+                    name="city"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.city}
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.state && errors.state)}
+                    helperText={touched.state && errors.state}
+                    fullWidth
+                    label="State"
+                    name="state"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.state}
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.country && errors.country)}
+                    helperText={touched.state && errors.state}
+                    fullWidth
+                    label="Country"
+                    name="country"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.country}
+                  />
+                </Grid>
+                <Grid item md={6} xs={12}>
+                  <TextField
+                    error={Boolean(touched.zipcode && errors.zipcode)}
+                    helperText={touched.zipcode && errors.zipcode}
+                    fullWidth
+                    label="Zip"
+                    name="zipcode"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    variant="outlined"
+                    value={values.zipcode}
+                  />
+                </Grid>
+
+              </Grid>
+            </CardContent>
+            <Divider />
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              p={2}
+            >
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                disabled={isSubmitting}
               >
-                <Button
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Update Company
+                Update Company
                 </Button>
-              </Box>
-            </Card>
-          </Form>
-          // eslint-disable-next-line indent
-        )}
+            </Box>
+          </Card>
+        </Form>
+        // eslint-disable-next-line indent
+      )}
     </Formik>
   );
 };
