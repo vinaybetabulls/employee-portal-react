@@ -26,7 +26,7 @@ const CreateView = () => {
   const [state, setState] = useState({
     departmentName: "",
     departmentCategory: "",
-    companiesList:[]
+    companiesList: []
   })
 
   const handleChange = (event) => {
@@ -56,7 +56,7 @@ const CreateView = () => {
             <CreateForm handleChange={handleChange} createdepartment={createDepartment} state={state} />
           </Grid>
           <Grid item lg={12} md={12} xs={12} >
-            <DepartmentsList isAdded={isAdded}/>
+            <DepartmentsList isAdded={isAdded} />
           </Grid>
         </Grid>
       </Container>

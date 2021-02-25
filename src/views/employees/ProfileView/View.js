@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -11,6 +13,7 @@ import {
   Grid, Paper, Table, TableRow
 } from '@material-ui/core';
 import MuiTableCell from '@material-ui/core/TableCell';
+import Moment from 'moment';
 
 function TabPanel(props) {
   const {
@@ -179,7 +182,7 @@ export default function EmployeeViewTabs() {
                       </TableRow>
                       <TableRow>
                         <TableCell>DOB</TableCell>
-                        <TableCell>{employeeDetails.dob || '--'}</TableCell>
+                        <TableCell>{Moment(employeeDetails.dob).format('DD-MM-YYYY') || '--'}</TableCell>
                       </TableRow>
                     </Table>
                   </TabPanel>

@@ -95,22 +95,22 @@ export default function Employee() {
     profileImageURL: '',
     dateOfJoining: '2020-09-26T07:37:51.390Z',
     organization: {
-      id: 'string',
-      name: 'string'
+      id: '',
+      name: ''
     },
     company: {
-      id: 'string',
-      name: 'string'
+      id: '',
+      name: ''
     },
     designation: {
-      id: 'string',
-      name: 'string'
+      id: null,
+      name: null
     },
     department: {
-      id: 'string',
-      name: 'string'
+      id: null,
+      name: null
     },
-    empId: 'string',
+    empId: '',
     employeeAddress: {
       address: '#123, Building 20, Mindspace',
       city: 'string',
@@ -122,7 +122,9 @@ export default function Employee() {
 
   const handleChange = (evt) => {
     console.log(state);
+    if(evt.target?.name) {
     setState({ ...state, [evt.target.name]: evt.target.value });
+    }
   };
 
   const handleNext = async () => {

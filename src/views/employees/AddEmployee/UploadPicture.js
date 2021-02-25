@@ -34,7 +34,6 @@ const UploadPicture = ({ state, setState, handleChange, profileImageChange }) =>
   const classes = useStyles();
   return (
     <Grid container>
-      {JSON.stringify(state)}
       <Grid item xs={12} sm={4}>
         <Card className={clsx(classes.root)}>
           <CardContent>

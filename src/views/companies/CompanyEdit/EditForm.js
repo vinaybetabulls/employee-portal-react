@@ -231,7 +231,7 @@ const CreateCompanyForm = ({
                       {
                         organizationsList.length > 0
                         && organizationsList.map((org) => (
-                          <MenuItem key={org.orgUniqueId} value={org.orgUniqueId}>
+                          <MenuItem selected={org.orgUniqueId === values.companyOrganizationId} key={org.orgUniqueId} value={org.orgUniqueId}>
                             {org.organizationName}
                           </MenuItem>
                         ))
