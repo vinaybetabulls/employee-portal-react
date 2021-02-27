@@ -105,7 +105,7 @@ const Departments = () => {
         <Grid container spacing={3}>
           <Grid item lg={12} md={12} xs={12}>
             {deptUniqId !== undefined
-              ? <EditForm handleChange={handleChange} createdepartment={createDepartment} state={state} departmentId={deptUniqId} />
+              ? <EditForm handleChange={handleChange} createdepartment={createDepartment} state={state} departmentId={deptUniqId} getdepartmentss={getdepartmentss}/>
               : <CreateForm handleChange={handleChange} createdepartment={createDepartment} state={state} />}
           </Grid>
           <Grid item lg={12} md={12} xs={12}>

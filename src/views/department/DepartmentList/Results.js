@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 // import moment from 'moment';
@@ -7,11 +7,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -21,7 +19,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
 
@@ -57,9 +54,6 @@ const Results = ({ className, getdepartmentss, departments }) => {
     setPage(newPage);
   };
 
-  function truncate(str) {
-    return (str.length > 35) ? `${str.substring(0, 34)} ..` : str;
-  }
 
   return (
     <Card

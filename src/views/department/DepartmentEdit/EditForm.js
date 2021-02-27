@@ -50,7 +50,7 @@ function getStyles(name, personName, theme) {
 }
 
 const EditForm = ({
-  className, departmentId, state, ...rest
+  className, departmentId, state,getdepartmentss, ...rest
 }) => {
   const classes = useStyles();
   const [companies, setCompanies] = useState([]);
@@ -139,6 +139,9 @@ const EditForm = ({
       setShowAlert(true);
       setSeverityValue('success');
       setResponseMessage('Department updated successfully!');
+      getDepartmentById(departmentId);
+      getCompaniesList();
+      getdepartmentss();
     } catch (error) {
       setShowAlert(true);
       setSeverityValue('error');
@@ -262,7 +265,8 @@ const EditForm = ({
 EditForm.propTypes = {
   className: PropTypes.string,
   departmentId: PropTypes.string,
-  state: PropTypes.any
+  state: PropTypes.any,
+  getdepartmentss: PropTypes.func
 };
 
 export default EditForm;
