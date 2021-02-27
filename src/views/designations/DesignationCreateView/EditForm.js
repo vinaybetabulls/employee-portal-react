@@ -100,7 +100,7 @@ const EditForm = ({
                         name="name"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.name || designationById.name|| ''}
+                        value={values.name || designationById.name || ''}
                         variant="outlined"
                         required
                       />

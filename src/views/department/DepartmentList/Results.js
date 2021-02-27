@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useContext, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 // import moment from 'moment';
@@ -6,11 +7,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import {
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -20,7 +19,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import getInitials from 'src/utils/getInitials';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'src/context/AppContext';
 
@@ -56,9 +54,6 @@ const Results = ({ className, getdepartmentss, departments }) => {
     setPage(newPage);
   };
 
-  function truncate(str) {
-    return (str.length > 35) ? `${str.substring(0, 34)} ..` : str;
-  }
 
   return (
     <Card
@@ -97,17 +92,21 @@ const Results = ({ className, getdepartmentss, departments }) => {
                         <IconButton aria-label="view" className={classes.margin} id={departments.departmentUniqueId}>
                           <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
                       )
-                    }
+                    } */}
                     {
                       permissions.includes('EDIT') && (
-                        <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId}>
-                          <EditIcon fontSize="small" size="small" /> </IconButton>
+                        <IconButton aria-label="edit" className={classes.margin} id={departments.departmentUniqueId} href={`/app/departments/${departments.departmentUniqueId}`}>
+                          <EditIcon fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
                       )
-                    } */}
+                    }
                     {
                       permissions.includes('DELETE') && (
                         <IconButton aria-label="delete" className={classes.margin} id={departments.departmentUniqueId} onClick={() => deletedepartments(departments.departmentUniqueId)}>
-                          <DeleteIcon color="error" fontSize="small" size="small" /> </IconButton>
+                          <DeleteIcon color="error" fontSize="small" size="small" />
+                          {' '}
+                        </IconButton>
                       )
                     }
 

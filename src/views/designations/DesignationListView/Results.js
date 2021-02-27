@@ -128,15 +128,15 @@ const Results = ({ className, getDesignations, designations }) => {
                             {' '}
                           </IconButton>
                         )
-                      }*/}
+                      } */}
                       {
                         permissions.includes('EDIT') && (
-                          <IconButton aria-label="edit" className={classes.margin} id={designation.desgUniqueId}>
+                          <IconButton aria-label="edit" className={classes.margin} id={designation.desgUniqueId} href={`/app/designations/${designation.desgUniqueId}`}>
                             <EditIcon fontSize="small" size="small" />
                             {' '}
                           </IconButton>
                         )
-                      } 
+                      }
                       {
                         permissions.includes('DELETE') && (
                           <IconButton aria-label="delete" className={classes.margin} id={designation.desgUniqueId} onClick={() => deleteDesignation(designation.desgUniqueId)}>

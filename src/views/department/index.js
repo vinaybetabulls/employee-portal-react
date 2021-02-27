@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -5,11 +6,15 @@ import {
   makeStyles, IconButton
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import CreateForm from './DepartmentCreate/CreateForm';
-import Results from './DepartmentList/Results';
 import axios from 'axios';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import CloseIcon from '@material-ui/icons/Close';
+import {
+  useParams
+} from 'react-router-dom';
+import CreateForm from './DepartmentCreate/CreateForm';
+import EditForm from './DepartmentEdit/EditForm';
+import Results from './DepartmentList/Results';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +29,15 @@ const Departments = () => {
   const classes = useStyles();
   const [departments, setDepartments] = useState([]);
   const [isCreated, setIsCreated] = useState(false);
+  // const [isEditDepartmentEdit, setisEditDepartment] = useState(false);
+  // const [departmentId, setDepartmentId] = useState(null);
+  const { deptUniqId } = useParams();
   const [state, setState] = useState({
-    departmentName: "",
-    departmentCategory: "",
+    departmentName: '',
+    departmentCategory: '',
     companiesList: []
   });
-  const [showAlert, setShowAlert] = useState(false)
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleChange = (event) => {
     console.log(event.target.value)
@@ -44,10 +52,10 @@ const Departments = () => {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
     console.log('designaiotns list....', departmentsList.data);
     setDepartments(departmentsList.data.departments);
-  }
+  };
 
   const createDepartment = async () => {
     try {
@@ -57,48 +65,56 @@ const Departments = () => {
       setIsCreated(true);
       setShowAlert(true);
       setState({
-        departmentName: "",
-        departmentCategory: "",
+        departmentName: '',
+        departmentCategory: '',
         companiesList: []
       });
     } catch (error) {
-      console.log('org create error', error)
+      console.log('org create error', error);
     }
-  }
+  };
 
   useEffect(() => {
     getdepartmentss();
-  }, [isCreated])
+  }, [isCreated]);
 
   return (
-    <Page className={classes.root} title="Account" >
+    <Page className={classes.root} title="Account">
       <Container maxWidth="lg">
         {
-          showAlert && <Alert severity="success" action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setShowAlert(false);
-              }}
+          showAlert && (
+            <Alert
+              severity="success"
+              action={(
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setShowAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              )}
             >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }>
-            Department added successfully! </Alert>
+              Department added successfully!
+            </Alert>
+          )
         }
-        <Grid container spacing={3} >
-          <Grid item lg={12} md={12} xs={12} >
-            <CreateForm handleChange={handleChange} createdepartment={createDepartment} state={state} />
+        <Grid container spacing={3}>
+          <Grid item lg={12} md={12} xs={12}>
+            {deptUniqId !== undefined
+              ? <EditForm handleChange={handleChange} createdepartment={createDepartment} state={state} departmentId={deptUniqId} getdepartmentss={getdepartmentss}/>
+              : <CreateForm handleChange={handleChange} createdepartment={createDepartment} state={state} />}
           </Grid>
-          <Grid item lg={12} md={12} xs={12} >
+          <Grid item lg={12} md={12} xs={12}>
             <Results getdepartmentss={getdepartmentss} departments={departments} />
           </Grid>
         </Grid>
       </Container>
     </Page>
-  )
-}
+  );
+};
 
-export default Departments
+export default Departments;
