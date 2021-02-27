@@ -46,6 +46,7 @@ const routes = [
       { path: 'employee/view', element: <EmployeestListView /> },
       { path: 'permission/create', element: <PermissionsCreateView /> },
       { path: 'designations', element: <DesignationCreate /> },
+      { path: 'designations/:desgId', element: <DesignationCreate /> },
       { path: 'employee/:empUniqueId', element: <EmployeeProfiletView /> },
       { path: 'departments/:deptUniqId', element: <Departments /> },
       { path: 'departments/', element: <Departments /> },
