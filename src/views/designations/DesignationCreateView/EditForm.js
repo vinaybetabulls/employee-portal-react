@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EditForm = ({
-  createDesignations, className, ...rest
+  designationById, editDesignations, className, ...rest
 }) => {
   const classes = useStyles();
 
@@ -46,9 +46,9 @@ const EditForm = ({
     <>
       <Formik
         initialValues={{
-          name: '',
-          level: '',
-          rolesAndResponsibilities: ''
+          name: designationById.name,
+          level: designationById.level,
+          rolesAndResponsibilities: designationById.rolesAndResponsibilities
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().max(255).required('Designation name is required'),
@@ -57,7 +57,7 @@ const EditForm = ({
 
         })}
         onSubmit={async (values) => {
-          createDesignations(values);
+          editDesignations(values);
         }}
       >
         {({
@@ -100,7 +100,7 @@ const EditForm = ({
                         name="name"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.name}
+                        value={values.name || designationById.name|| ''}
                         variant="outlined"
                         required
                       />
@@ -108,8 +108,8 @@ const EditForm = ({
                     <Grid item md={6} xs={12}>
                       <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="age-native-simple">Level</InputLabel>
-                        <Select native name="level" onChange={handleChange}>
-                          <option aria-label="None" value="" />
+                        <Select native name="level" onChange={handleChange} value={values.level || designationById.level} >
+                          <option aria-label="None"/>
                           <option value="1">Level 1</option>
                           <option value="2">Level 2</option>
                           <option value="3">Level 3</option>
@@ -134,7 +134,7 @@ const EditForm = ({
                         placeholder="Roles and Responsibilities"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value={values.rolesAndResponsibilities}
+                        value={values.rolesAndResponsibilities || designationById.rolesAndResponsibilities}
                         variant="outlined"
                       />
                     </Grid>

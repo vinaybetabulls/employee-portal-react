@@ -16,12 +16,12 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import * as Yup from 'yup';
-import { useFormik, Field } from 'formik';
+import { useFormik } from 'formik';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   formControl: {
-    minWidth: "100%",
+    minWidth: '100%',
   },
 }));
 
@@ -45,7 +45,9 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const CreateForm = ({ createdepartment, handleChange, state, className, ...rest }) => {
+const CreateForm = ({
+  createdepartment, handleChange, state, className, ...rest
+}) => {
   const classes = useStyles();
   const [companies, setCompanies] = useState([]);
   const theme = useTheme();
@@ -54,72 +56,67 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
     departmentName: Yup.string().max(255).required('Department name is required'),
     departmentCategory: Yup.string().max(255).required('Department name is required'),
     companiesList: Yup.array().of(Yup.string().max(255).required('Companies is required')),
-  })
-
-  const formik = useFormik({
-    initialValues: {
-      departmentName: '',
-      departmentCategory: "",
-      companiesList: [],
-    },
-    validationSchema,
-    onSubmit: async values => {
-      alert(JSON.stringify(values, null, 2));
-      const createDeptResponse = await axios.post('http://localhost:4000/department/create', values, { headers: { token: localStorage.getItem('empJWT') } });
-    },
   });
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     departmentName: '',
+  //     departmentCategory: '',
+  //     companiesList: [],
+  //   },
+  //   validationSchema,
+  //   onSubmit: (values) => {
+  //     alert(JSON.stringify(values, null, 2));
+  //   },
+  // });
 
   useEffect(() => {
     const getCompaniesList = async () => {
-      const companies = await axios.get(`http://localhost:4000/company/list`, {
+      const companiesList = await axios.get('http://localhost:4000/company/list', {
         headers: {
           token: localStorage.getItem('empJWT')
         }
       });
       console.log(companies);
-      const companiesSelect = companies.data && companies.data.companies && companies.data.companies.map((company) => {
+      const companiesSelect = companiesList.data && companiesList.data.companies && companiesList.data.companies.map((company) => {
         return {
           companyName: company.companyName,
           companyUniqeId: company.companyUniqeId
-        }
-      })
-      console.log(' companiesSelect..', companiesSelect)
-      setCompanies(companiesSelect)
-    }
-    getCompaniesList()
-  }, [])
+        };
+      });
+      console.log(' companiesSelect..', companiesSelect);
+      setCompanies(companiesSelect);
+    };
+    getCompaniesList();
+  }, []);
   return (
-    <form onSubmit={formik.handleSubmit}  autoComplete="off" noValidate className={clsx(classes.root, className)} {...rest} >
+    <form autoComplete="off" noValidate className={clsx(classes.root, className)} {...rest}>
       <Card>
         <CardHeader title="Create Department" />
         <Divider />
         <CardContent>
-          <Grid container spacing={3} >
+          <Grid container spacing={3}>
             <Grid item sm={6} xs={12}>
               <TextField
-                error={Boolean(formik.touched.departmentName && formik.errors.departmentName)}
-                helperText={formik.touched.departmentName && formik.errors.departmentName}
                 id="name"
                 name="departmentName"
                 label="Department Name"
                 fullWidth
-                autoComplete="family-name" defaultValue=""
-                onChange={formik.handleChange}
-                value={formik.values.departmentName || ''}
+                autoComplete="family-name"
+                defaultValue=""
+                onChange={handleChange}
               />
             </Grid>
             <Grid item sm={6} xs={12}>
               <FormControl className={classes.formControl} variant="outlined">
                 <InputLabel id="demo-mutiple-name-label">Department Category</InputLabel>
-                <Select labelId="demo-mutiple-name-label"
-                  error={Boolean(formik.touched.departmentCategory && formik.errors.departmentCategory)}
-                  helperText={formik.touched.departmentCategory && formik.errors.departmentCategory}
+                <Select
+                  labelId="demo-mutiple-name-label"
                   id="demo-mutiple-name"
-                  onChange={formik.handleChange}
-                  value={formik.values.departmentCategory || ''}
+                  onChange={handleChange}
                   input={<Input />}
-                  MenuProps={MenuProps}  
-                  name="departmentCategory" >
+                  MenuProps={MenuProps}
+                  name="departmentCategory">
                   <MenuItem value="low"> Low </MenuItem>
                   <MenuItem value="medium"> Medium </MenuItem>
                   <MenuItem value="high"> High </MenuItem>
@@ -129,12 +126,13 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
             <Grid item xs={12}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-mutiple-name-label">Select Companies</InputLabel>
-                <Select variant="outlined"
+                <Select
+                  variant="outlined"
                   labelId="demo-mutiple-name-label"
                   id="demo-mutiple-name"
-                  multiple={true}
+                  multiple
                   value={state.companiesList || ''}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   input={<Input />}
                   MenuProps={MenuProps}
                   name="companiesList"
@@ -150,11 +148,12 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
           </Grid>
         </CardContent>
         <Divider />
-        <Box display="flex" justifyContent="flex-end" p={2} >
+        <Box display="flex" justifyContent="flex-end" p={2}>
           <Button
             color="primary"
             variant="contained"
-            type="submit"
+            type="button"
+            onClick={createdepartment}
           >
             Create
           </Button>
@@ -165,7 +164,10 @@ const CreateForm = ({ createdepartment, handleChange, state, className, ...rest 
 };
 
 CreateForm.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  state: PropTypes.any,
+  createdepartment: PropTypes.func,
+  handleChange: PropTypes.func
 };
 
 export default CreateForm;
