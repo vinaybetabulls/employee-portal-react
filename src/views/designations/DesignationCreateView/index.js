@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -8,13 +9,13 @@ import Page from 'src/components/Page';
 import axios from 'axios';
 import { Alert } from '@material-ui/lab';
 import CloseIcon from '@material-ui/icons/Close';
+import {
+  useParams
+} from 'react-router-dom';
 import CreateForm from './CreateForm';
 import EditForm from './EditForm';
 import Logo from './Logo';
 import Results from '../DesignationListView/Results';
-import {
-  useParams
-} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,23 +33,20 @@ const DesignationCreate = () => {
   const classes = useStyles();
 
   const [designations, setDesignations] = useState([]);
-  const [designationById, setDesignationById] = useState([]);
+  const [, setDesignationById] = useState([]);
   const [state, setState] = useState({});
   const [isCreated, setIsCreated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [file, setFile] = useState({ url: '' });
   const [downloadURL, setDownloadURL] = useState('');
   const [fileBlob, setBlob] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
-  let { desgId } = useParams();
+  const { desgId } = useParams();
 
   const onFileChange = (event) => {
     const fileReader = new window.FileReader();
     const iputFile = event.target.files[0];
-    // console.log('file....', iputFile);
-    // console.log('file name....', iputFile.name);
-    // console.log('file mimetype....', iputFile.type);
-
     fileReader.onload = (fileLoad) => {
       const { result } = fileLoad.target;
       setFile({ url: result, fileName: iputFile.name, mimeType: iputFile.type });
@@ -57,8 +55,6 @@ const DesignationCreate = () => {
     fileReader.readAsDataURL(iputFile);
     const blob = new Blob([iputFile], { type: iputFile.type });
     const objectURL = window.URL.createObjectURL(blob);
-    console.log(objectURL);
-    console.log(blob)
     setDownloadURL(objectURL);
     setBlob(blob);
   };
@@ -76,88 +72,70 @@ const DesignationCreate = () => {
         token: localStorage.getItem('empJWT')
       }
     });
-    console.log('designaiotns list....', designationsList.data);
     setDesignations(designationsList.data.designations);
   };
-  const dataUrlToFile = async (data, fileName) => {
-
-    // var bufferArray = base64ToArrayBuffer(data);
-    // var blobStore = new Blob([bufferArray], { type: "application/pdf" });
-    // if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-    //     window.navigator.msSaveOrOpenBlob(blobStore);
-    //     return;
-    // }
-    // var data = window.URL.createObjectURL(blobStore);
-    // var link = document.createElement('a');
-    // document.body.appendChild(link);
-    // link.href = data;
-    // link.download = "file.pdf";
-    // link.click();
-    // window.URL.revokeObjectURL(data);
-    // link.remove();
-
-}
   const getDesignationById = async () => {
-    const designationById = await axios.get('http://localhost:4000/designation/'+desgId, {
+    const designationById = await axios.get(`http://localhost:4000/designation/${desgId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
       }
     });
-    console.log('designaiotns by id....', designationById.data);
-    dataUrlToFile(designationById.data.organizations[0].notesURL, "test")
-    setFile({url: designationById.data.organizations[0].notesURL, fileName: 'test.pdf', mimeType: "application/pdf"  })
-
-		const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    setFile({ url: designationById.data.organizations[0].notesURL, fileName: `${designationById.data.organizations[0].name}.pdf`, mimeType: 'application/pdf' });
+    setState({
+      name: designationById.data.organizations[0].name, rolesAndResponsibilities: designationById.data.organizations[0].rolesAndResponsibilities, level: designationById.data.organizations[0].level, desgUniqueId: designationById.data.organizations[0].desgUniqueId
+    });
+    const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
       const byteCharacters = atob(b64Data);
       const byteArrays = [];
-    
+
       for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
         const slice = byteCharacters.slice(offset, offset + sliceSize);
-    
+
         const byteNumbers = new Array(slice.length);
         for (let i = 0; i < slice.length; i++) {
           byteNumbers[i] = slice.charCodeAt(i);
         }
-    
+
         const byteArray = new Uint8Array(byteNumbers);
         byteArrays.push(byteArray);
       }
-    
-      const blob = new Blob(byteArrays, {type: contentType});
+
+      const blob = new Blob(byteArrays, { type: contentType });
       return blob;
-    }
-    let base64 = designationById.data.organizations[0].notesURL.split('base64,')[1];
-    const blob = b64toBlob(base64, "application/pdf");
+    };
+    const base64 = designationById.data.organizations[0].notesURL.split('base64,')[1];
+    const blob = b64toBlob(base64, 'application/pdf');
     const blobUrl = URL.createObjectURL(blob);
-    console.log(blob); console.log(blobUrl);
-		setDownloadURL(blobUrl);
+    setDownloadURL(blobUrl);
     setBlob(blob);
-    
 
     setDesignationById(designationById.data.organizations[0]);
   };
   useEffect(() => {
     getDesignations();
-    desgId && getDesignationById();
+    if (desgId) getDesignationById();
   }, [isCreated]);
 
   const createDesignations = async (values) => {
     try {
       state.notesURL = file.url;
-      const createOrgResponse = await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create designation Response..', createOrgResponse);
-      setIsCreated(true); setState({}); setShowAlert(true);
+      await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
+      setIsCreated(true);
+      setState({});
+      setShowAlert(true);
+      setAlertMessage('Designation added successfully!');
     } catch (error) {
       console.log('org create error', error);
     }
   };
 
-  const editDesignations = async (values) => {
+  const editDesignations = async () => {
     try {
       state.notesURL = file.url;
-      const createOrgResponse = await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create designation Response..', createOrgResponse);
-      setIsCreated(true); setState({}); setShowAlert(true);
+      await axios.put(`http://localhost:4000/designation/${desgId}`, { ...state, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
+      setIsCreated(true);
+      setShowAlert(true);
+      setAlertMessage('Designation updated successfully!');
     } catch (error) {
       console.log('org create error', error);
     }
@@ -184,7 +162,7 @@ const DesignationCreate = () => {
                   </IconButton>
                 )}
               >
-                Designation added successfully!
+                {alertMessage}
                 {' '}
 
               </Alert>
@@ -200,12 +178,16 @@ const DesignationCreate = () => {
               />
             </Grid>
             {
-              desgId != undefined ? <Grid item lg={8} md={6} xs={12}>
-              <EditForm designationById={designationById} handleChange={handleChange} editDesignations={editDesignations} />
-            </Grid> :
-            <Grid item lg={8} md={6} xs={12}>
-              <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
-            </Grid>
+              desgId != undefined ? (
+                <Grid item lg={8} md={6} xs={12}>
+                  <EditForm designationById={state} handleChange={handleChange} editDesignations={editDesignations} />
+                </Grid>
+              )
+                : (
+                  <Grid item lg={8} md={6} xs={12}>
+                    <CreateForm handleChange={handleChange} createDesignations={createDesignations} />
+                  </Grid>
+                )
             }
             <Grid item lg={12} md={12} xs={12}>
               <Results getDesignations={getDesignations} designations={designations} />
