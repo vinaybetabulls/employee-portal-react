@@ -18,8 +18,7 @@ import Employee from './views/employees/AddEmployee/Employee';
 import EmployeestListView from './views/employees/ViewEmployee';
 import PermissionsCreateView from './views/permissions/AddPermissions';
 import DesignationCreate from './views/designations/DesignationCreateView';
-import DesignationsList from './views/designations/DesignationListView';
-import DepartmentsList from './views/department/DepartmentList';
+import EditDepartment from './views/department/DepartmentEdit';
 import EmployeeProfiletView from './views/employees/ProfileView';
 import Departments from './views/department/index';
 // import CompanyEditView from './views/companies/CompanyEdit/CompanyEditForm';
@@ -48,7 +47,9 @@ const routes = [
       { path: 'permission/create', element: <PermissionsCreateView /> },
       { path: 'designations', element: <DesignationCreate /> },
       { path: 'employee/:empUniqueId', element: <EmployeeProfiletView /> },
-      { path: 'departments', element: <Departments /> },
+      { path: 'departments/:deptUniqId', element: <Departments /> },
+      { path: 'departments/', element: <Departments /> },
+      // { path: 'departments/edit/:departmentId', element: <EditDepartment /> },
       { path: 'organization/:orgUniqueId', element: <OrgDetailsPage /> },
       { path: 'company/:companyUniqeId', element: <CompanyDetailsPage /> },
       { path: '*', element: <Navigate to="/404" /> }
