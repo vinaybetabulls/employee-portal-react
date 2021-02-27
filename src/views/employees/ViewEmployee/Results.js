@@ -243,19 +243,18 @@ const Results = ({ className }) => {
                     </TableCell>
                   )}
                   <TableCell>
-                    {/* {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId}>
+                    {
+                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/${employee.empUniqueId}`}>
                         <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
-                    } */}
+                    }
                     {
                       permissions.includes('EDIT')
                       && (
-                        <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/${employee.empUniqueId}`}>
+                        <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/edit/${employee.empUniqueId}`}>
                           <EditIcon fontSize="small" size="small" />
                         </IconButton>
                       )
                     }
-                    ,
                     {
                       permissions.includes('DELETE') && (
                         <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>

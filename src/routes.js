@@ -15,6 +15,7 @@ import CustomerCreateView from 'src/views/customer/CustomerCreateView';
 import CompanyList from 'src/views/companies/CompanyList';
 import CompanyCreateView from './views/companies/CompanyCreateView';
 import Employee from './views/employees/AddEmployee/Employee';
+import EditEmployee from './views/employees/EditEmployee/Employee';
 import EmployeestListView from './views/employees/ViewEmployee';
 import PermissionsCreateView from './views/permissions/AddPermissions';
 import DesignationCreate from './views/designations/DesignationCreateView';
@@ -48,6 +49,7 @@ const routes = [
       { path: 'designations', element: <DesignationCreate /> },
       { path: 'designations/:desgId', element: <DesignationCreate /> },
       { path: 'employee/:empUniqueId', element: <EmployeeProfiletView /> },
+      { path: 'employee/edit/:empUniqueId', element: <EditEmployee /> },
       { path: 'departments/:deptUniqId', element: <Departments /> },
       { path: 'departments/', element: <Departments /> },
       // { path: 'departments/edit/:departmentId', element: <EditDepartment /> },
