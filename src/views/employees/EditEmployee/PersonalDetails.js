@@ -278,7 +278,7 @@ export default function PersonalDetails({
           />
         </Grid>
         {
-          state.employeeAddress
+          state.employeeAddress[0]
           && (
             <>
               <Grid item xs={12}>
@@ -289,7 +289,7 @@ export default function PersonalDetails({
                   fullWidth
                   autoComplete="shipping address-line2"
                   onChange={handleEmpAdd}
-                  value={state.employeeAddress.address || ''}
+                  defaultValue={state.employeeAddress[0].address || ''}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -301,11 +301,11 @@ export default function PersonalDetails({
                   fullWidth
                   autoComplete="shipping address-level2"
                   onChange={handleEmpAdd}
-                  value={state.employeeAddress.city || ''}
+                  defaultValue={state.employeeAddress[0].city || ''}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} value={state.employeeAddress.state || ''} />
+                <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} defaultValue={state.employeeAddress[0].state || ''} />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
@@ -316,7 +316,7 @@ export default function PersonalDetails({
                   fullWidth
                   autoComplete="shipping country"
                   onChange={handleEmpAdd}
-                  value={state.employeeAddress.country || ''}
+                  defaultValue={state.employeeAddress[0].country || ''}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -328,7 +328,7 @@ export default function PersonalDetails({
                   fullWidth
                   autoComplete="shipping postal-code"
                   onChange={handleEmpAdd}
-                  value={state.employeeAddress.zipcode || ''}
+                  defaultValue={state.employeeAddress[0].zipcode || ''}
                 />
               </Grid>
             </>
