@@ -80,7 +80,7 @@ const DesignationCreate = () => {
         token: localStorage.getItem('empJWT')
       }
     });
-    setFile({ url: designationById.data.organizations[0].notesURL, fileName: 'test.pdf', mimeType: 'application/pdf' });
+    setFile({ url: designationById.data.organizations[0].notesURL, fileName: `${designationById.data.organizations[0].name}.pdf`, mimeType: 'application/pdf' });
     setState({
       name: designationById.data.organizations[0].name, rolesAndResponsibilities: designationById.data.organizations[0].rolesAndResponsibilities, level: designationById.data.organizations[0].level, desgUniqueId: designationById.data.organizations[0].desgUniqueId
     });
@@ -116,10 +116,12 @@ const DesignationCreate = () => {
     if (desgId) getDesignationById();
   }, [isCreated]);
 
-  const createDesignations = async () => {
+  const createDesignations = async (values) => {
     try {
       state.notesURL = file.url;
-      setIsCreated(true); setState({});
+      await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
+      setIsCreated(true);
+      setState({});
       setShowAlert(true);
       setAlertMessage('Designation added successfully!');
     } catch (error) {
@@ -130,7 +132,7 @@ const DesignationCreate = () => {
   const editDesignations = async () => {
     try {
       state.notesURL = file.url;
-      state.notesURL = file.url;
+      await axios.put(`http://localhost:4000/designation/${desgId}`, { ...state, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
       setIsCreated(true);
       setShowAlert(true);
       setAlertMessage('Designation updated successfully!');
