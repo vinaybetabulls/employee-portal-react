@@ -43,7 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PersonalDetails({ state, setState, handleChange, profileImageChange }) {
+export default function PersonalDetails({
+  state, setState, handleChange, profileImageChange
+}) {
   const classes = useStyles();
   const handleEmpAdd = (event) => {
     const { employeeAddress: ea } = state;
@@ -276,58 +278,62 @@ export default function PersonalDetails({ state, setState, handleChange, profile
           />
         </Grid>
         {
-          state.employeeAddress && <>
-        <Grid item xs={12}>
-          <TextField
-            id="address"
-            name="address"
-            label="Address"
-            fullWidth
-            autoComplete="shipping address-line2"
-            onChange={handleEmpAdd}
-            value={state.employeeAddress.address || ''}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            id="city"
-            name="city"
-            label="City"
-            fullWidth
-            autoComplete="shipping address-level2"
-            onChange={handleEmpAdd}
-            value={state.employeeAddress.city || ''}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} value={state.employeeAddress.state || ''}/>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            id="country"
-            name="country"
-            label="Country"
-            fullWidth
-            autoComplete="shipping country"
-            onChange={handleEmpAdd}
-            value={state.employeeAddress.country || ''}
-          />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextField
-            required
-            id="zipcode"
-            name="zipcode"
-            label="Zip / Postal code"
-            fullWidth
-            autoComplete="shipping postal-code"
-            onChange={handleEmpAdd}
-            value={state.employeeAddress.zipcode || ''}
-          />
-        </Grid>
-        </>}
+          state.employeeAddress
+          && (
+            <>
+              <Grid item xs={12}>
+                <TextField
+                  id="address"
+                  name="address"
+                  label="Address"
+                  fullWidth
+                  autoComplete="shipping address-line2"
+                  onChange={handleEmpAdd}
+                  value={state.employeeAddress.address || ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  required
+                  id="city"
+                  name="city"
+                  label="City"
+                  fullWidth
+                  autoComplete="shipping address-level2"
+                  onChange={handleEmpAdd}
+                  value={state.employeeAddress.city || ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField id="state" name="state" label="State/Province/Region" fullWidth onChange={handleEmpAdd} value={state.employeeAddress.state || ''} />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  required
+                  id="country"
+                  name="country"
+                  label="Country"
+                  fullWidth
+                  autoComplete="shipping country"
+                  onChange={handleEmpAdd}
+                  value={state.employeeAddress.country || ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  required
+                  id="zipcode"
+                  name="zipcode"
+                  label="Zip / Postal code"
+                  fullWidth
+                  autoComplete="shipping postal-code"
+                  onChange={handleEmpAdd}
+                  value={state.employeeAddress.zipcode || ''}
+                />
+              </Grid>
+            </>
+          )
+        }
         <Grid item xs={12}>
           <FormControlLabel
             control={<Checkbox color="secondary" name="isActive" value="yes" />}

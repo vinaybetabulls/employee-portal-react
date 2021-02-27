@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,10 +11,10 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import PersonalDetails from './PersonalDetails';
 import WorkExperience from './WorkExperience';
 import UploadPicture from './UploadPicture';
-import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -72,10 +73,10 @@ export default function Employee() {
   const [activeStep, setActiveStep] = React.useState(0);
   const { empUniqueId } = useParams();
 
-  const [state, setState] = useState({});
+  const [state, setState] = useState();
 
   const getEmpById = async () => {
-    //http://localhost:4000/employee/9b100e2f-3f39-4e7f-a2ac-fa0a1ff3c657
+    // http://localhost:4000/employee/9b100e2f-3f39-4e7f-a2ac-fa0a1ff3c657
     const empDetails = empUniqueId && await axios.get(`http://localhost:4000/employee/${empUniqueId}`, {
       headers: {
         token: localStorage.getItem('empJWT')
@@ -83,22 +84,22 @@ export default function Employee() {
     });
     console.log(empDetails.data.employeeAddress);
     setState(empDetails.data);
-  }
+  };
 
   const handleChange = (evt) => {
     console.log(state);
     if (evt instanceof Date) {
       setState({ ...state, dob: new Date(evt).toISOString() });
-    }
-    else if (evt.target?.name) {
+    } else if (evt.target?.name) {
       setState({ ...state, [evt.target.name]: evt.target.value });
     }
   };
 
   const handleNext = async () => {
     if (activeStep === steps.length - 1) {
+      state.employeeAddress = [state.employeeAddress];
       console.log(state);
-      const editEmp = await axios.put('http://localhost:4000/employee/employee/update/'+empUniqueId, state, {
+      const editEmp = await axios.put(`http://localhost:4000/employee/employee/update/${empUniqueId}`, state, {
         headers: {
           token: localStorage.getItem('empJWT')
         }
@@ -125,7 +126,7 @@ export default function Employee() {
 
   useEffect(() => {
     getEmpById();
-  },[])
+  }, []);
 
   return (
     <>
@@ -156,13 +157,13 @@ export default function Employee() {
                   Thank you for registering your employee.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Employee Created Successfully!. Please provide the password to the employee, so that he can login and check/update their profile
+                  Employee Updated Successfully!. Please provide the password to the employee, so that he can login and check/update their profile
                 </Typography>
               </>
             ) : (
                 // eslint-disable-next-line react/jsx-indent
                 <>
-                  {getStepContent(activeStep, state, setState, handleChange, profileImageChange)}
+                  {state ? getStepContent(activeStep, state, setState, handleChange, profileImageChange) : <></>}
                   <div className={classes.buttons}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} className={classes.button}>

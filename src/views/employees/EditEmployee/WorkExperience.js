@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -157,10 +158,10 @@ export default function WorkExperience({ state, setState, handleChange }) {
     const getLists = async () => {
       await getOrganizationsList();
       await getDesingationsList();
-      if(state.organization && state.organization.id != null) {
+      if (state.organization && state.organization.id != null) {
         await getCompaniesList(state.organization.id);
-        if(state.company && state.company.id != null){
-          await getDepartmentList(state.company.id)
+        if (state.company && state.company.id != null) {
+          await getDepartmentList(state.company.id);
         }
       }
     };
@@ -193,79 +194,91 @@ export default function WorkExperience({ state, setState, handleChange }) {
           </FormControl>
         </Grid>
         {
-          state.workExperience && <>
-        <Grid item xs={12} sm={4}>
-          {/* <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel> */}
-          <FormControl className={classes.formControlsize}>
-            <InputLabel htmlFor="age-native-simple">Experience in Years</InputLabel>
-            <Select native name="years" onChange={handleExpChange} value={state.workExperience.years || ''}>
-              <option aria-label="None" value="" />
-              <option value={0}>0</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-            </Select>
-          </FormControl>
-          {' '}
-          <FormControl className={classes.formControlsize}>
-            <InputLabel htmlFor="age-native-simple">Experience in Months</InputLabel>
-            <Select native name="months" onChange={handleExpChange} value={state.workExperience.months || ''}>
-              <option aria-label="None" value="" />
-              <option value={0}>0</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-            </Select>
-          </FormControl>
-        </Grid>
-        </>
+          state.workExperience && (
+            <>
+              <Grid item xs={12} sm={4}>
+                {/* <InputLabel htmlFor="age-native-simple">Work Experience</InputLabel> */}
+                <FormControl className={classes.formControlsize}>
+                  <InputLabel htmlFor="age-native-simple">Experience in Years</InputLabel>
+                  <Select native name="years" onChange={handleExpChange} value={state.workExperience.years || ''}>
+                    <option aria-label="None" value="" />
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                  </Select>
+                </FormControl>
+                {' '}
+                <FormControl className={classes.formControlsize}>
+                  <InputLabel htmlFor="age-native-simple">Experience in Months</InputLabel>
+                  <Select native name="months" onChange={handleExpChange} value={state.workExperience.months || ''}>
+                    <option aria-label="None" value="" />
+                    <option value={0}>0</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </>
+          )
         }
-        { state.organization && <Grid item xs={12} sm={4}>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
-            <Select native name="organization" onChange={handleSelectChange} value={ state.organization.id || ''}>
-              <option aria-label="None" value="" />
-              {
-                // eslint-disable-next-line max-len
-                organizationsList.length > 0 && organizationsList.map((org) => <option key={org.orgUniqueId} value={org.orgUniqueId} data={org.orgUniqueId}>{org.organizationName}</option>)
-              }
-            </Select>
-          </FormControl>
-        </Grid>}
-        { state.company && <Grid item xs={12} sm={4}>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-native-simple">Company</InputLabel>
-            <Select native name="company" onChange={handleSelectChange} value={state.company.id || ''}>
-              <option aria-label="None" value="" />
-              {
-                // eslint-disable-next-line max-len
-                companiesList.length > 0 && companiesList.map((cmp) => <option key={cmp.companyUniqeId} value={cmp.companyUniqeId} data={cmp.companyUniqeId}>{cmp.name}</option>)
-              }
-            </Select>
-          </FormControl>
-        </Grid> }
-        {state.designation && <Grid item xs={12} sm={4}><>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-native-simple">Designation</InputLabel>
-            <Select native name="designation" onChange={handleSelectChange}>
-              <option aria-label="None" value="" />
-              {
-                // eslint-disable-next-line max-len
-                designationsList.length > 0 && designationsList.map((designation) => <option key={designation.desgUniqueId} value={designation.desgUniqueId} data={designation.desgUniqueId}>{designation.name}</option>)
-              }
-            </Select>
-          </FormControl></>
-        </Grid>}
-        { state.department && <Grid item xs={12} sm={4}>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-native-simple">Department</InputLabel>
-            <Select native name="department" onChange={handleSelectChange} value={state.department.id || ''}>
-              <option aria-label="None" value="" />
-              {
-                // eslint-disable-next-line max-len
-                departmentList.length > 0 && departmentList.map((departments) => <option key={departments.departmentUniqueId} value={departments.departmentUniqueId} data={departments.departmentUniqueId}>{departments.departmentName}</option>)
-              }
-            </Select>
-          </FormControl>
-        </Grid>}
+        {state.organization && organizationsList.length > 0 && (
+          <Grid item xs={12} sm={4}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
+              <Select native name="organization" onChange={handleSelectChange} value={state.organization.id || ''}>
+                <option aria-label="None" value="" />
+                {
+                  // eslint-disable-next-line max-len
+                  organizationsList.length > 0 && organizationsList.map((org) => <option key={org.orgUniqueId} value={org.orgUniqueId} data={org.orgUniqueId}>{org.organizationName}</option>)
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
+        {state.company && companiesList.length > 0 && (
+          <Grid item xs={12} sm={4}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-simple">Company</InputLabel>
+              <Select native name="company" onChange={handleSelectChange} value={state.company.id || ''}>
+                <option aria-label="None" value="" />
+                {
+                  // eslint-disable-next-line max-len
+                  companiesList.length > 0 && companiesList.map((cmp) => <option key={cmp.companyUniqeId} value={cmp.companyUniqeId} data={cmp.companyUniqeId}>{cmp.name}</option>)
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
+        {state.designation && designationsList.length > 0 && (
+          <Grid item xs={12} sm={4}>
+            <>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">Designation</InputLabel>
+                <Select native name="designation" onChange={handleSelectChange} value={state.designation.id}>
+                  <option aria-label="None" value="" />
+                  {
+                    // eslint-disable-next-line max-len
+                    designationsList.length > 0 && designationsList.map((designation) => <option key={designation.desgUniqueId} value={designation.desgUniqueId} data={designation.desgUniqueId}>{designation.name}</option>)
+                  }
+                </Select>
+              </FormControl>
+            </>
+          </Grid>
+        )}
+        {state.department && departmentList.length > 0 && (
+          <Grid item xs={12} sm={4}>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-simple">Department</InputLabel>
+              <Select native name="department" onChange={handleSelectChange} value={state.department.id || ''}>
+                <option aria-label="None" value="" />
+                {
+                  // eslint-disable-next-line max-len
+                  departmentList.length > 0 && departmentList.map((departments) => <option key={departments.departmentUniqueId} value={departments.departmentUniqueId} data={departments.departmentUniqueId}>{departments.departmentName}</option>)
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
         <Grid item xs={12} md={4}>
           <TextField
             required
@@ -274,7 +287,8 @@ export default function WorkExperience({ state, setState, handleChange }) {
             name="empId"
             fullWidth
             autoComplete="cc-csc"
-            onChange={handleChange} value={state.empId || ''}
+            onChange={handleChange}
+            value={state.empId || ''}
           />
         </Grid>
 
