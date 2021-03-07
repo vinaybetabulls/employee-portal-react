@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
+
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -97,16 +102,25 @@ const NavBar = ({ onMobileClose, openMobile }) => {
        */}
       <Divider />
       <Box p={2}>
-        <List>
-          {items.map((item) => (
-            <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
-            />
-          ))}
-        </List>
+        <TreeView
+          className={classes.root}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={['1']}
+        >
+          <TreeItem nodeId="1" label="Main">
+            <List>
+              {items.map((item, index) => (
+                <NavItem
+                  href={item.href}
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                />
+              ))}
+            </List>
+          </TreeItem>
+        </TreeView>
       </Box>
       <Box flexGrow={1} />
 
