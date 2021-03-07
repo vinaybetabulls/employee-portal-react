@@ -80,6 +80,7 @@ const CompanyEditView = () => {
         name: values.companyContactName,
         phone: values.companyContactPhone
       };
+      values.companyOrganizationId = companyDetails.companyOrganizationId;
 
       console.log('values.....', values);
       const upadteeOrgResponse = await axios.put(`http://localhost:4000/company/${companyUniqeId}`, { ...values, companyLogoURL: state.companyLogoURL }, { headers: { token: localStorage.getItem('empJWT') } });
@@ -88,6 +89,7 @@ const CompanyEditView = () => {
       setSeverityValue('success');
       setResponseMessage('Company updated successfully.');
       setState({});
+      getCompanyById(companyUniqeId);
     } catch (error) {
       console.error('company create error.....', error.response.data.statusCode === 400);
       setSeverityValue('error');
