@@ -118,10 +118,12 @@ const DesignationCreate = () => {
 
   const createDesignations = async (values) => {
     try {
+      setIsCreated(false);
       state.notesURL = file.url;
       await axios.post('http://localhost:4000/designation/create', { ...values, notesURL: file.url }, { headers: { token: localStorage.getItem('empJWT') } });
       setIsCreated(true);
       setState({});
+      setFile({ url: '' });
       setShowAlert(true);
       setAlertMessage('Designation added successfully!');
     } catch (error) {

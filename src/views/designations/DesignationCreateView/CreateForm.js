@@ -56,8 +56,9 @@ const CreateForm = ({
           level: Yup.string().max(255).required('Designation level is required'),
 
         })}
-        onSubmit={async (values) => {
+        onSubmit={async (values, {resetForm}) => {
           createDesignations(values);
+          resetForm();
         }}
       >
         {({

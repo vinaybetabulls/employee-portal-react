@@ -38,11 +38,14 @@ const CreateView = () => {
   let isAdded = false;
   const createDepartment = async () => {
     try {
+      isAdded = false;
       const createDeptResponse = await axios.post('http://localhost:4000/department/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create department Response..', createDeptResponse);
-      // createDeptResponse && navigate('/app/department/view');
       isAdded = true;
-      console.log(isAdded);
+      setState({
+        departmentName: "",
+        departmentCategory: "",
+        companiesList: []
+      });
     } catch (error) {
       console.log('org create error', error)
     }

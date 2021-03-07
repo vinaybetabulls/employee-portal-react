@@ -77,14 +77,12 @@ const CreateForm = ({
           token: localStorage.getItem('empJWT')
         }
       });
-      console.log(companies);
       const companiesSelect = companiesList.data && companiesList.data.companies && companiesList.data.companies.map((company) => {
         return {
           companyName: company.companyName,
           companyUniqeId: company.companyUniqeId
         };
       });
-      console.log(' companiesSelect..', companiesSelect);
       setCompanies(companiesSelect);
     };
     getCompaniesList();
@@ -104,6 +102,7 @@ const CreateForm = ({
                 fullWidth
                 autoComplete="family-name"
                 defaultValue=""
+                value={state.departmentName}
                 onChange={handleChange}
               />
             </Grid>
@@ -116,6 +115,7 @@ const CreateForm = ({
                   onChange={handleChange}
                   input={<Input />}
                   MenuProps={MenuProps}
+                  value={state.departmentCategory}
                   name="departmentCategory">
                   <MenuItem value="low"> Low </MenuItem>
                   <MenuItem value="medium"> Medium </MenuItem>

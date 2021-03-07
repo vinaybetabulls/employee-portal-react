@@ -53,15 +53,13 @@ const Departments = () => {
         token: localStorage.getItem('empJWT')
       }
     });
-    console.log('designaiotns list....', departmentsList.data);
     setDepartments(departmentsList.data.departments);
   };
 
   const createDepartment = async () => {
     try {
-      console.log(state);
+      setIsCreated(false);
       const createDeptResponse = await axios.post('http://localhost:4000/department/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create department Response..', createDeptResponse);
       setIsCreated(true);
       setShowAlert(true);
       setState({
