@@ -34,14 +34,16 @@ const OrganizationEditView = () => {
 
   const uploadOrganizationLogo = (evt) => {
     console.log(evt.target.files[0]);
-    const reader = new FileReader();
-    reader.readAsDataURL(evt.target.files[0]);
-    reader.onload = () => {
-      setState({ ...state, organizationLogoURL: reader.result });
-    };
-    reader.onerror = (error) => {
-      console.log('Error: ', error);
-    };
+    if (evt.target?.files[0]) {
+      const reader = new FileReader();
+      reader.readAsDataURL(evt.target.files[0]);
+      reader.onload = () => {
+        setState({ ...state, organizationLogoURL: reader.result });
+      };
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+      };
+    }
   };
 
   const getOrgnizationById = async (orgUniqId) => {

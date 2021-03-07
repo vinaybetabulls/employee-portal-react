@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className,debounceOnChange, ...rest }) => {
   const classes = useStyles();
 
   const { decoded } = useContext(AppContext)
@@ -59,8 +59,9 @@ const Toolbar = ({ className, ...rest }) => {
                         </InputAdornment>
                       )
                     }}
-                    placeholder="Search organisation"
+                    placeholder="Search Organizations"
                     variant="outlined"
+                    onChange={(e) => debounceOnChange(e.target.value)}
                   />
                 </Box>
               </Grid>
@@ -79,7 +80,8 @@ const Toolbar = ({ className, ...rest }) => {
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  debounceOnChange: PropTypes.func
 };
 
 export default Toolbar;

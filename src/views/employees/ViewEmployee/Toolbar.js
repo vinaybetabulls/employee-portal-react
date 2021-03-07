@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className,debounceOnChange, ...rest }) => {
   const classes = useStyles();
 
   const { decoded } = useContext(AppContext)
@@ -58,8 +58,9 @@ const Toolbar = ({ className, ...rest }) => {
                       </InputAdornment>
                     )
                   }}
-                  placeholder="Search customer"
+                  placeholder="Search Employee"
                   variant="outlined"
+                  onChange={(e) => debounceOnChange(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -76,7 +77,8 @@ const Toolbar = ({ className, ...rest }) => {
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  debounceOnChange: PropTypes.func
 };
 
 export default Toolbar;

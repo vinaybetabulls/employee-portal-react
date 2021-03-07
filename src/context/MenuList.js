@@ -79,6 +79,11 @@ const Menu = {
       href: '/app/settings',
       icon: SettingsIcon,
       title: 'Change Password'
+    },
+    {
+      href: '/app/organizaiton/view',
+      icon: AccountBalanceIcon,
+      title: 'Organizations'
     }
   ]
 };

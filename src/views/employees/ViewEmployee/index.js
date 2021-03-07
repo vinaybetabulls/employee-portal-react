@@ -4,6 +4,7 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
+import debounce from 'lodash.debounce';
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
@@ -18,6 +19,15 @@ const useStyles = makeStyles((theme) => ({
 
 const EmployeestListView = () => {
   const classes = useStyles();
+  const [searchEmployee, setEmployeeSearch] = React.useState();
+  function onChange(value) {
+    if (value === '') {
+      setEmployeeSearch();
+    }
+    setEmployeeSearch(value);
+  }
+
+  const debounceOnChange = React.useCallback(debounce(onChange, 400), []);
 
   return (
     <Page
@@ -25,9 +35,9 @@ const EmployeestListView = () => {
       title="Customers"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar debounceOnChange={debounceOnChange} />
         <Box mt={3}>
-          <Results />
+          <Results searchEmployee={searchEmployee } />
         </Box>
       </Container>
     </Page>

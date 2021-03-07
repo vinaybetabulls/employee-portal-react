@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   TextField,
@@ -12,10 +11,6 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
-
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AppContext } from 'src/context/AppContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +23,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, debounceOnChange, ...rest }) => {
+const Toolbar = ({
+  className, debounceOnChange, placeholder = '', ...rest
+}) => {
   const classes = useStyles();
-
-  const { decoded } = useContext(AppContext)
-
   return (
     <div
       className={clsx(classes.root, className)}
@@ -56,8 +50,8 @@ const Toolbar = ({ className, debounceOnChange, ...rest }) => {
                     </InputAdornment>
                   )
                 }}
-                onChange={e => debounceOnChange(e.target.value)}
-                placeholder="Search customer"
+                onChange={(e) => debounceOnChange(e.target.value)}
+                placeholder={placeholder}
                 variant="outlined"
               />
             </Box>
@@ -69,7 +63,9 @@ const Toolbar = ({ className, debounceOnChange, ...rest }) => {
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  placeholder: PropTypes.string,
+  debounceOnChange: PropTypes.func,
 };
 
 export default Toolbar;

@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { AppContext } from 'src/context/AppContext';
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className, debounceOnChange, ...rest }) => {
   const classes = useStyles();
 
   const { decoded } = useContext(AppContext)
@@ -59,8 +59,9 @@ const Toolbar = ({ className, ...rest }) => {
                         </InputAdornment>
                       )
                     }}
-                    placeholder="Search customer"
+                    placeholder="Search Companies"
                     variant="outlined"
+                    onChange={(e) => debounceOnChange(e.target.value)}
                   />
                 </Box>
               </Grid>
@@ -79,7 +80,8 @@ const Toolbar = ({ className, ...rest }) => {
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  debounceOnChange: PropTypes.func,
 };
 
 export default Toolbar;

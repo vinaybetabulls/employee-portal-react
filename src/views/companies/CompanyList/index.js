@@ -4,6 +4,7 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
+import debounce from 'lodash.debounce';
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
@@ -16,8 +17,22 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
 const CompanyList = () => {
   const classes = useStyles();
+  const [companySearch, setCompanySearch] = React.useState();
+  function onChange(value) {
+    if (value === '') {
+      console.log('value...', value);
+      setCompanySearch();
+      console.log('companySearch..', companySearch);
+    }
+    setCompanySearch(value);
+    console.log('companySearch..', companySearch);
+    console.log('Companies search value', value);
+  }
+
+  const debounceOnChange = React.useCallback(debounce(onChange, 400), []);
 
   return (
     <Page
@@ -25,9 +40,9 @@ const CompanyList = () => {
       title="Customers"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar debounceOnChange={debounceOnChange} />
         <Box mt={3}>
-          <Results />
+          <Results companySearch={companySearch} />
         </Box>
       </Container>
     </Page>

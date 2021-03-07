@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Results = ({ className }) => {
+const Results = ({ className, organizationSearch = undefined }) => {
   const classes = useStyles();
   const [selectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(5);
@@ -41,20 +41,45 @@ const Results = ({ className }) => {
   const { decoded: { user: { permissions } } } = useContext(AppContext);
   const [totalOrgnizations, setTotalOrganizations] = useState(0);
   const getOrganization = async () => {
-    const organizationsList = await axios.get(`http://localhost:4000/organization/list?pageNumber=${page}&pageLimit=${limit}`, {
-      headers: {
-        token: localStorage.getItem('empJWT')
+    let organizationsList;
+    if (!organizationSearch) {
+      try {
+        organizationsList = await axios.get(`http://localhost:4000/organization/list?pageNumber=${page}&pageLimit=${limit}`, {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setTotalOrganizations(organizationsList.data.totalOrganizaitons);
+        setOrganizations(organizationsList.data.organizations);
+      } catch (error) {
+        if (error.response?.status === 404) {
+          setOrganizations([]);
+          setTotalOrganizations(0);
+        }
       }
-    });
-    console.log('organizationsList..', organizationsList.data);
-    setTotalOrganizations(organizationsList.data.totalOrganizaitons);
-    setOrganizations(organizationsList.data.organizations);
+
+    }
+    else {
+      try {
+        organizationsList = await axios.get(`http://localhost:4000/organization/list?pageNumber=${page}&pageLimit=${limit}&search=${organizationSearch}`, {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setTotalOrganizations(organizationsList.data.totalOrganizaitons);
+        setOrganizations(organizationsList.data.organizations);
+      } catch (error) {
+        if (error.response.status === 404) {
+          setOrganizations([]);
+          setTotalOrganizations(0);
+        }
+      };
+    }
     // setLimit(organizationsList.data.pageLimit);
   };
   useEffect(() => {
     getOrganization();
-  }, [page, limit]);
-  console.log('customers....', organizations);
+  }, [page, limit, organizationSearch]);
   const deleteOrganization = async (orgId) => {
     await axios.delete(`http://localhost:4000/organization/${orgId}`, {
       headers: {
@@ -104,7 +129,7 @@ const Results = ({ className }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {organizations.length > 0 && organizations.slice(0, limit).map((customer) => (
+              {organizations.length > 0 ? organizations.slice(0, limit).map((customer) => (
                 <TableRow
                   hover
                   key={customer.orgUniqueId}
@@ -168,7 +193,8 @@ const Results = ({ className }) => {
                     }
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+                : <p>Organizations not found</p>}
             </TableBody>
           </Table>
         </Box>
@@ -187,7 +213,8 @@ const Results = ({ className }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  organizationSearch: PropTypes.any
 };
 
 export default Results;

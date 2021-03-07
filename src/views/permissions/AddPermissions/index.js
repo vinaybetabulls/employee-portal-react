@@ -5,8 +5,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import CreateForm from './CreateForm';
 import axios from 'axios';
+import CreateForm from './CreateForm';
 import Toolbar from './Toolbar';
 import debounce from 'lodash.debounce';
 
@@ -26,7 +26,7 @@ const PermissionsCreateView = () => {
     organizationLogoURL: null
   });
 
-  const debounceOnChange = React.useCallback(debounce(onChange, 400), []);
+
 
   async function onChange(value) {
     console.log('onchage...,', value);
@@ -34,12 +34,14 @@ const PermissionsCreateView = () => {
       headers: {
         token: localStorage.getItem('empJWT')
       }
-    })
+    });
   }
+
+  const debounceOnChange = React.useCallback(debounce(onChange, 400), []);
 
   const uploadOrganizationLogo = (evt) => {
     console.log(evt.target.files[0]);
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(evt.target.files[0]);
     reader.onload = function () {
       setState({ ...state, organizationLogoURL: reader.result });
@@ -47,7 +49,7 @@ const PermissionsCreateView = () => {
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
-  }
+  };
 
   const handleChange = (event) => {
     setState({
@@ -64,32 +66,32 @@ const PermissionsCreateView = () => {
         state: state.state,
         country: state.country,
         zipcode: state.zipcode
-      }]
+      }];
       state.organizationContactPerson = {
         name: state.organizationContactName,
         phone: state.organizationContactPhone
-      }
+      };
       const createOrgResponse = await axios.post('http://localhost:4000/organization/create', state, { headers: { token: localStorage.getItem('empJWT') } });
-      console.log('create Org Response..', createOrgResponse)
+      console.log('create Org Response..', createOrgResponse);
     } catch (error) {
-      console.log('org create error', error)
+      console.log('org create error', error);
     }
-  }
+  };
 
   /**
    * search employees
    */
 
   const searchEmployees = (event) => {
-    console.log('seach employee', event.target.value)
-  }
+    console.log('seach employee', event.target.value);
+  };
   return (
-    <Page className={classes.root} title="Permission" >
+    <Page className={classes.root} title="Permission">
 
       <Container maxWidth={false}>
-        <Toolbar debounceOnChange={debounceOnChange} />
-        <Grid container  >
-          <Grid item lg={12} md={12} xs={12} >
+        <Toolbar debounceOnChange={debounceOnChange} placeholder="Search Employee" />
+        <Grid container>
+          <Grid item lg={12} md={12} xs={12}>
             <CreateForm handleChange={handleChange} createOrganization={createOrganization} />
           </Grid>
         </Grid>

@@ -4,6 +4,7 @@ import {
   Container,
   makeStyles
 } from '@material-ui/core';
+import debounce from 'lodash.debounce';
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
@@ -18,16 +19,24 @@ const useStyles = makeStyles((theme) => ({
 
 const OrganizationView = () => {
   const classes = useStyles();
+  const [organizationSearch, setOrganizationSearch] = React.useState();
+  function onChange(value) {
+    if (value === '') {
+      setOrganizationSearch();
+    }
+    setOrganizationSearch(value);
+  }
 
+  const debounceOnChange = React.useCallback(debounce(onChange, 400), []);
   return (
     <Page
       className={classes.root}
       title="Customers"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar debounceOnChange={debounceOnChange}/>
         <Box mt={3}>
-          <Results />
+          <Results organizationSearch={organizationSearch} />
         </Box>
       </Container>
     </Page>

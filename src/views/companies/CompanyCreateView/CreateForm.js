@@ -81,9 +81,10 @@ const CreateForm = ({
       enableReinitialize
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { resetForm }) => {
         console.log('on submit values....', values);
         createCompany(values);
+        resetForm();
       }}
     >
       {({

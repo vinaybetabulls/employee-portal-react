@@ -214,7 +214,7 @@ export default function PersonalDetails({ state, setState, handleChange, profile
             <KeyboardDatePicker
               margin="normal"
               id="date-picker-dialog"
-              label="Date picker dialog"
+              label="Date of birth"
               format="MM/dd/yyyy"
               name="dob"
               value={state.dob}

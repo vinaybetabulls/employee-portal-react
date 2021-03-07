@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Results = ({ className }) => {
+const Results = ({ className, companySearch = undefined }) => {
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const { decoded: { user: { permissions } } } = useContext(AppContext);
@@ -42,17 +42,39 @@ const Results = ({ className }) => {
   const [page, setPage] = useState(0);
   const [companies, setCompanies] = useState([]);
   const getOrganization = async () => {
-    const companiesList = await axios.get(`http://localhost:4000/company/list?pageNumber=${page}&pageLimit=${limit}`, {
-      headers: {
-        token: localStorage.getItem('empJWT')
+    let companiesList;
+    if (!companySearch) {
+      try {
+        companiesList = await axios.get(`http://localhost:4000/company/list?pageNumber=${page}&pageLimit=${limit}`, {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setCompanies(companiesList.data.companies);
+      } catch (error) {
+        if (error.response?.status === 404) {
+          setCompanies([]);
+        }
       }
-    });
-    console.log('organizationsList..', companiesList.data);
-    setCompanies(companiesList.data.companies);
+    }
+    else {
+      try {
+        companiesList = await axios.get(`http://localhost:4000/company/list?pageNumber=${page}&pageLimit=${limit}&search=${companySearch}`, {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setCompanies(companiesList.data.companies);
+      } catch (error) {
+        if (error.response?.status === 404) {
+          setCompanies([]);
+        }
+      }
+    }
   };
   useEffect(() => {
     getOrganization();
-  }, [page, limit]);
+  }, [page, limit, companySearch]);
   const deleteCompany = async (companyId) => {
     console.log('delete icon', companyId);
     await axios.delete(`http://localhost:4000/company/${companyId}`, {
@@ -147,7 +169,7 @@ const Results = ({ className }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {companies && companies.length > 0 && companies.slice(0, limit).map((company) => (
+              {(companies && companies.length > 0) ? companies.slice(0, limit).map((company) => (
                 <TableRow
                   hover
                   key={company.orgUniqueId}
@@ -168,7 +190,7 @@ const Results = ({ className }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {company.organizationName}
+                        {company.companyName}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -218,7 +240,9 @@ const Results = ({ className }) => {
 
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+                :
+                <p>Componies Not Found</p>}
             </TableBody>
           </Table>
         </Box>
@@ -237,7 +261,8 @@ const Results = ({ className }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  companySearch: PropTypes.any
 };
 
 export default Results;

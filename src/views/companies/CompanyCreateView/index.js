@@ -69,7 +69,10 @@ const CustomerCreateView = () => {
       setShowAlert(true);
       setSeverityValue('success');
       setResponseMessage('Company created successfully.');
-      setState({});
+      setState({
+        companyLogoURL: null
+      });
+      return;
     } catch (error) {
       console.error('company create error.....', error.response.data.statusCode === 400);
       setSeverityValue('error');

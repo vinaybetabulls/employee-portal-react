@@ -69,7 +69,7 @@ const MenuProps = {
   },
 };
 
-const Results = ({ className }) => {
+const Results = ({ className, searchEmployee = null }) => {
   const rolesList = GetRoles();
   const classes = useStyles();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -80,19 +80,49 @@ const Results = ({ className }) => {
   const { decoded: { user: { permissions, roles } } } = useContext(AppContext);
   const [state, setState] = useState({ roles: [], permissions: [] });
   const [open, setOpen] = useState(false);
+  const [noResult, setNoResult] = useState('');
 
   const getEmployees = async () => {
-    const employeeList = await axios.get('http://localhost:4000/employee/employees/list', {
-      headers: {
-        token: localStorage.getItem('empJWT')
+    let employeeList;
+    if (!searchEmployee) {
+      try {
+        employeeList = await axios.get('http://localhost:4000/employee/employees/list', {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setEmployees(employeeList.data.employees);
+      } catch (error) {
+        console.log('employee error', error)
+        if (error.response.status) {
+          setNoResult('Employees not found');
+          setEmployees([]);
+        }
       }
-    });
-    console.log('employeeList..', employeeList.data);
-    setEmployees(employeeList.data.employees);
+
+    }
+    else {
+      try {
+        employeeList = await axios.get(`http://localhost:4000/employee/employees/list?search=${searchEmployee}`, {
+          headers: {
+            token: localStorage.getItem('empJWT')
+          }
+        });
+        setEmployees(employeeList.data.employees);
+      } catch (error) {
+
+        console.log('employee error', error)
+        if (error.response.status) {
+          setNoResult('Employees not found');
+          setEmployees([]);
+        }
+      }
+
+    }
   };
   useEffect(() => {
     getEmployees();
-  }, [open]);
+  }, [open, searchEmployee]);
   const deleteEmployee = async (empUniqueId) => {
     await axios.delete(`http://localhost:4000/employee/${empUniqueId}`, {
       headers: {
@@ -195,79 +225,87 @@ const Results = ({ className }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {employees.length > 0 && employees.slice(0, limit).map((employee) => (
-                <TableRow
-                  hover
-                  key={employee.empUniqueId}
-                  selected={selectedCustomerIds.indexOf(employee.empUniqueId) !== -1}
-                >
-                  <TableCell>
-                    <Box
-                      alignItems="center"
-                      display="flex"
+              {
+                employees.length > 0
+                  ? employees.slice(0, limit).map((employee) => (
+                    <TableRow
+                      hover
+                      key={employee.empUniqueId}
+                      selected={selectedCustomerIds.indexOf(employee.empUniqueId) !== -1}
                     >
-                      <Avatar
-                        className={classes.avatar}
-                        src={employee.profileImageURL ? employee.profileImageURL : ''}
-                      >
-                        {getInitials(`${employee.firstName} ${employee.lastName}`)}
-                      </Avatar>
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
-                      >
-                        {`${employee.firstName} ${employee.lastName}`}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {employee.empId}
-                  </TableCell>
-                  <TableCell>
-                    {employee.email}
-                  </TableCell>
-                  <TableCell>
-                    {employee.phone}
-                  </TableCell>
-                  <TableCell>
-                    {`${employee.organization ? employee.organization.name : ''}`}
-                  </TableCell>
-                  <TableCell>
-                    {`${employee.company.name}`}
-                  </TableCell>
-                  {roles.includes('SUPER_ADMIN') && (
-                    <TableCell>
-                      <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId, employee.employeePermissions)}>
-                        Set
-                      </Button>
-                    </TableCell>
-                  )}
-                  <TableCell>
-                    {
-                      permissions.includes('VIEW') && <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/${employee.empUniqueId}`}>
-                        <VisibilityIcon color="primary" fontSize="small" size="small"/> </IconButton>
-                    }
-                    {
-                      permissions.includes('EDIT')
-                      && (
-                        <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/edit/${employee.empUniqueId}`}>
-                          <EditIcon fontSize="small" size="small" />
-                        </IconButton>
-                      )
-                    }
-                    {
-                      permissions.includes('DELETE') && (
-                        <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
-                          <DeleteIcon color="error" fontSize="small" size="small" />
-                          {' '}
+                      <TableCell>
+                        <Box
+                          alignItems="center"
+                          display="flex"
+                        >
+                          <Avatar
+                            className={classes.avatar}
+                            src={employee.profileImageURL ? employee.profileImageURL : ''}
+                          >
+                            {getInitials(`${employee.firstName} ${employee.lastName}`)}
+                          </Avatar>
+                          <Typography
+                            color="textPrimary"
+                            variant="body1"
+                          >
+                            {`${employee.firstName} ${employee.lastName}`}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        {employee.empId}
+                      </TableCell>
+                      <TableCell>
+                        {employee.email}
+                      </TableCell>
+                      <TableCell>
+                        {employee.phone}
+                      </TableCell>
+                      <TableCell>
+                        {`${employee.organization ? employee.organization.name : ''}`}
+                      </TableCell>
+                      <TableCell>
+                        {`${employee.company.name}`}
+                      </TableCell>
+                      {roles.includes('SUPER_ADMIN') && (
+                        <TableCell>
+                          <Button variant="outlined" color="primary" onClick={() => handleClickOpen(employee.empUniqueId, employee.employeePermissions)}>
+                            Set
+                          </Button>
+                        </TableCell>
+                      )}
+                      <TableCell>
+                        {
+                          permissions.includes('VIEW') && (
+                            <IconButton aria-label="view" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/${employee.empUniqueId}`}>
+                              <VisibilityIcon color="primary" fontSize="small" size="small" /> </IconButton>
+                          )
+                        }
+                        {
+                          permissions.includes('EDIT')
+                          && (
+                            <IconButton aria-label="edit" className={classes.margin} id={employee.orgUniqueId} href={`/app/employee/edit/${employee.empUniqueId}`}>
+                              <EditIcon fontSize="small" size="small" />
+                            </IconButton>
+                          )
+                        }
+                        {
+                          permissions.includes('DELETE') && (
+                            <IconButton aria-label="delete" className={classes.margin} id={employee.orgUniqueId} onClick={() => deleteEmployee(employee.orgUniqueId)}>
+                              <DeleteIcon color="error" fontSize="small" size="small" />
+                              {' '}
 
-                        </IconButton>
-                      )
-                    }
+                            </IconButton>
+                          )
+                        }
 
-                  </TableCell>
-                </TableRow>
-              ))}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                  : (
+                        <p>Employees not found</p>
+                  )
+              }
             </TableBody>
           </Table>
         </Box>
@@ -356,7 +394,8 @@ const Results = ({ className }) => {
 };
 
 Results.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  searchEmployee: PropTypes.any
 };
 
 export default Results;
